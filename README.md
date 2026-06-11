@@ -308,3 +308,5 @@ supabase/
 - **RLS** habilitado em todas as tabelas; políticas por perfil.
 - Trigger impede que usuário comum altere o próprio `role`/`is_active`.
 - `SUPABASE_SERVICE_ROLE_KEY` usada **apenas** no servidor (`src/lib/supabase/admin.ts`, com `server-only`).
+#   C e m e - E d u c a c i o n a l  
+ 
