@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js dev server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Supabase local (Docker)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "db:start"],
+      "port": 54321
+    }
+  ]
+}

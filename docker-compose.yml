@@ -1,0 +1,39 @@
+# =============================================================================
+# docker-compose de produção — app Next.js + Caddy (HTTPS automático)
+# =============================================================================
+# Uso no VPS:
+#   docker compose --env-file .env.production up -d --build
+#
+# O Caddy obtém e renova o certificado SSL (Let's Encrypt) automaticamente,
+# desde que o domínio (DOMAIN) aponte para o IP do VPS.
+# =============================================================================
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    env_file: .env.production
+    restart: unless-stopped
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:
+  caddy_config:

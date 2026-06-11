@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.github
+npm-debug.log*
+.env*
+README.md
+DEPLOY-HOSTINGER.md
+.vscode
+.idea
+coverage
+*.tsbuildinfo
+supabase/.branches
+supabase/.temp
