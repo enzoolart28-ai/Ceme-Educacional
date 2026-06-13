@@ -17,6 +17,10 @@ import {
   MonitorPlay,
   FileQuestion,
   FolderArchive,
+  Megaphone,
+  Mail,
+  Bell,
+  CalendarDays,
   Wallet,
   BookOpen,
   UserCircle,
@@ -44,6 +48,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Painel",
     href: "/dashboard",
     icon: LayoutDashboard,
+    roles: ALL_ROLES,
+  },
+  {
+    label: "Calendário",
+    href: "/dashboard/calendario",
+    icon: CalendarDays,
     roles: ALL_ROLES,
   },
   {
@@ -93,6 +103,24 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/documentos",
     icon: FolderArchive,
     roles: ["admin", "diretor", "coordenacao", "secretaria", "aluno", "responsavel"],
+  },
+  {
+    label: "Comunicados",
+    href: "/dashboard/comunicacao",
+    icon: Megaphone,
+    roles: ALL_ROLES,
+  },
+  {
+    label: "Mensagens",
+    href: "/dashboard/mensagens",
+    icon: Mail,
+    roles: ALL_ROLES,
+  },
+  {
+    label: "Notificações",
+    href: "/dashboard/notificacoes",
+    icon: Bell,
+    roles: ALL_ROLES,
   },
   {
     label: "Professores",

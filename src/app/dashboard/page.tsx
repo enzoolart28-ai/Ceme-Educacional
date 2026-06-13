@@ -8,6 +8,8 @@ import {
 import { getStudentFrequencyByProfile } from "@/lib/attendance/queries";
 import { getStudentRecentGradesByProfile } from "@/lib/grades/queries";
 import { getStudentProgressByProfile } from "@/lib/ava/queries";
+import { listUpcomingEvents } from "@/lib/calendar/queries";
+import { UpcomingEvents } from "@/components/calendar/upcoming-events";
 import { PageHeader } from "@/components/ui/page-header";
 import { RoleBadge } from "@/components/ui/badge";
 import { AdminDashboard } from "@/components/dashboard/admin-dashboard";
@@ -70,6 +72,11 @@ export default async function DashboardPage() {
     }
   }
 
+  const [dashboard, upcoming] = await Promise.all([
+    renderDashboard(),
+    listUpcomingEvents(5),
+  ]);
+
   return (
     <>
       <PageHeader
@@ -77,7 +84,10 @@ export default async function DashboardPage() {
         description="Bem-vindo ao Sistema CME Educacional."
         action={<RoleBadge role={role} />}
       />
-      {await renderDashboard()}
+      {dashboard}
+      <div className="mt-6">
+        <UpcomingEvents events={upcoming} />
+      </div>
     </>
   );
 }

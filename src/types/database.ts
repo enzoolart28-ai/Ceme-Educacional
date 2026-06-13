@@ -34,6 +34,83 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcement_reads: {
+        Row: {
+          announcement_id: string
+          id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          announcement_id: string
+          id?: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          announcement_id?: string
+          id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_reads_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "announcements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcement_reads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      announcements: {
+        Row: {
+          attachment_url: string | null
+          author_id: string | null
+          created_at: string
+          id: string
+          message: string
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["announcement_target"]
+          title: string
+        }
+        Insert: {
+          attachment_url?: string | null
+          author_id?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["announcement_target"]
+          title: string
+        }
+        Update: {
+          attachment_url?: string | null
+          author_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["announcement_target"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcements_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_options: {
         Row: {
           id: string
@@ -328,6 +405,96 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      calendar_events: {
+        Row: {
+          class_id: string | null
+          course_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_datetime: string | null
+          id: string
+          location: string | null
+          start_datetime: string
+          teacher_id: string | null
+          title: string
+          type: Database["public"]["Enums"]["calendar_event_type"]
+          unit_id: string | null
+          updated_at: string
+          visibility: Database["public"]["Enums"]["event_visibility"]
+        }
+        Insert: {
+          class_id?: string | null
+          course_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_datetime?: string | null
+          id?: string
+          location?: string | null
+          start_datetime: string
+          teacher_id?: string | null
+          title: string
+          type?: Database["public"]["Enums"]["calendar_event_type"]
+          unit_id?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["event_visibility"]
+        }
+        Update: {
+          class_id?: string | null
+          course_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_datetime?: string | null
+          id?: string
+          location?: string | null
+          start_datetime?: string
+          teacher_id?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["calendar_event_type"]
+          unit_id?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["event_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_events_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_events_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_events_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_events_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "teachers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_events_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
             referencedColumns: ["id"]
           },
         ]
@@ -1271,6 +1438,92 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          attachment_url: string | null
+          body: string | null
+          created_at: string
+          id: string
+          read_at: string | null
+          receiver_id: string
+          sender_id: string | null
+          subject: string | null
+        }
+        Insert: {
+          attachment_url?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          receiver_id: string
+          sender_id?: string | null
+          subject?: string | null
+        }
+        Update: {
+          attachment_url?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          receiver_id?: string
+          sender_id?: string | null
+          subject?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          read_at: string | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          read_at?: string | null
+          title: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          read_at?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       online_assessment_logs: {
         Row: {
           action: string
@@ -2100,6 +2353,14 @@ export type Database = {
         Args: { p_assessment: string }
         Returns: boolean
       }
+      can_send_announcements: { Args: never; Returns: boolean }
+      can_view_announcement: {
+        Args: {
+          p_target: string
+          p_type: Database["public"]["Enums"]["announcement_target"]
+        }
+        Returns: boolean
+      }
       can_view_financial_student: {
         Args: { p_student_id: string }
         Returns: boolean
@@ -2136,6 +2397,14 @@ export type Database = {
       is_guardian_of: { Args: { p_student: string }; Returns: boolean }
       is_own_student: { Args: { p_student: string }; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }
+      list_message_recipients: {
+        Args: never
+        Returns: {
+          full_name: string
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+        }[]
+      }
       owns_teacher: { Args: { p_teacher: string }; Returns: boolean }
       record_last_access: { Args: never; Returns: undefined }
       refresh_overdue_invoices: { Args: never; Returns: undefined }
@@ -2143,10 +2412,26 @@ export type Database = {
         Args: { p_answers: Json; p_submission: string; p_submit: boolean }
         Returns: undefined
       }
+      send_message: {
+        Args: {
+          p_attachment?: string
+          p_body: string
+          p_receiver: string
+          p_subject: string
+        }
+        Returns: string
+      }
       start_assessment: { Args: { p_assessment: string }; Returns: string }
       teaches_class: { Args: { p_class: string }; Returns: boolean }
     }
     Enums: {
+      announcement_target:
+        | "all"
+        | "class"
+        | "course"
+        | "guardians"
+        | "teachers"
+        | "user"
       assessment_correction_type: "automatic" | "manual"
       assessment_type:
         | "prova"
@@ -2162,6 +2447,15 @@ export type Database = {
         | "justified_absence"
         | "late"
       attendance_status: "open" | "finalized"
+      calendar_event_type:
+        | "aula"
+        | "prova"
+        | "atividade"
+        | "reuniao"
+        | "feriado"
+        | "institucional"
+        | "vencimento_financeiro"
+        | "palestra"
       class_shift: "manha" | "tarde" | "noite" | "integral" | "sabado"
       class_status: "open" | "in_progress" | "finished" | "cancelled"
       class_student_status: "active" | "inactive" | "transferred" | "cancelled"
@@ -2187,6 +2481,7 @@ export type Database = {
         | "comprovante_pagamento"
         | "outros"
       enrollment_status: "active" | "transferred" | "cancelled" | "completed"
+      event_visibility: "public" | "restricted"
       generated_document_type:
         | "declaracao_matricula"
         | "declaracao_frequencia"
@@ -2206,6 +2501,12 @@ export type Database = {
       lesson_release_type: "all" | "date" | "after_previous"
       lesson_status: "draft" | "published" | "archived"
       material_type: "video" | "pdf" | "slides" | "link" | "file"
+      notification_type:
+        | "info"
+        | "success"
+        | "warning"
+        | "announcement"
+        | "message"
       online_assessment_status: "draft" | "published" | "closed" | "archived"
       payment_method:
         | "cash"
@@ -2374,6 +2675,14 @@ export const Constants = {
   },
   public: {
     Enums: {
+      announcement_target: [
+        "all",
+        "class",
+        "course",
+        "guardians",
+        "teachers",
+        "user",
+      ],
       assessment_correction_type: ["automatic", "manual"],
       assessment_type: [
         "prova",
@@ -2391,6 +2700,16 @@ export const Constants = {
         "late",
       ],
       attendance_status: ["open", "finalized"],
+      calendar_event_type: [
+        "aula",
+        "prova",
+        "atividade",
+        "reuniao",
+        "feriado",
+        "institucional",
+        "vencimento_financeiro",
+        "palestra",
+      ],
       class_shift: ["manha", "tarde", "noite", "integral", "sabado"],
       class_status: ["open", "in_progress", "finished", "cancelled"],
       class_student_status: ["active", "inactive", "transferred", "cancelled"],
@@ -2418,6 +2737,7 @@ export const Constants = {
         "outros",
       ],
       enrollment_status: ["active", "transferred", "cancelled", "completed"],
+      event_visibility: ["public", "restricted"],
       generated_document_type: [
         "declaracao_matricula",
         "declaracao_frequencia",
@@ -2439,6 +2759,13 @@ export const Constants = {
       lesson_release_type: ["all", "date", "after_previous"],
       lesson_status: ["draft", "published", "archived"],
       material_type: ["video", "pdf", "slides", "link", "file"],
+      notification_type: [
+        "info",
+        "success",
+        "warning",
+        "announcement",
+        "message",
+      ],
       online_assessment_status: ["draft", "published", "closed", "archived"],
       payment_method: [
         "cash",

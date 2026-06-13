@@ -50,6 +50,21 @@ export type Assessment = Database["public"]["Tables"]["assessments"]["Row"];
 export type Grade = Database["public"]["Tables"]["grades"]["Row"];
 export type AssessmentType = Database["public"]["Enums"]["assessment_type"];
 
+// --- Calendário Acadêmico ----------------------------------------------------
+export type CalendarEvent = Database["public"]["Tables"]["calendar_events"]["Row"];
+export type CalendarEventType = Database["public"]["Enums"]["calendar_event_type"];
+export type EventVisibility = Database["public"]["Enums"]["event_visibility"];
+
+// --- Comunicação Interna -----------------------------------------------------
+export type Announcement = Database["public"]["Tables"]["announcements"]["Row"];
+export type AnnouncementRead =
+  Database["public"]["Tables"]["announcement_reads"]["Row"];
+export type Message = Database["public"]["Tables"]["messages"]["Row"];
+export type Notification = Database["public"]["Tables"]["notifications"]["Row"];
+export type AnnouncementTarget =
+  Database["public"]["Enums"]["announcement_target"];
+export type NotificationType = Database["public"]["Enums"]["notification_type"];
+
 // --- Documentos --------------------------------------------------------------
 export type Document = Database["public"]["Tables"]["documents"]["Row"];
 export type DocumentType = Database["public"]["Enums"]["document_type"];

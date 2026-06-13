@@ -670,3 +670,74 @@ begin
   insert into public.generated_documents (student_id, enrollment_id, type, title, file_url, generated_by)
     values (v_student, v_enroll, 'declaracao_matricula', 'Declaração de Matrícula', 'seed/declaracao.pdf', v_admin);
 end $$;
+
+-- =============================================================================
+-- Seed de Comunicação — comunicados e notificação de exemplo
+-- =============================================================================
+do $$
+declare
+  v_author uuid;
+  v_class  uuid;
+  v_aluno  uuid;
+begin
+  if exists (select 1 from public.announcements) then
+    return;
+  end if;
+
+  select p.id into v_author from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+  select id into v_class from public.classes where name = '2º Ano A' and year = 2026;
+  select p.id into v_aluno from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'aluno@cme.local';
+
+  insert into public.announcements (title, message, author_id, target_type, target_id) values
+    ('Bem-vindos ao ano letivo de 2026',
+     'Sejam todos bem-vindos! As aulas começam conforme o calendário acadêmico. Fiquem atentos aos comunicados.',
+     v_author, 'all', null);
+
+  if v_class is not null then
+    insert into public.announcements (title, message, author_id, target_type, target_id) values
+      ('Reunião da turma 2º Ano A',
+       'Haverá reunião de pais e responsáveis da turma 2º Ano A na próxima sexta-feira, às 19h, no auditório.',
+       v_author, 'class', v_class);
+  end if;
+
+  if v_aluno is not null then
+    insert into public.notifications (user_id, title, message, type)
+      values (v_aluno, 'Boas-vindas', 'Seu acesso ao portal do aluno está ativo. Explore o menu lateral.', 'info');
+  end if;
+end $$;
+
+-- =============================================================================
+-- Seed do Calendário — eventos de exemplo
+-- =============================================================================
+do $$
+declare
+  v_admin   uuid;
+  v_class   uuid;
+  v_course  uuid;
+  v_unit    uuid;
+  v_teacher uuid;
+begin
+  if exists (select 1 from public.calendar_events) then
+    return;
+  end if;
+
+  select p.id into v_admin from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+  select id, course_id, unit_id into v_class, v_course, v_unit from public.classes where name = '2º Ano A' and year = 2026;
+  select id into v_teacher from public.teachers where email = 'professor@cme.local';
+
+  insert into public.calendar_events
+    (title, description, type, start_datetime, end_datetime, course_id, class_id, unit_id, teacher_id, location, visibility, created_by)
+  values
+    ('Feriado — Corpus Christi', 'Não haverá aula.', 'feriado',
+     '2026-06-19 00:00-03', '2026-06-19 23:59-03', null, null, null, null, null, 'public', v_admin),
+    ('Aula de Matemática', 'Conteúdo: funções.', 'aula',
+     '2026-06-16 07:30-03', '2026-06-16 08:20-03', v_course, v_class, v_unit, v_teacher, 'Sala 1', 'restricted', v_admin),
+    ('Prova 1 — Matemática', 'Avaliação bimestral.', 'prova',
+     '2026-06-20 09:00-03', '2026-06-20 11:00-03', v_course, v_class, v_unit, v_teacher, 'Sala 1', 'restricted', v_admin),
+    ('Reunião pedagógica', 'Planejamento do bimestre.', 'reuniao',
+     '2026-06-18 19:00-03', '2026-06-18 20:30-03', null, null, v_unit, null, 'Auditório', 'restricted', v_admin),
+    ('Vencimento da mensalidade', 'Mensalidade de junho.', 'vencimento_financeiro',
+     '2026-06-10 00:00-03', null, null, null, null, null, null, 'restricted', v_admin),
+    ('Palestra: Carreiras do futuro', 'Aberta a toda a comunidade escolar.', 'palestra',
+     '2026-06-25 19:00-03', '2026-06-25 21:00-03', null, null, v_unit, null, 'Auditório', 'public', v_admin);
+end $$;
