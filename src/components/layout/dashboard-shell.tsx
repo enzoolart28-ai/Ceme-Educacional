@@ -28,7 +28,7 @@ export function DashboardShell({ role, fullName, email, children }: DashboardShe
   }
 
   const nav = (
-    <nav className="flex-1 space-y-1 px-3 py-4">
+    <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4 [scrollbar-color:theme(colors.slate.300)_transparent] [scrollbar-width:thin]">
       {items.map((item) => {
         const Icon = item.icon;
         const active = isActive(item.href);
@@ -37,15 +37,21 @@ export function DashboardShell({ role, fullName, email, children }: DashboardShe
             key={item.href}
             href={item.href}
             onClick={() => setMobileOpen(false)}
+            aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150",
               active
-                ? "bg-indigo-50 text-indigo-700"
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+                ? "bg-indigo-600 text-white shadow-sm shadow-indigo-600/30"
+                : "text-slate-600 hover:bg-indigo-50 hover:text-indigo-700",
             )}
           >
-            <Icon className="h-5 w-5 shrink-0" />
-            <span>{item.label}</span>
+            <Icon
+              className={cn(
+                "h-5 w-5 shrink-0 transition-colors",
+                active ? "text-white" : "text-slate-400 group-hover:text-indigo-600",
+              )}
+            />
+            <span className="truncate">{item.label}</span>
           </Link>
         );
       })}
