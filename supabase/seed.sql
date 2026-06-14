@@ -741,3 +741,63 @@ begin
     ('Palestra: Carreiras do futuro', 'Aberta a toda a comunidade escolar.', 'palestra',
      '2026-06-25 19:00-03', '2026-06-25 21:00-03', null, null, v_unit, null, 'Auditório', 'public', v_admin);
 end $$;
+
+-- =============================================================================
+-- Seed do CRM — leads e atendimentos de exemplo
+-- =============================================================================
+do $$
+declare
+  v_admin uuid;
+  l1 uuid; l2 uuid; l3 uuid;
+begin
+  if exists (select 1 from public.leads) then
+    return;
+  end if;
+  select p.id into v_admin from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+
+  insert into public.leads (full_name, phone, email, age, guardian_name, course_interest, source, city, status, notes) values
+    ('Maria Souza', '(11) 99999-1111', 'maria@email.com', 16, 'Joana Souza', 'Ensino Médio', 'whatsapp', 'São Paulo', 'novo', 'Veio pelo grupo do WhatsApp.')
+    returning id into l1;
+  insert into public.leads (full_name, phone, email, age, guardian_name, course_interest, source, city, status, notes) values
+    ('João Lima', '(11) 98888-2222', 'joao@email.com', 15, 'Pedro Lima', 'Curso Técnico', 'instagram', 'Guarulhos', 'em_atendimento', null)
+    returning id into l2;
+  insert into public.leads (full_name, phone, email, age, guardian_name, course_interest, source, city, status, notes) values
+    ('Ana Paula', '(11) 97777-3333', 'ana@email.com', 17, 'Marcos', 'Preparatório ENEM', 'indicacao', 'Osasco', 'agendado', 'Indicada por aluno atual.')
+    returning id into l3;
+  insert into public.leads (full_name, phone, course_interest, source, city, status) values
+    ('Carlos Eduardo', '(11) 96666-4444', 'Reforço de Matemática', 'site', 'São Paulo', 'sem_resposta');
+
+  insert into public.lead_interactions (lead_id, user_id, interaction_type, description, next_contact_at) values
+    (l2, v_admin, 'ligacao', 'Primeiro contato. Demonstrou interesse no período da manhã.', null),
+    (l3, v_admin, 'agendamento', 'Visita agendada à escola.', '2026-06-20 14:00-03');
+end $$;
+
+-- =============================================================================
+-- Seed de Eventos — eventos e inscrições de exemplo
+-- =============================================================================
+do $$
+declare
+  v_admin uuid;
+  e1 uuid; e2 uuid;
+begin
+  if exists (select 1 from public.events) then
+    return;
+  end if;
+  select p.id into v_admin from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+
+  insert into public.events (name, description, date, start_time, end_time, location, target_audience, max_registrations, responsible_user_id, status)
+    values ('Feira de Profissões 2026', 'Conheça os cursos e converse com professores e alunos.',
+            '2026-07-12', '09:00', '17:00', 'Auditório Central', 'Estudantes do Ensino Médio e responsáveis', 100, v_admin, 'aberto_inscricao')
+    returning id into e1;
+  insert into public.events (name, description, date, start_time, end_time, location, target_audience, max_registrations, responsible_user_id, status)
+    values ('Palestra: Vestibular sem medo', 'Dicas de preparação e organização para o vestibular.',
+            '2026-07-20', '19:00', '21:00', 'Sala Magna', 'Alunos e comunidade', 50, v_admin, 'aberto_inscricao')
+    returning id into e2;
+  insert into public.events (name, description, date, location, target_audience, responsible_user_id, status)
+    values ('Semana Cultural', 'Apresentações culturais dos alunos.', '2026-08-05', 'Pátio', 'Comunidade escolar', v_admin, 'planejado');
+
+  insert into public.event_registrations (event_id, full_name, phone, email, age, guardian_name, course_interest, city, school, attended) values
+    (e1, 'Lucas Ferreira', '(11) 95555-1010', 'lucas@email.com', 16, 'Sandra Ferreira', 'Ensino Médio', 'São Paulo', 'Escola Estadual X', true),
+    (e1, 'Júlia Mendes', '(11) 95555-2020', 'julia@email.com', 15, 'Roberto Mendes', 'Curso Técnico', 'Guarulhos', 'Colégio Y', true),
+    (e1, 'Pedro Alves', '(11) 95555-3030', 'pedro@email.com', 17, null, 'Preparatório ENEM', 'Osasco', 'Escola Z', false);
+end $$;

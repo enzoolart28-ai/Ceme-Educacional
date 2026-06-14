@@ -7,7 +7,7 @@ import { env } from "@/lib/env";
 import type { Database } from "@/types/database";
 
 /** Rotas públicas (não exigem autenticação). */
-const PUBLIC_ROUTES = ["/login", "/recuperar-senha", "/auth"];
+const PUBLIC_ROUTES = ["/login", "/recuperar-senha", "/auth", "/eventos"];
 
 function isPublicRoute(pathname: string): boolean {
   if (pathname === "/") return true;

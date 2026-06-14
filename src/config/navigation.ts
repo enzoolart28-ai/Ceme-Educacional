@@ -21,6 +21,8 @@ import {
   Mail,
   Bell,
   CalendarDays,
+  Target,
+  Ticket,
   Wallet,
   BookOpen,
   UserCircle,
@@ -133,6 +135,18 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/responsaveis",
     icon: Contact,
     roles: ["admin", "secretaria", "coordenacao"],
+  },
+  {
+    label: "Comercial (CRM)",
+    href: "/dashboard/crm",
+    icon: Target,
+    roles: STAFF_ROLES,
+  },
+  {
+    label: "Eventos",
+    href: "/dashboard/eventos",
+    icon: Ticket,
+    roles: STAFF_ROLES,
   },
   {
     label: "Meus dependentes",

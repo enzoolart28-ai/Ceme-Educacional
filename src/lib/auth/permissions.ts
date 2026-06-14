@@ -28,6 +28,7 @@ export const PERMISSIONS = {
   GUARDIANS_MANAGE: "guardians.manage",
   DOCUMENTS_READ: "documents.read",
   DOCUMENTS_MANAGE: "documents.manage",
+  LEADS_MANAGE: "leads.manage",
   FINANCE_READ: "finance.read",
   FINANCE_MANAGE: "finance.manage",
   REPORTS_READ: "reports.read",
@@ -52,6 +53,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "students.read",
     "students.manage",
     "courses.manage",
+    "leads.manage",
   ],
   coordenacao: [
     "profile.self",
@@ -67,6 +69,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "students.read",
     "students.manage",
     "guardians.manage",
+    "leads.manage",
   ],
   secretaria: [
     "profile.self",
@@ -80,6 +83,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "guardians.manage",
     "classes.read",
     "finance.read",
+    "leads.manage",
   ],
   financeiro: ["profile.self", "finance.read", "finance.manage"],
   professor: [

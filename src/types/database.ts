@@ -931,6 +931,144 @@ export type Database = {
           },
         ]
       }
+      event_registrations: {
+        Row: {
+          age: number | null
+          attended: boolean
+          city: string | null
+          converted_to_lead: boolean
+          converted_to_student: boolean
+          course_interest: string | null
+          created_at: string
+          email: string | null
+          event_id: string
+          full_name: string
+          guardian_name: string | null
+          id: string
+          lead_id: string | null
+          notes: string | null
+          phone: string | null
+          school: string | null
+          student_id: string | null
+        }
+        Insert: {
+          age?: number | null
+          attended?: boolean
+          city?: string | null
+          converted_to_lead?: boolean
+          converted_to_student?: boolean
+          course_interest?: string | null
+          created_at?: string
+          email?: string | null
+          event_id: string
+          full_name: string
+          guardian_name?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          phone?: string | null
+          school?: string | null
+          student_id?: string | null
+        }
+        Update: {
+          age?: number | null
+          attended?: boolean
+          city?: string | null
+          converted_to_lead?: boolean
+          converted_to_student?: boolean
+          course_interest?: string | null
+          created_at?: string
+          email?: string | null
+          event_id?: string
+          full_name?: string
+          guardian_name?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          phone?: string | null
+          school?: string | null
+          student_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_registrations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_registrations_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          date: string | null
+          description: string | null
+          end_time: string | null
+          id: string
+          location: string | null
+          max_registrations: number | null
+          name: string
+          responsible_user_id: string | null
+          start_time: string | null
+          status: Database["public"]["Enums"]["event_status"]
+          target_audience: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          max_registrations?: number | null
+          name: string
+          responsible_user_id?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          target_audience?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          max_registrations?: number | null
+          name?: string
+          responsible_user_id?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          target_audience?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_responsible_user_id_fkey"
+            columns: ["responsible_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       financial_logs: {
         Row: {
           action: string
@@ -1324,6 +1462,110 @@ export type Database = {
           {
             foreignKeyName: "invoices_student_id_fkey"
             columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_interactions: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          interaction_type: Database["public"]["Enums"]["lead_interaction_type"]
+          lead_id: string
+          next_contact_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          interaction_type?: Database["public"]["Enums"]["lead_interaction_type"]
+          lead_id: string
+          next_contact_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          interaction_type?: Database["public"]["Enums"]["lead_interaction_type"]
+          lead_id?: string
+          next_contact_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_interactions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_interactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          age: number | null
+          city: string | null
+          converted_student_id: string | null
+          course_interest: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          guardian_name: string | null
+          id: string
+          notes: string | null
+          phone: string | null
+          source: Database["public"]["Enums"]["lead_source"]
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          city?: string | null
+          converted_student_id?: string | null
+          course_interest?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          guardian_name?: string | null
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          source?: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          city?: string | null
+          converted_student_id?: string | null
+          course_interest?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          guardian_name?: string | null
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          source?: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_converted_student_id_fkey"
+            columns: ["converted_student_id"]
             isOneToOne: false
             referencedRelation: "students"
             referencedColumns: ["id"]
@@ -2408,6 +2650,21 @@ export type Database = {
       owns_teacher: { Args: { p_teacher: string }; Returns: boolean }
       record_last_access: { Args: never; Returns: undefined }
       refresh_overdue_invoices: { Args: never; Returns: undefined }
+      register_for_event: {
+        Args: {
+          p_age?: number
+          p_city?: string
+          p_course?: string
+          p_email?: string
+          p_event: string
+          p_full_name: string
+          p_guardian?: string
+          p_notes?: string
+          p_phone?: string
+          p_school?: string
+        }
+        Returns: string
+      }
       save_assessment_progress: {
         Args: { p_answers: Json; p_submission: string; p_submit: boolean }
         Returns: undefined
@@ -2481,6 +2738,12 @@ export type Database = {
         | "comprovante_pagamento"
         | "outros"
       enrollment_status: "active" | "transferred" | "cancelled" | "completed"
+      event_status:
+        | "planejado"
+        | "aberto_inscricao"
+        | "encerrado"
+        | "cancelado"
+        | "finalizado"
       event_visibility: "public" | "restricted"
       generated_document_type:
         | "declaracao_matricula"
@@ -2497,6 +2760,33 @@ export type Database = {
         | "partial"
         | "cancelled"
         | "renegotiated"
+      lead_interaction_type:
+        | "ligacao"
+        | "whatsapp"
+        | "email"
+        | "presencial"
+        | "agendamento"
+        | "observacao"
+        | "outro"
+      lead_source:
+        | "instagram"
+        | "whatsapp"
+        | "facebook"
+        | "indicacao"
+        | "evento"
+        | "palestra"
+        | "escola_parceira"
+        | "site"
+        | "outro"
+      lead_status:
+        | "novo"
+        | "em_atendimento"
+        | "aguardando_retorno"
+        | "agendado"
+        | "compareceu"
+        | "matriculado"
+        | "desistiu"
+        | "sem_resposta"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_release_type: "all" | "date" | "after_previous"
       lesson_status: "draft" | "published" | "archived"
@@ -2737,6 +3027,13 @@ export const Constants = {
         "outros",
       ],
       enrollment_status: ["active", "transferred", "cancelled", "completed"],
+      event_status: [
+        "planejado",
+        "aberto_inscricao",
+        "encerrado",
+        "cancelado",
+        "finalizado",
+      ],
       event_visibility: ["public", "restricted"],
       generated_document_type: [
         "declaracao_matricula",
@@ -2754,6 +3051,36 @@ export const Constants = {
         "partial",
         "cancelled",
         "renegotiated",
+      ],
+      lead_interaction_type: [
+        "ligacao",
+        "whatsapp",
+        "email",
+        "presencial",
+        "agendamento",
+        "observacao",
+        "outro",
+      ],
+      lead_source: [
+        "instagram",
+        "whatsapp",
+        "facebook",
+        "indicacao",
+        "evento",
+        "palestra",
+        "escola_parceira",
+        "site",
+        "outro",
+      ],
+      lead_status: [
+        "novo",
+        "em_atendimento",
+        "aguardando_retorno",
+        "agendado",
+        "compareceu",
+        "matriculado",
+        "desistiu",
+        "sem_resposta",
       ],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_release_type: ["all", "date", "after_previous"],

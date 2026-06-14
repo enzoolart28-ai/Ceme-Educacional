@@ -50,6 +50,19 @@ export type Assessment = Database["public"]["Tables"]["assessments"]["Row"];
 export type Grade = Database["public"]["Tables"]["grades"]["Row"];
 export type AssessmentType = Database["public"]["Enums"]["assessment_type"];
 
+// --- Eventos e Palestras -----------------------------------------------------
+export type Event = Database["public"]["Tables"]["events"]["Row"];
+export type EventRegistration =
+  Database["public"]["Tables"]["event_registrations"]["Row"];
+export type EventStatus = Database["public"]["Enums"]["event_status"];
+
+// --- Comercial / CRM ---------------------------------------------------------
+export type Lead = Database["public"]["Tables"]["leads"]["Row"];
+export type LeadInteraction = Database["public"]["Tables"]["lead_interactions"]["Row"];
+export type LeadSource = Database["public"]["Enums"]["lead_source"];
+export type LeadStatus = Database["public"]["Enums"]["lead_status"];
+export type LeadInteractionType = Database["public"]["Enums"]["lead_interaction_type"];
+
 // --- Calendário Acadêmico ----------------------------------------------------
 export type CalendarEvent = Database["public"]["Tables"]["calendar_events"]["Row"];
 export type CalendarEventType = Database["public"]["Enums"]["calendar_event_type"];
