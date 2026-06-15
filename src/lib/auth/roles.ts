@@ -101,3 +101,12 @@ export const FINANCE_ROLES: readonly UserRole[] = [
   "aluno",
   "responsavel",
 ];
+
+export const REPORT_ROLES: readonly UserRole[] = [
+  "admin",
+  "diretor",
+  "coordenacao",
+  "secretaria",
+  "financeiro",
+  "professor",
+];

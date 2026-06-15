@@ -34,6 +34,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      alerts: {
+        Row: {
+          created_at: string
+          dedupe_key: string
+          description: string | null
+          id: string
+          priority: Database["public"]["Enums"]["alert_priority"]
+          related_class_id: string | null
+          related_student_id: string | null
+          related_user_id: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["alert_status"]
+          title: string
+          type: Database["public"]["Enums"]["alert_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dedupe_key: string
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["alert_priority"]
+          related_class_id?: string | null
+          related_student_id?: string | null
+          related_user_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["alert_status"]
+          title: string
+          type: Database["public"]["Enums"]["alert_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dedupe_key?: string
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["alert_priority"]
+          related_class_id?: string | null
+          related_student_id?: string | null
+          related_user_id?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["alert_status"]
+          title?: string
+          type?: Database["public"]["Enums"]["alert_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_related_class_id_fkey"
+            columns: ["related_class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_related_student_id_fkey"
+            columns: ["related_student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_related_user_id_fkey"
+            columns: ["related_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       announcement_reads: {
         Row: {
           announcement_id: string
@@ -498,6 +578,193 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      campaign_levels: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          description: string | null
+          difficulty: Database["public"]["Enums"]["campaign_level_difficulty"]
+          id: string
+          name: string
+          order_index: number
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["campaign_level_difficulty"]
+          id?: string
+          name: string
+          order_index?: number
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["campaign_level_difficulty"]
+          id?: string
+          name?: string
+          order_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_levels_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_participants: {
+        Row: {
+          age: number | null
+          campaign_id: string
+          city: string | null
+          created_at: string
+          current_level: number
+          eligible_for_draw: boolean
+          father_name: string | null
+          full_name: string
+          guardian_name: string | null
+          id: string
+          is_winner: boolean
+          mother_name: string | null
+          phone: string | null
+          school: string | null
+          status: Database["public"]["Enums"]["campaign_participant_status"]
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          campaign_id: string
+          city?: string | null
+          created_at?: string
+          current_level?: number
+          eligible_for_draw?: boolean
+          father_name?: string | null
+          full_name: string
+          guardian_name?: string | null
+          id?: string
+          is_winner?: boolean
+          mother_name?: string | null
+          phone?: string | null
+          school?: string | null
+          status?: Database["public"]["Enums"]["campaign_participant_status"]
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          campaign_id?: string
+          city?: string | null
+          created_at?: string
+          current_level?: number
+          eligible_for_draw?: boolean
+          father_name?: string | null
+          full_name?: string
+          guardian_name?: string | null
+          id?: string
+          is_winner?: boolean
+          mother_name?: string | null
+          phone?: string | null
+          school?: string | null
+          status?: Database["public"]["Enums"]["campaign_participant_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_participants_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          level_id: string
+          notes: string | null
+          participant_id: string
+          score: number | null
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          level_id: string
+          notes?: string | null
+          participant_id: string
+          score?: number | null
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          level_id?: string
+          notes?: string | null
+          participant_id?: string
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_progress_level_id_fkey"
+            columns: ["level_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_levels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_progress_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_participants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          prizes: string | null
+          rules: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["campaign_status"]
+          target_audience: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          prizes?: string | null
+          rules?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          target_audience?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          prizes?: string | null
+          rules?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          target_audience?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       class_students: {
         Row: {
@@ -2596,6 +2863,13 @@ export type Database = {
         Returns: boolean
       }
       can_send_announcements: { Args: never; Returns: boolean }
+      can_view_alert: {
+        Args: {
+          p_related_user: string
+          p_type: Database["public"]["Enums"]["alert_type"]
+        }
+        Returns: boolean
+      }
       can_view_announcement: {
         Args: {
           p_target: string
@@ -2626,6 +2900,7 @@ export type Database = {
         Args: { p_invoice: string }
         Returns: number
       }
+      generate_alerts: { Args: never; Returns: number }
       get_student_assessment: { Args: { p_assessment: string }; Returns: Json }
       get_submission_review: { Args: { p_submission: string }; Returns: Json }
       guardian_of_course_student: {
@@ -2682,6 +2957,20 @@ export type Database = {
       teaches_class: { Args: { p_class: string }; Returns: boolean }
     }
     Enums: {
+      alert_priority: "baixa" | "media" | "alta" | "critica"
+      alert_status: "novo" | "visualizado" | "resolvido" | "ignorado"
+      alert_type:
+        | "frequencia_baixa"
+        | "faltas_consecutivas"
+        | "mensalidade_vencida"
+        | "ava_inativo"
+        | "chamada_pendente"
+        | "atividade_sem_correcao"
+        | "documento_pendente"
+        | "certificado_pendente"
+        | "lead_sem_retorno"
+        | "evento_proximo"
+        | "prova_proxima"
       announcement_target:
         | "all"
         | "class"
@@ -2713,6 +3002,13 @@ export type Database = {
         | "institucional"
         | "vencimento_financeiro"
         | "palestra"
+      campaign_level_difficulty: "facil" | "medio" | "dificil"
+      campaign_participant_status:
+        | "inscrito"
+        | "em_andamento"
+        | "concluido"
+        | "desistente"
+      campaign_status: "rascunho" | "ativa" | "encerrada" | "cancelada"
       class_shift: "manha" | "tarde" | "noite" | "integral" | "sabado"
       class_status: "open" | "in_progress" | "finished" | "cancelled"
       class_student_status: "active" | "inactive" | "transferred" | "cancelled"
@@ -2965,6 +3261,21 @@ export const Constants = {
   },
   public: {
     Enums: {
+      alert_priority: ["baixa", "media", "alta", "critica"],
+      alert_status: ["novo", "visualizado", "resolvido", "ignorado"],
+      alert_type: [
+        "frequencia_baixa",
+        "faltas_consecutivas",
+        "mensalidade_vencida",
+        "ava_inativo",
+        "chamada_pendente",
+        "atividade_sem_correcao",
+        "documento_pendente",
+        "certificado_pendente",
+        "lead_sem_retorno",
+        "evento_proximo",
+        "prova_proxima",
+      ],
       announcement_target: [
         "all",
         "class",
@@ -3000,6 +3311,14 @@ export const Constants = {
         "vencimento_financeiro",
         "palestra",
       ],
+      campaign_level_difficulty: ["facil", "medio", "dificil"],
+      campaign_participant_status: [
+        "inscrito",
+        "em_andamento",
+        "concluido",
+        "desistente",
+      ],
+      campaign_status: ["rascunho", "ativa", "encerrada", "cancelada"],
       class_shift: ["manha", "tarde", "noite", "integral", "sabado"],
       class_status: ["open", "in_progress", "finished", "cancelled"],
       class_student_status: ["active", "inactive", "transferred", "cancelled"],

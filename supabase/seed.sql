@@ -801,3 +801,98 @@ begin
     (e1, 'Júlia Mendes', '(11) 95555-2020', 'julia@email.com', 15, 'Roberto Mendes', 'Curso Técnico', 'Guarulhos', 'Colégio Y', true),
     (e1, 'Pedro Alves', '(11) 95555-3030', 'pedro@email.com', 17, null, 'Preparatório ENEM', 'Osasco', 'Escola Z', false);
 end $$;
+
+-- =============================================================================
+-- Seed de Campanhas — Desafio Labirinto Digital
+-- =============================================================================
+do $$
+declare
+  c1 uuid; n1 uuid; n2 uuid; n3 uuid;
+  p1 uuid; p2 uuid; p3 uuid;
+begin
+  if exists (select 1 from public.campaigns) then
+    return;
+  end if;
+
+  insert into public.campaigns (name, description, start_date, end_date, target_audience, rules, prizes, status)
+    values ('Desafio Labirinto Digital',
+            'Desafio gamificado de lógica para captação de alunos.',
+            '2026-06-01', '2026-08-31', 'Estudantes de 10 a 15 anos',
+            'Concluir os 3 níveis para concorrer ao sorteio.',
+            'Bolsa de estudos de 50% + kit tecnológico.', 'ativa')
+    returning id into c1;
+
+  insert into public.campaign_levels (campaign_id, name, description, difficulty, order_index)
+    values (c1, 'Nível 1 — Iniciante', 'Primeiros passos no labirinto.', 'facil', 1) returning id into n1;
+  insert into public.campaign_levels (campaign_id, name, description, difficulty, order_index)
+    values (c1, 'Nível 2 — Intermediário', 'Caminhos com obstáculos.', 'medio', 2) returning id into n2;
+  insert into public.campaign_levels (campaign_id, name, description, difficulty, order_index)
+    values (c1, 'Nível 3 — Avançado', 'O grande labirinto final.', 'dificil', 3) returning id into n3;
+
+  insert into public.campaign_participants (campaign_id, full_name, age, phone, father_name, mother_name, guardian_name, school, city, current_level, status, eligible_for_draw, is_winner)
+    values (c1, 'Ana Beatriz', 12, '(11) 94444-1111', 'Carlos', 'Fernanda', 'Fernanda', 'Escola Aurora', 'São Paulo', 2, 'em_andamento', false, false) returning id into p1;
+  insert into public.campaign_participants (campaign_id, full_name, age, phone, father_name, mother_name, guardian_name, school, city, current_level, status, eligible_for_draw, is_winner)
+    values (c1, 'Bruno Costa', 14, '(11) 94444-2222', 'Marcos', 'Patrícia', 'Marcos', 'Colégio Saber', 'Guarulhos', 3, 'concluido', true, false) returning id into p2;
+  insert into public.campaign_participants (campaign_id, full_name, age, phone, father_name, mother_name, guardian_name, school, city, current_level, status, eligible_for_draw, is_winner)
+    values (c1, 'Carla Dias', 11, '(11) 94444-3333', 'José', 'Mariana', 'Mariana', 'Escola Aurora', 'Osasco', 1, 'em_andamento', false, false) returning id into p3;
+  insert into public.campaign_participants (campaign_id, full_name, age, phone, school, city, current_level, status)
+    values (c1, 'Diego Souza', 13, '(11) 94444-4444', 'Colégio Saber', 'São Paulo', 0, 'inscrito');
+
+  insert into public.campaign_progress (participant_id, level_id, score) values
+    (p1, n1, 100), (p1, n2, 85),
+    (p2, n1, 100), (p2, n2, 95), (p2, n3, 90),
+    (p3, n1, 80);
+end $$;
+
+-- =============================================================================
+-- Seed de Alertas — alertas de demonstração (a geração automática complementa)
+-- =============================================================================
+do $$
+declare
+  v_admin uuid;
+  v_student uuid;
+  v_defaulter uuid;
+  v_class uuid;
+begin
+  if exists (select 1 from public.alerts) then
+    return;
+  end if;
+
+  select p.id into v_admin from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+  select s.id into v_student
+    from public.students s
+    join public.profiles p on p.id = s.profile_id
+    join auth.users u on u.id = p.user_id
+   where u.email = 'aluno@cme.local'
+   limit 1;
+  select id into v_defaulter from public.students where status = 'defaulter' limit 1;
+  select id into v_class from public.classes where name ilike '%Ano A%' limit 1;
+
+  insert into public.alerts (type, title, description, related_student_id, related_class_id, priority, status, dedupe_key) values
+    ('frequencia_baixa', 'Frequência abaixo de 75%',
+     'Aluno Demonstração está com 40% de frequência na turma 2º Ano A.',
+     v_student, v_class, 'alta', 'novo',
+     'frequencia_baixa:' || coalesce(v_student::text, 'seed') || ':' || coalesce(v_class::text, 'seed')),
+    ('faltas_consecutivas', '3 faltas seguidas',
+     'Aluno Demonstração tem 3 faltas consecutivas na turma 2º Ano A.',
+     v_student, v_class, 'alta', 'novo',
+     'faltas_consecutivas:' || coalesce(v_student::text, 'seed') || ':' || coalesce(v_class::text, 'seed')),
+    ('mensalidade_vencida', 'Mensalidade vencida',
+     'Há mensalidade vencida pendente de regularização.',
+     v_defaulter, null, 'critica', 'novo',
+     'mensalidade_vencida:seed-' || coalesce(v_defaulter::text, 'seed')),
+    ('documento_pendente', 'Documento pendente',
+     'Documento "Comprovante de residência" pendente de análise.',
+     v_student, null, 'media', 'visualizado', 'documento_pendente:seed'),
+    ('lead_sem_retorno', 'Lead sem retorno',
+     'Lead comercial está há mais de 7 dias sem retorno.',
+     null, null, 'media', 'novo', 'lead_sem_retorno:seed'),
+    ('evento_proximo', 'Evento próximo',
+     'O evento "Feira de Profissões 2026" está se aproximando.',
+     null, null, 'baixa', 'novo', 'evento_proximo:seed');
+
+  insert into public.alerts (type, title, description, related_student_id, priority, status, resolved_by, resolved_at, dedupe_key) values
+    ('certificado_pendente', 'Certificado pendente',
+     'Certificado de conclusão emitido após verificação.',
+     v_student, 'baixa', 'resolvido', v_admin, now(), 'certificado_pendente:seed-resolved');
+end $$;

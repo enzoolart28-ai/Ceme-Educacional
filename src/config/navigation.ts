@@ -20,11 +20,14 @@ import {
   Megaphone,
   Mail,
   Bell,
+  BellRing,
   CalendarDays,
   Target,
   Ticket,
+  Trophy,
   Wallet,
   BookOpen,
+  BarChart3,
   UserCircle,
   type LucideIcon,
 } from "lucide-react";
@@ -34,6 +37,7 @@ import {
   ALL_ROLES,
   FINANCE_ROLES,
   MANAGEMENT_ROLES,
+  REPORT_ROLES,
   STAFF_ROLES,
 } from "@/lib/auth/roles";
 
@@ -57,6 +61,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/calendario",
     icon: CalendarDays,
     roles: ALL_ROLES,
+  },
+  {
+    label: "Alertas",
+    href: "/dashboard/alertas",
+    icon: BellRing,
+    roles: ["admin", "diretor", "coordenacao", "secretaria", "financeiro", "professor"],
   },
   {
     label: "Usuários",
@@ -149,6 +159,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: STAFF_ROLES,
   },
   {
+    label: "Campanhas",
+    href: "/dashboard/campanhas",
+    icon: Trophy,
+    roles: ["admin", "coordenacao", "secretaria"],
+  },
+  {
     label: "Meus dependentes",
     href: "/dashboard/dependentes",
     icon: UsersRound,
@@ -165,6 +181,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/financeiro",
     icon: Wallet,
     roles: FINANCE_ROLES,
+  },
+  {
+    label: "RelatÃ³rios",
+    href: "/dashboard/relatorios",
+    icon: BarChart3,
+    roles: REPORT_ROLES,
   },
   {
     label: "Boletim",

@@ -10,6 +10,7 @@ import { getStudentRecentGradesByProfile } from "@/lib/grades/queries";
 import { getStudentProgressByProfile } from "@/lib/ava/queries";
 import { listUpcomingEvents } from "@/lib/calendar/queries";
 import { UpcomingEvents } from "@/components/calendar/upcoming-events";
+import { DashboardAlerts } from "@/components/alerts/dashboard-alerts";
 import { PageHeader } from "@/components/ui/page-header";
 import { RoleBadge } from "@/components/ui/badge";
 import { AdminDashboard } from "@/components/dashboard/admin-dashboard";
@@ -85,7 +86,8 @@ export default async function DashboardPage() {
         action={<RoleBadge role={role} />}
       />
       {dashboard}
-      <div className="mt-6">
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <DashboardAlerts />
         <UpcomingEvents events={upcoming} />
       </div>
     </>

@@ -50,6 +50,24 @@ export type Assessment = Database["public"]["Tables"]["assessments"]["Row"];
 export type Grade = Database["public"]["Tables"]["grades"]["Row"];
 export type AssessmentType = Database["public"]["Enums"]["assessment_type"];
 
+// --- Campanhas / Sorteios / Desafios -----------------------------------------
+export type Campaign = Database["public"]["Tables"]["campaigns"]["Row"];
+export type CampaignLevel = Database["public"]["Tables"]["campaign_levels"]["Row"];
+export type CampaignParticipant =
+  Database["public"]["Tables"]["campaign_participants"]["Row"];
+export type CampaignProgress = Database["public"]["Tables"]["campaign_progress"]["Row"];
+export type CampaignStatus = Database["public"]["Enums"]["campaign_status"];
+export type CampaignParticipantStatus =
+  Database["public"]["Enums"]["campaign_participant_status"];
+export type CampaignLevelDifficulty =
+  Database["public"]["Enums"]["campaign_level_difficulty"];
+
+// --- Alertas Automáticos -----------------------------------------------------
+export type Alert = Database["public"]["Tables"]["alerts"]["Row"];
+export type AlertType = Database["public"]["Enums"]["alert_type"];
+export type AlertPriority = Database["public"]["Enums"]["alert_priority"];
+export type AlertStatus = Database["public"]["Enums"]["alert_status"];
+
 // --- Eventos e Palestras -----------------------------------------------------
 export type Event = Database["public"]["Tables"]["events"]["Row"];
 export type EventRegistration =
