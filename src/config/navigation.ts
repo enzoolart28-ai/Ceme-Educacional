@@ -25,6 +25,13 @@ import {
   Target,
   Ticket,
   Trophy,
+  FileCheck2,
+  Building2,
+  ClipboardSignature,
+  Landmark,
+  GitCompareArrows,
+  ArrowUpDown,
+  FileClock,
   Wallet,
   BookOpen,
   BarChart3,
@@ -39,6 +46,7 @@ import {
   MANAGEMENT_ROLES,
   REPORT_ROLES,
   STAFF_ROLES,
+  GESTOR_ROLES,
 } from "@/lib/auth/roles";
 
 export interface NavItem {
@@ -66,7 +74,49 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Alertas",
     href: "/dashboard/alertas",
     icon: BellRing,
-    roles: ["admin", "diretor", "coordenacao", "secretaria", "financeiro", "professor"],
+    roles: ["admin", "diretor", "gestor", "coordenacao", "secretaria", "financeiro", "professor"],
+  },
+  {
+    label: "Gestao",
+    href: "/dashboard/gestao",
+    icon: Building2,
+    roles: GESTOR_ROLES,
+  },
+  {
+    label: "Metas",
+    href: "/dashboard/gestao/metas",
+    icon: Target,
+    roles: GESTOR_ROLES,
+  },
+  {
+    label: "Relatorios Gerenciais",
+    href: "/dashboard/gestao/relatorios",
+    icon: BarChart3,
+    roles: GESTOR_ROLES,
+  },
+  {
+    label: "Auditoria",
+    href: "/dashboard/gestao/auditoria",
+    icon: FileClock,
+    roles: GESTOR_ROLES,
+  },
+  {
+    label: "Aprovacoes Financeiras",
+    href: "/dashboard/gestao/aprovacoes-financeiras",
+    icon: ClipboardSignature,
+    roles: GESTOR_ROLES,
+  },
+  {
+    label: "Fluxo de Caixa",
+    href: "/dashboard/gestao/fluxo-caixa",
+    icon: GitCompareArrows,
+    roles: ["admin", "diretor", "gestor", "financeiro"],
+  },
+  {
+    label: "Conferencia de Caixa",
+    href: "/dashboard/gestao/conferencia-caixa",
+    icon: Landmark,
+    roles: GESTOR_ROLES,
   },
   {
     label: "Usuários",
@@ -165,6 +215,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ["admin", "coordenacao", "secretaria"],
   },
   {
+    label: "Aula-Teste",
+    href: "/dashboard/aula-teste",
+    icon: FileCheck2,
+    roles: ["admin", "diretor", "coordenacao", "professor"],
+  },
+  {
     label: "Meus dependentes",
     href: "/dashboard/dependentes",
     icon: UsersRound,
@@ -183,7 +239,31 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: FINANCE_ROLES,
   },
   {
-    label: "RelatÃ³rios",
+    label: "Caixa",
+    href: "/dashboard/financeiro/caixa",
+    icon: Landmark,
+    roles: ["admin", "diretor", "financeiro"],
+  },
+  {
+    label: "Movimentacoes",
+    href: "/dashboard/financeiro/movimentacoes",
+    icon: ArrowUpDown,
+    roles: ["admin", "diretor", "gestor", "financeiro"],
+  },
+  {
+    label: "Fechamento de Caixa",
+    href: "/dashboard/financeiro/fechamento-caixa",
+    icon: ClipboardCheck,
+    roles: ["admin", "diretor", "financeiro"],
+  },
+  {
+    label: "Solicitacoes Financeiras",
+    href: "/dashboard/financeiro/solicitacoes",
+    icon: ClipboardSignature,
+    roles: ["admin", "diretor", "gestor", "coordenacao", "secretaria", "financeiro", "professor"],
+  },
+  {
+    label: "Relatorios",
     href: "/dashboard/relatorios",
     icon: BarChart3,
     roles: REPORT_ROLES,

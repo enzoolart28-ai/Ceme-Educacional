@@ -341,6 +341,667 @@ export type Database = {
           },
         ]
       }
+      at_attachments: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          kind: Database["public"]["Enums"]["at_attachment_kind"]
+          mime_type: string | null
+          report_id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          kind?: Database["public"]["Enums"]["at_attachment_kind"]
+          mime_type?: string | null
+          report_id: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["at_attachment_kind"]
+          mime_type?: string | null
+          report_id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_attachments_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_attachments_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_candidates: {
+        Row: {
+          academic_background: string | null
+          address: string | null
+          availability: string | null
+          birth_date: string | null
+          complementary_courses: string | null
+          cpf: string | null
+          created_at: string
+          created_by: string | null
+          disciplines: string | null
+          email: string | null
+          full_name: string
+          id: string
+          observations: string | null
+          phone: string | null
+          postgrad: string | null
+          professional_experience: string | null
+          teaching_experience: string | null
+          updated_at: string
+        }
+        Insert: {
+          academic_background?: string | null
+          address?: string | null
+          availability?: string | null
+          birth_date?: string | null
+          complementary_courses?: string | null
+          cpf?: string | null
+          created_at?: string
+          created_by?: string | null
+          disciplines?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          observations?: string | null
+          phone?: string | null
+          postgrad?: string | null
+          professional_experience?: string | null
+          teaching_experience?: string | null
+          updated_at?: string
+        }
+        Update: {
+          academic_background?: string | null
+          address?: string | null
+          availability?: string | null
+          birth_date?: string | null
+          complementary_courses?: string | null
+          cpf?: string | null
+          created_at?: string
+          created_by?: string | null
+          disciplines?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          observations?: string | null
+          phone?: string | null
+          postgrad?: string | null
+          professional_experience?: string | null
+          teaching_experience?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_candidates_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_criteria: {
+        Row: {
+          active: boolean
+          id: string
+          label: string
+          order_index: number
+          section: Database["public"]["Enums"]["at_evaluation_type"]
+        }
+        Insert: {
+          active?: boolean
+          id?: string
+          label: string
+          order_index?: number
+          section: Database["public"]["Enums"]["at_evaluation_type"]
+        }
+        Update: {
+          active?: boolean
+          id?: string
+          label?: string
+          order_index?: number
+          section?: Database["public"]["Enums"]["at_evaluation_type"]
+        }
+        Relationships: []
+      }
+      at_evaluation_scores: {
+        Row: {
+          comment: string | null
+          criterion_id: string
+          evaluation_id: string
+          id: string
+          not_evaluated: boolean
+          score: number | null
+        }
+        Insert: {
+          comment?: string | null
+          criterion_id: string
+          evaluation_id: string
+          id?: string
+          not_evaluated?: boolean
+          score?: number | null
+        }
+        Update: {
+          comment?: string | null
+          criterion_id?: string
+          evaluation_id?: string
+          id?: string
+          not_evaluated?: boolean
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_evaluation_scores_criterion_id_fkey"
+            columns: ["criterion_id"]
+            isOneToOne: false
+            referencedRelation: "at_criteria"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_evaluation_scores_evaluation_id_fkey"
+            columns: ["evaluation_id"]
+            isOneToOne: false
+            referencedRelation: "at_evaluations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_evaluations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          evaluator_name: string | null
+          evaluator_profile_id: string | null
+          evaluator_role: string | null
+          id: string
+          parecer: string | null
+          report_id: string
+          score: number | null
+          signature_path: string | null
+          type: Database["public"]["Enums"]["at_evaluation_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          evaluator_name?: string | null
+          evaluator_profile_id?: string | null
+          evaluator_role?: string | null
+          id?: string
+          parecer?: string | null
+          report_id: string
+          score?: number | null
+          signature_path?: string | null
+          type: Database["public"]["Enums"]["at_evaluation_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          evaluator_name?: string | null
+          evaluator_profile_id?: string | null
+          evaluator_role?: string | null
+          id?: string
+          parecer?: string | null
+          report_id?: string
+          score?: number | null
+          signature_path?: string | null
+          type?: Database["public"]["Enums"]["at_evaluation_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_evaluations_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_evaluations_evaluator_profile_id_fkey"
+            columns: ["evaluator_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_evaluations_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_guardian_responses: {
+        Row: {
+          answers: Json
+          authorized: boolean
+          comment: string | null
+          created_at: string
+          guardian_name: string | null
+          id: string
+          kinship: string | null
+          overall_rating: number | null
+          report_id: string
+          respondent_profile_id: string | null
+          student_name: string | null
+        }
+        Insert: {
+          answers?: Json
+          authorized?: boolean
+          comment?: string | null
+          created_at?: string
+          guardian_name?: string | null
+          id?: string
+          kinship?: string | null
+          overall_rating?: number | null
+          report_id: string
+          respondent_profile_id?: string | null
+          student_name?: string | null
+        }
+        Update: {
+          answers?: Json
+          authorized?: boolean
+          comment?: string | null
+          created_at?: string
+          guardian_name?: string | null
+          id?: string
+          kinship?: string | null
+          overall_rating?: number | null
+          report_id?: string
+          respondent_profile_id?: string | null
+          student_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_guardian_responses_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_guardian_responses_respondent_profile_id_fkey"
+            columns: ["respondent_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          detail: string | null
+          id: string
+          report_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: string | null
+          id?: string
+          report_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: string | null
+          id?: string
+          report_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_logs_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_logs_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_reports: {
+        Row: {
+          age_group: string | null
+          available_resources: string | null
+          candidate_id: string
+          class_id: string | null
+          code: string
+          content: string | null
+          created_at: string
+          created_by: string | null
+          discipline: string | null
+          duration_minutes: number | null
+          end_time: string | null
+          evaluators_present: string | null
+          final_opinion: Json
+          final_score: number | null
+          finalized_at: string | null
+          finalized_by: string | null
+          id: string
+          lesson_plan: Json
+          location: string | null
+          modality: string | null
+          notes: string | null
+          position_title: string | null
+          process_status: Database["public"]["Enums"]["at_process_status"]
+          resume_notes: string | null
+          resume_sent_at: string | null
+          resume_summary: string | null
+          section_scores: Json
+          start_time: string | null
+          status: Database["public"]["Enums"]["at_report_status"]
+          students_present: number | null
+          test_date: string | null
+          test_modality:
+            | Database["public"]["Enums"]["at_teaching_modality"]
+            | null
+          theme: string | null
+          unit_id: string | null
+          updated_at: string
+          used_resources: string | null
+          weights: Json
+          wizard_step: number
+        }
+        Insert: {
+          age_group?: string | null
+          available_resources?: string | null
+          candidate_id: string
+          class_id?: string | null
+          code: string
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          discipline?: string | null
+          duration_minutes?: number | null
+          end_time?: string | null
+          evaluators_present?: string | null
+          final_opinion?: Json
+          final_score?: number | null
+          finalized_at?: string | null
+          finalized_by?: string | null
+          id?: string
+          lesson_plan?: Json
+          location?: string | null
+          modality?: string | null
+          notes?: string | null
+          position_title?: string | null
+          process_status?: Database["public"]["Enums"]["at_process_status"]
+          resume_notes?: string | null
+          resume_sent_at?: string | null
+          resume_summary?: string | null
+          section_scores?: Json
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["at_report_status"]
+          students_present?: number | null
+          test_date?: string | null
+          test_modality?:
+            | Database["public"]["Enums"]["at_teaching_modality"]
+            | null
+          theme?: string | null
+          unit_id?: string | null
+          updated_at?: string
+          used_resources?: string | null
+          weights?: Json
+          wizard_step?: number
+        }
+        Update: {
+          age_group?: string | null
+          available_resources?: string | null
+          candidate_id?: string
+          class_id?: string | null
+          code?: string
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          discipline?: string | null
+          duration_minutes?: number | null
+          end_time?: string | null
+          evaluators_present?: string | null
+          final_opinion?: Json
+          final_score?: number | null
+          finalized_at?: string | null
+          finalized_by?: string | null
+          id?: string
+          lesson_plan?: Json
+          location?: string | null
+          modality?: string | null
+          notes?: string | null
+          position_title?: string | null
+          process_status?: Database["public"]["Enums"]["at_process_status"]
+          resume_notes?: string | null
+          resume_sent_at?: string | null
+          resume_summary?: string | null
+          section_scores?: Json
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["at_report_status"]
+          students_present?: number | null
+          test_date?: string | null
+          test_modality?:
+            | Database["public"]["Enums"]["at_teaching_modality"]
+            | null
+          theme?: string | null
+          unit_id?: string | null
+          updated_at?: string
+          used_resources?: string | null
+          weights?: Json
+          wizard_step?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_reports_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "at_candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_reports_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_reports_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_reports_finalized_by_fkey"
+            columns: ["finalized_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_reports_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_settings: {
+        Row: {
+          address: string | null
+          cnpj: string | null
+          default_weights: Json
+          email: string | null
+          id: boolean
+          institution_name: string
+          logo_path: string | null
+          phone: string | null
+          sector: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          address?: string | null
+          cnpj?: string | null
+          default_weights?: Json
+          email?: string | null
+          id?: boolean
+          institution_name?: string
+          logo_path?: string | null
+          phone?: string | null
+          sector?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          address?: string | null
+          cnpj?: string | null
+          default_weights?: Json
+          email?: string | null
+          id?: boolean
+          institution_name?: string
+          logo_path?: string | null
+          phone?: string | null
+          sector?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_signatures: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          position: string | null
+          report_id: string
+          role: Database["public"]["Enums"]["at_signature_role"]
+          signature_path: string | null
+          signed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          position?: string | null
+          report_id: string
+          role: Database["public"]["Enums"]["at_signature_role"]
+          signature_path?: string | null
+          signed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          position?: string | null
+          report_id?: string
+          role?: Database["public"]["Enums"]["at_signature_role"]
+          signature_path?: string | null
+          signed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_signatures_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      at_student_responses: {
+        Row: {
+          answers: Json
+          created_at: string
+          id: string
+          improvement_point: string | null
+          is_child: boolean
+          overall_rating: number | null
+          positive_point: string | null
+          recommend: boolean | null
+          report_id: string
+          respondent_profile_id: string | null
+        }
+        Insert: {
+          answers?: Json
+          created_at?: string
+          id?: string
+          improvement_point?: string | null
+          is_child?: boolean
+          overall_rating?: number | null
+          positive_point?: string | null
+          recommend?: boolean | null
+          report_id: string
+          respondent_profile_id?: string | null
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          id?: string
+          improvement_point?: string | null
+          is_child?: boolean
+          overall_rating?: number | null
+          positive_point?: string | null
+          recommend?: boolean | null
+          report_id?: string
+          respondent_profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "at_student_responses_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "at_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "at_student_responses_respondent_profile_id_fkey"
+            columns: ["respondent_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attendance: {
         Row: {
           class_id: string
@@ -766,6 +1427,240 @@ export type Database = {
         }
         Relationships: []
       }
+      cash_movements: {
+        Row: {
+          amount: number
+          attachment_url: string | null
+          cash_session_id: string
+          category: string
+          cost_center_id: string | null
+          created_at: string
+          created_by: string
+          department_id: string | null
+          description: string | null
+          financial_request_id: string | null
+          id: string
+          movement_type: Database["public"]["Enums"]["cash_movement_type"]
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          status: Database["public"]["Enums"]["cash_movement_status"]
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          attachment_url?: string | null
+          cash_session_id: string
+          category?: string
+          cost_center_id?: string | null
+          created_at?: string
+          created_by: string
+          department_id?: string | null
+          description?: string | null
+          financial_request_id?: string | null
+          id?: string
+          movement_type: Database["public"]["Enums"]["cash_movement_type"]
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          status?: Database["public"]["Enums"]["cash_movement_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          attachment_url?: string | null
+          cash_session_id?: string
+          category?: string
+          cost_center_id?: string | null
+          created_at?: string
+          created_by?: string
+          department_id?: string | null
+          description?: string | null
+          financial_request_id?: string | null
+          id?: string
+          movement_type?: Database["public"]["Enums"]["cash_movement_type"]
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          status?: Database["public"]["Enums"]["cash_movement_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_movements_cash_session_id_fkey"
+            columns: ["cash_session_id"]
+            isOneToOne: false
+            referencedRelation: "cash_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_movements_cost_center_id_fkey"
+            columns: ["cost_center_id"]
+            isOneToOne: false
+            referencedRelation: "cost_centers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_movements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_movements_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_movements_financial_request_id_fkey"
+            columns: ["financial_request_id"]
+            isOneToOne: false
+            referencedRelation: "financial_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_movements_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cash_registers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["cash_register_status"]
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["cash_register_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["cash_register_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_registers_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cash_sessions: {
+        Row: {
+          cash_register_id: string
+          closed_at: string | null
+          closed_by: string | null
+          created_at: string
+          difference: number | null
+          difference_reason: string | null
+          expected_closing_balance: number | null
+          id: string
+          informed_closing_balance: number | null
+          manager_review_notes: string | null
+          manager_reviewed_at: string | null
+          manager_reviewed_by: string | null
+          opened_at: string
+          opened_by: string
+          opening_balance: number
+          status: Database["public"]["Enums"]["cash_session_status"]
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          cash_register_id: string
+          closed_at?: string | null
+          closed_by?: string | null
+          created_at?: string
+          difference?: number | null
+          difference_reason?: string | null
+          expected_closing_balance?: number | null
+          id?: string
+          informed_closing_balance?: number | null
+          manager_review_notes?: string | null
+          manager_reviewed_at?: string | null
+          manager_reviewed_by?: string | null
+          opened_at?: string
+          opened_by: string
+          opening_balance?: number
+          status?: Database["public"]["Enums"]["cash_session_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cash_register_id?: string
+          closed_at?: string | null
+          closed_by?: string | null
+          created_at?: string
+          difference?: number | null
+          difference_reason?: string | null
+          expected_closing_balance?: number | null
+          id?: string
+          informed_closing_balance?: number | null
+          manager_review_notes?: string | null
+          manager_reviewed_at?: string | null
+          manager_reviewed_by?: string | null
+          opened_at?: string
+          opened_by?: string
+          opening_balance?: number
+          status?: Database["public"]["Enums"]["cash_session_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_sessions_cash_register_id_fkey"
+            columns: ["cash_register_id"]
+            isOneToOne: false
+            referencedRelation: "cash_registers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_sessions_closed_by_fkey"
+            columns: ["closed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_sessions_manager_reviewed_by_fkey"
+            columns: ["manager_reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_sessions_opened_by_fkey"
+            columns: ["opened_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_sessions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       class_students: {
         Row: {
           class_id: string
@@ -890,6 +1785,47 @@ export type Database = {
             columns: ["unit_id"]
             isOneToOne: false
             referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cost_centers: {
+        Row: {
+          budget_limit: number
+          created_at: string
+          department_id: string | null
+          description: string | null
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["department_status"]
+          updated_at: string
+        }
+        Insert: {
+          budget_limit?: number
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Update: {
+          budget_limit?: number
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cost_centers_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
             referencedColumns: ["id"]
           },
         ]
@@ -1053,6 +1989,107 @@ export type Database = {
           workload_hours?: number | null
         }
         Relationships: []
+      }
+      department_goals: {
+        Row: {
+          achieved_value: number
+          created_at: string
+          department_id: string
+          description: string | null
+          end_date: string | null
+          id: string
+          manager_notes: string | null
+          progress_percentage: number
+          responsible_user_id: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["goal_status"]
+          target_value: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          achieved_value?: number
+          created_at?: string
+          department_id: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          manager_notes?: string | null
+          progress_percentage?: number
+          responsible_user_id?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["goal_status"]
+          target_value?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          achieved_value?: number
+          created_at?: string
+          department_id?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          manager_notes?: string | null
+          progress_percentage?: number
+          responsible_user_id?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["goal_status"]
+          target_value?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_goals_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_goals_responsible_user_id_fkey"
+            columns: ["responsible_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          created_at: string
+          id: string
+          manager_id: string | null
+          name: string
+          status: Database["public"]["Enums"]["department_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          manager_id?: string | null
+          name: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          manager_id?: string | null
+          name?: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       document_logs: {
         Row: {
@@ -1434,6 +2471,211 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_request_history: {
+        Row: {
+          action: string
+          created_at: string
+          financial_request_id: string
+          id: string
+          new_status:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          notes: string | null
+          previous_status:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          financial_request_id: string
+          id?: string
+          new_status?:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          notes?: string | null
+          previous_status?:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          financial_request_id?: string
+          id?: string
+          new_status?:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          notes?: string | null
+          previous_status?:
+            | Database["public"]["Enums"]["financial_request_status"]
+            | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_request_history_financial_request_id_fkey"
+            columns: ["financial_request_id"]
+            isOneToOne: false
+            referencedRelation: "financial_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_request_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_requests: {
+        Row: {
+          approved_amount: number | null
+          attachment_url: string | null
+          beneficiary_document: string | null
+          beneficiary_name: string | null
+          cost_center_id: string | null
+          created_at: string
+          department_id: string | null
+          description: string | null
+          desired_payment_method: Database["public"]["Enums"]["payment_method"]
+          expense_category: string
+          id: string
+          justification: string | null
+          manager_decision:
+            | Database["public"]["Enums"]["manager_decision"]
+            | null
+          manager_decision_at: string | null
+          manager_id: string | null
+          manager_reason: string | null
+          paid_amount: number | null
+          paid_at: string | null
+          paid_by: string | null
+          payment_proof_url: string | null
+          priority: Database["public"]["Enums"]["financial_request_priority"]
+          request_date: string
+          requested_amount: number
+          requester_id: string
+          required_date: string | null
+          status: Database["public"]["Enums"]["financial_request_status"]
+          title: string
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_amount?: number | null
+          attachment_url?: string | null
+          beneficiary_document?: string | null
+          beneficiary_name?: string | null
+          cost_center_id?: string | null
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          desired_payment_method?: Database["public"]["Enums"]["payment_method"]
+          expense_category?: string
+          id?: string
+          justification?: string | null
+          manager_decision?:
+            | Database["public"]["Enums"]["manager_decision"]
+            | null
+          manager_decision_at?: string | null
+          manager_id?: string | null
+          manager_reason?: string | null
+          paid_amount?: number | null
+          paid_at?: string | null
+          paid_by?: string | null
+          payment_proof_url?: string | null
+          priority?: Database["public"]["Enums"]["financial_request_priority"]
+          request_date?: string
+          requested_amount: number
+          requester_id: string
+          required_date?: string | null
+          status?: Database["public"]["Enums"]["financial_request_status"]
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_amount?: number | null
+          attachment_url?: string | null
+          beneficiary_document?: string | null
+          beneficiary_name?: string | null
+          cost_center_id?: string | null
+          created_at?: string
+          department_id?: string | null
+          description?: string | null
+          desired_payment_method?: Database["public"]["Enums"]["payment_method"]
+          expense_category?: string
+          id?: string
+          justification?: string | null
+          manager_decision?:
+            | Database["public"]["Enums"]["manager_decision"]
+            | null
+          manager_decision_at?: string | null
+          manager_id?: string | null
+          manager_reason?: string | null
+          paid_amount?: number | null
+          paid_at?: string | null
+          paid_by?: string | null
+          payment_proof_url?: string | null
+          priority?: Database["public"]["Enums"]["financial_request_priority"]
+          request_date?: string
+          requested_amount?: number
+          requester_id?: string
+          required_date?: string | null
+          status?: Database["public"]["Enums"]["financial_request_status"]
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_requests_cost_center_id_fkey"
+            columns: ["cost_center_id"]
+            isOneToOne: false
+            referencedRelation: "cost_centers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_requests_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_requests_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_requests_paid_by_fkey"
+            columns: ["paid_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_requests_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
             referencedColumns: ["id"]
           },
         ]
@@ -1943,6 +3185,104 @@ export type Database = {
             columns: ["subject_id"]
             isOneToOne: false
             referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      management_audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: unknown
+          new_data: Json | null
+          previous_data: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: unknown
+          new_data?: Json | null
+          previous_data?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: unknown
+          new_data?: Json | null
+          previous_data?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "management_audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      manager_reviews: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          department_id: string | null
+          id: string
+          manager_id: string | null
+          notes: string | null
+          reference_id: string | null
+          review_type: Database["public"]["Enums"]["manager_review_type"]
+          status: Database["public"]["Enums"]["manager_review_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          department_id?: string | null
+          id?: string
+          manager_id?: string | null
+          notes?: string | null
+          reference_id?: string | null
+          review_type?: Database["public"]["Enums"]["manager_review_type"]
+          status?: Database["public"]["Enums"]["manager_review_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          department_id?: string | null
+          id?: string
+          manager_id?: string | null
+          notes?: string | null
+          reference_id?: string | null
+          review_type?: Database["public"]["Enums"]["manager_review_type"]
+          status?: Database["public"]["Enums"]["manager_review_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manager_reviews_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manager_reviews_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2856,12 +4196,15 @@ export type Database = {
     }
     Functions: {
       can_manage_attendance: { Args: { p_class: string }; Returns: boolean }
+      can_manage_aulateste: { Args: never; Returns: boolean }
       can_manage_content: { Args: never; Returns: boolean }
       can_manage_grades: { Args: { p_class: string }; Returns: boolean }
       can_manage_online_assessment: {
         Args: { p_assessment: string }
         Returns: boolean
       }
+      can_read_cash: { Args: never; Returns: boolean }
+      can_review_cash: { Args: never; Returns: boolean }
       can_send_announcements: { Args: never; Returns: boolean }
       can_view_alert: {
         Args: {
@@ -2881,9 +4224,14 @@ export type Database = {
         Args: { p_student_id: string }
         Returns: boolean
       }
+      can_view_management: { Args: never; Returns: boolean }
       can_view_online_assessment: {
         Args: { p_assessment: string }
         Returns: boolean
+      }
+      cash_session_expected_balance: {
+        Args: { p_session: string }
+        Returns: number
       }
       current_guardian_id: { Args: never; Returns: string }
       current_profile_id: { Args: never; Returns: string }
@@ -2910,7 +4258,9 @@ export type Database = {
       guards_student: { Args: { p_student_id: string }; Returns: boolean }
       has_permission: { Args: { p_permission: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
+      is_aulateste_evaluator: { Args: { p_report: string }; Returns: boolean }
       is_enrolled: { Args: { p_class: string }; Returns: boolean }
+      is_gestor: { Args: never; Returns: boolean }
       is_guardian_of: { Args: { p_student: string }; Returns: boolean }
       is_own_student: { Args: { p_student: string }; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }
@@ -2987,6 +4337,28 @@ export type Database = {
         | "recuperacao"
         | "projeto"
         | "pratica"
+      at_attachment_kind: "curriculo" | "plano_aula" | "assinatura" | "outro"
+      at_evaluation_type:
+        | "curricular"
+        | "plano_aula"
+        | "didatica"
+        | "dominio"
+        | "professor_atual"
+        | "comissao"
+      at_process_status:
+        | "em_andamento"
+        | "pendente_documentacao"
+        | "pendente_nova_aula"
+        | "encaminhado"
+        | "finalizado"
+      at_report_status: "rascunho" | "finalizado" | "reaberto"
+      at_signature_role:
+        | "candidato"
+        | "professor_atual"
+        | "coordenador"
+        | "avaliador"
+        | "responsavel_processo"
+      at_teaching_modality: "presencial" | "remota" | "hibrida"
       attendance_record_status:
         | "present"
         | "absent"
@@ -3009,6 +4381,22 @@ export type Database = {
         | "concluido"
         | "desistente"
       campaign_status: "rascunho" | "ativa" | "encerrada" | "cancelada"
+      cash_movement_status: "pending" | "completed" | "cancelled" | "reversed"
+      cash_movement_type:
+        | "entry"
+        | "exit"
+        | "reinforcement"
+        | "withdrawal"
+        | "reversal"
+        | "adjustment"
+      cash_register_status: "active" | "inactive"
+      cash_session_status:
+        | "open"
+        | "closed"
+        | "under_review"
+        | "with_difference"
+        | "approved"
+        | "rejected"
       class_shift: "manha" | "tarde" | "noite" | "integral" | "sabado"
       class_status: "open" | "in_progress" | "finished" | "cancelled"
       class_student_status: "active" | "inactive" | "transferred" | "cancelled"
@@ -3021,6 +4409,7 @@ export type Database = {
         | "infantil"
         | "preparatorio"
         | "reforco"
+      department_status: "active" | "inactive"
       document_status: "pendente" | "enviado" | "aprovado" | "reprovado"
       document_type:
         | "rg"
@@ -3041,6 +4430,17 @@ export type Database = {
         | "cancelado"
         | "finalizado"
       event_visibility: "public" | "restricted"
+      financial_request_priority: "baixa" | "media" | "alta" | "urgente"
+      financial_request_status:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "approved"
+        | "partially_approved"
+        | "rejected"
+        | "needs_information"
+        | "paid"
+        | "cancelled"
       generated_document_type:
         | "declaracao_matricula"
         | "declaracao_frequencia"
@@ -3049,6 +4449,13 @@ export type Database = {
         | "recibo"
         | "comprovante_financeiro"
         | "relatorio_academico"
+      goal_status:
+        | "not_started"
+        | "in_progress"
+        | "on_track"
+        | "late"
+        | "completed"
+        | "cancelled"
       invoice_status:
         | "paid"
         | "open"
@@ -3086,6 +4493,26 @@ export type Database = {
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_release_type: "all" | "date" | "after_previous"
       lesson_status: "draft" | "published" | "archived"
+      manager_decision:
+        | "approved"
+        | "partially_approved"
+        | "rejected"
+        | "needs_information"
+        | "returned_for_correction"
+        | "forwarded_to_direction"
+      manager_review_status:
+        | "on_track"
+        | "attention"
+        | "late"
+        | "critical"
+        | "completed"
+      manager_review_type:
+        | "department"
+        | "goal"
+        | "cash_session"
+        | "financial_request"
+        | "indicator"
+        | "other"
       material_type: "video" | "pdf" | "slides" | "link" | "file"
       notification_type:
         | "info"
@@ -3130,6 +4557,7 @@ export type Database = {
         | "professor"
         | "aluno"
         | "responsavel"
+        | "gestor"
       user_status: "active" | "inactive" | "suspended" | "pending"
     }
     CompositeTypes: {
@@ -3294,6 +4722,31 @@ export const Constants = {
         "projeto",
         "pratica",
       ],
+      at_attachment_kind: ["curriculo", "plano_aula", "assinatura", "outro"],
+      at_evaluation_type: [
+        "curricular",
+        "plano_aula",
+        "didatica",
+        "dominio",
+        "professor_atual",
+        "comissao",
+      ],
+      at_process_status: [
+        "em_andamento",
+        "pendente_documentacao",
+        "pendente_nova_aula",
+        "encaminhado",
+        "finalizado",
+      ],
+      at_report_status: ["rascunho", "finalizado", "reaberto"],
+      at_signature_role: [
+        "candidato",
+        "professor_atual",
+        "coordenador",
+        "avaliador",
+        "responsavel_processo",
+      ],
+      at_teaching_modality: ["presencial", "remota", "hibrida"],
       attendance_record_status: [
         "present",
         "absent",
@@ -3319,6 +4772,24 @@ export const Constants = {
         "desistente",
       ],
       campaign_status: ["rascunho", "ativa", "encerrada", "cancelada"],
+      cash_movement_status: ["pending", "completed", "cancelled", "reversed"],
+      cash_movement_type: [
+        "entry",
+        "exit",
+        "reinforcement",
+        "withdrawal",
+        "reversal",
+        "adjustment",
+      ],
+      cash_register_status: ["active", "inactive"],
+      cash_session_status: [
+        "open",
+        "closed",
+        "under_review",
+        "with_difference",
+        "approved",
+        "rejected",
+      ],
       class_shift: ["manha", "tarde", "noite", "integral", "sabado"],
       class_status: ["open", "in_progress", "finished", "cancelled"],
       class_student_status: ["active", "inactive", "transferred", "cancelled"],
@@ -3332,6 +4803,7 @@ export const Constants = {
         "preparatorio",
         "reforco",
       ],
+      department_status: ["active", "inactive"],
       document_status: ["pendente", "enviado", "aprovado", "reprovado"],
       document_type: [
         "rg",
@@ -3354,6 +4826,18 @@ export const Constants = {
         "finalizado",
       ],
       event_visibility: ["public", "restricted"],
+      financial_request_priority: ["baixa", "media", "alta", "urgente"],
+      financial_request_status: [
+        "draft",
+        "submitted",
+        "under_review",
+        "approved",
+        "partially_approved",
+        "rejected",
+        "needs_information",
+        "paid",
+        "cancelled",
+      ],
       generated_document_type: [
         "declaracao_matricula",
         "declaracao_frequencia",
@@ -3362,6 +4846,14 @@ export const Constants = {
         "recibo",
         "comprovante_financeiro",
         "relatorio_academico",
+      ],
+      goal_status: [
+        "not_started",
+        "in_progress",
+        "on_track",
+        "late",
+        "completed",
+        "cancelled",
       ],
       invoice_status: [
         "paid",
@@ -3404,6 +4896,29 @@ export const Constants = {
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_release_type: ["all", "date", "after_previous"],
       lesson_status: ["draft", "published", "archived"],
+      manager_decision: [
+        "approved",
+        "partially_approved",
+        "rejected",
+        "needs_information",
+        "returned_for_correction",
+        "forwarded_to_direction",
+      ],
+      manager_review_status: [
+        "on_track",
+        "attention",
+        "late",
+        "critical",
+        "completed",
+      ],
+      manager_review_type: [
+        "department",
+        "goal",
+        "cash_session",
+        "financial_request",
+        "indicator",
+        "other",
+      ],
       material_type: ["video", "pdf", "slides", "link", "file"],
       notification_type: [
         "info",
@@ -3452,6 +4967,7 @@ export const Constants = {
         "professor",
         "aluno",
         "responsavel",
+        "gestor",
       ],
       user_status: ["active", "inactive", "suspended", "pending"],
     },

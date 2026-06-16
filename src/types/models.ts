@@ -68,6 +68,31 @@ export type AlertType = Database["public"]["Enums"]["alert_type"];
 export type AlertPriority = Database["public"]["Enums"]["alert_priority"];
 export type AlertStatus = Database["public"]["Enums"]["alert_status"];
 
+// --- Relatório Avaliativo de Aula-Teste --------------------------------------
+export type AtSettings = Database["public"]["Tables"]["at_settings"]["Row"];
+export type AtCandidate = Database["public"]["Tables"]["at_candidates"]["Row"];
+export type AtReport = Database["public"]["Tables"]["at_reports"]["Row"];
+export type AtReportUpdate = Database["public"]["Tables"]["at_reports"]["Update"];
+export type AtCandidateUpdate = Database["public"]["Tables"]["at_candidates"]["Update"];
+export type AtCriterion = Database["public"]["Tables"]["at_criteria"]["Row"];
+export type AtEvaluation = Database["public"]["Tables"]["at_evaluations"]["Row"];
+export type AtEvaluationScore =
+  Database["public"]["Tables"]["at_evaluation_scores"]["Row"];
+export type AtStudentResponse =
+  Database["public"]["Tables"]["at_student_responses"]["Row"];
+export type AtGuardianResponse =
+  Database["public"]["Tables"]["at_guardian_responses"]["Row"];
+export type AtAttachment = Database["public"]["Tables"]["at_attachments"]["Row"];
+export type AtSignature = Database["public"]["Tables"]["at_signatures"]["Row"];
+export type AtLog = Database["public"]["Tables"]["at_logs"]["Row"];
+export type AtReportStatus = Database["public"]["Enums"]["at_report_status"];
+export type AtProcessStatus = Database["public"]["Enums"]["at_process_status"];
+export type AtEvaluationType = Database["public"]["Enums"]["at_evaluation_type"];
+export type AtAttachmentKind = Database["public"]["Enums"]["at_attachment_kind"];
+export type AtSignatureRole = Database["public"]["Enums"]["at_signature_role"];
+export type AtTeachingModality =
+  Database["public"]["Enums"]["at_teaching_modality"];
+
 // --- Eventos e Palestras -----------------------------------------------------
 export type Event = Database["public"]["Tables"]["events"]["Row"];
 export type EventRegistration =

@@ -1,15 +1,12 @@
 // =============================================================================
-// RBAC — definição central de perfis e rótulos
-// =============================================================================
-// Fonte única de verdade para os papéis. A matriz de permissões fica em
-// permissions.ts (espelhando a tabela role_permissions do banco).
+// RBAC - definicao central de perfis e rotulos
 // =============================================================================
 import type { UserRole, UserStatus } from "@/types/models";
 
-/** Todos os perfis do sistema, na ordem hierárquica de exibição. */
 export const ALL_ROLES: readonly UserRole[] = [
   "admin",
   "diretor",
+  "gestor",
   "coordenacao",
   "secretaria",
   "financeiro",
@@ -18,22 +15,22 @@ export const ALL_ROLES: readonly UserRole[] = [
   "responsavel",
 ] as const;
 
-/** Rótulos amigáveis para exibição na interface. */
 export const ROLE_LABELS: Record<UserRole, string> = {
   admin: "Administrador",
   diretor: "Diretor",
-  coordenacao: "Coordenação Pedagógica",
+  gestor: "Gestor",
+  coordenacao: "Coordenacao Pedagogica",
   secretaria: "Secretaria",
   financeiro: "Financeiro",
   professor: "Professor",
   aluno: "Aluno",
-  responsavel: "Responsável",
+  responsavel: "Responsavel",
 };
 
-/** Cor (classe Tailwind) usada em badges por perfil. */
 export const ROLE_BADGE_CLASSES: Record<UserRole, string> = {
   admin: "bg-red-100 text-red-800",
   diretor: "bg-purple-100 text-purple-800",
+  gestor: "bg-cyan-100 text-cyan-800",
   coordenacao: "bg-indigo-100 text-indigo-800",
   secretaria: "bg-sky-100 text-sky-800",
   financeiro: "bg-emerald-100 text-emerald-800",
@@ -46,7 +43,6 @@ export function roleLabel(role: UserRole): string {
   return ROLE_LABELS[role] ?? role;
 }
 
-/** Rótulos de status da conta. */
 export const STATUS_LABELS: Record<UserStatus, string> = {
   active: "Ativo",
   inactive: "Inativo",
@@ -65,7 +61,6 @@ export function statusLabel(status: UserStatus): string {
   return STATUS_LABELS[status] ?? status;
 }
 
-/** Verdadeiro se o papel pertence ao conjunto informado. */
 export function hasRole(
   role: UserRole | null | undefined,
   allowed: readonly UserRole[],
@@ -73,9 +68,6 @@ export function hasRole(
   return role != null && allowed.includes(role);
 }
 
-// -----------------------------------------------------------------------------
-// Grupos de papéis reutilizáveis
-// -----------------------------------------------------------------------------
 export const STAFF_ROLES: readonly UserRole[] = [
   "admin",
   "diretor",
@@ -84,6 +76,8 @@ export const STAFF_ROLES: readonly UserRole[] = [
 ];
 
 export const MANAGEMENT_ROLES: readonly UserRole[] = ["admin", "diretor"];
+
+export const GESTOR_ROLES: readonly UserRole[] = ["admin", "diretor", "gestor"];
 
 export const ACADEMIC_ROLES: readonly UserRole[] = [
   "admin",
@@ -105,6 +99,7 @@ export const FINANCE_ROLES: readonly UserRole[] = [
 export const REPORT_ROLES: readonly UserRole[] = [
   "admin",
   "diretor",
+  "gestor",
   "coordenacao",
   "secretaria",
   "financeiro",

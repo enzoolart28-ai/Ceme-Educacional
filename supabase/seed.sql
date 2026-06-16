@@ -20,6 +20,7 @@ begin
     select * from (values
       ('admin@cme.local',       'Administrador',            'admin',       'active'),
       ('diretor@cme.local',     'Diretor da Escola',        'diretor',     'active'),
+      ('gestor@cme.local',      'Gestor CME',               'gestor',      'active'),
       ('coordenacao@cme.local', 'Coordenação Pedagógica',   'coordenacao', 'active'),
       ('secretaria@cme.local',  'Secretaria',               'secretaria',  'active'),
       ('financeiro@cme.local',  'Setor Financeiro',         'financeiro',  'active'),
@@ -895,4 +896,31 @@ begin
     ('certificado_pendente', 'Certificado pendente',
      'Certificado de conclusão emitido após verificação.',
      v_student, 'baixa', 'resolvido', v_admin, now(), 'certificado_pendente:seed-resolved');
+end $$;
+
+-- =============================================================================
+-- Seed de Aula-Teste — candidato e relatório de demonstração (rascunho)
+-- =============================================================================
+do $$
+declare
+  v_admin uuid;
+  v_unit uuid;
+  v_cand uuid;
+begin
+  if exists (select 1 from public.at_reports) then
+    return;
+  end if;
+
+  select p.id into v_admin from public.profiles p join auth.users u on u.id = p.user_id where u.email = 'admin@cme.local';
+  select id into v_unit from public.units limit 1;
+
+  insert into public.at_candidates (full_name, cpf, birth_date, phone, email, academic_background, teaching_experience, disciplines, created_by)
+    values ('Mariana Teste Silva', '529.982.247-25', '1992-04-18', '(11) 96666-0001', 'mariana.silva@exemplo.com',
+            'Licenciatura em Matemática', '5 anos', 'Matemática, Física', v_admin)
+    returning id into v_cand;
+
+  insert into public.at_reports (code, candidate_id, position_title, unit_id, modality, discipline,
+                                 test_date, theme, age_group, test_modality, status, process_status, created_by)
+    values ('AT-2026-0001', v_cand, 'Professor de Matemática', v_unit, 'Presencial', 'Matemática',
+            '2026-06-10', 'Funções do 1º grau', '15 a 16 anos', 'presencial', 'rascunho', 'em_andamento', v_admin);
 end $$;
