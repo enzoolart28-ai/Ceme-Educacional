@@ -31,8 +31,6 @@ export const PERMISSIONS = {
   LEADS_MANAGE: "leads.manage",
   CAMPAIGNS_MANAGE: "campaigns.manage",
   ALERTS_MANAGE: "alerts.manage",
-  AULATESTE_MANAGE: "aulateste.manage",
-  AULATESTE_EVALUATE: "aulateste.evaluate",
   MANAGEMENT_READ: "management.read",
   MANAGEMENT_REVIEW: "management.review",
   MANAGEMENT_GOALS_MANAGE: "management.goals.manage",
@@ -70,7 +68,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "courses.manage",
     "leads.manage",
     "alerts.manage",
-    "aulateste.manage",
     "management.read",
     "management.review",
     "cash.read",
@@ -119,12 +116,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "leads.manage",
     "campaigns.manage",
     "alerts.manage",
-    "aulateste.manage",
-    "aulateste.evaluate",
     "financial_requests.create",
   ],
-  // Aula-teste segue os perfis do spec (admin/diretor/coordenação/professor);
-  // secretaria não participa deste subsistema.
   secretaria: [
     "profile.self",
     "reports.read",
@@ -162,7 +155,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "grades.read",
     "grades.manage",
     "students.read",
-    "aulateste.evaluate",
     "financial_requests.create",
   ],
   aluno: [

@@ -25,7 +25,6 @@ import {
   Target,
   Ticket,
   Trophy,
-  FileCheck2,
   School,
   Building2,
   ClipboardSignature,
@@ -220,12 +219,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/campanhas",
     icon: Trophy,
     roles: ["admin", "coordenacao", "secretaria"],
-  },
-  {
-    label: "Aula-Teste",
-    href: "/dashboard/aula-teste",
-    icon: FileCheck2,
-    roles: ["admin", "diretor", "coordenacao", "professor"],
   },
   {
     label: "Meus dependentes",
