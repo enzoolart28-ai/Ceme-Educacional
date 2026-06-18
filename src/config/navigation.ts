@@ -26,6 +26,7 @@ import {
   Ticket,
   Trophy,
   FileCheck2,
+  School,
   Building2,
   ClipboardSignature,
   Landmark,
@@ -146,6 +147,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Avaliações",
     href: "/dashboard/avaliacoes",
     icon: ClipboardList,
+    roles: ACADEMIC_ROLES,
+  },
+  {
+    label: "Pedagógico",
+    href: "/dashboard/pedagogico",
+    icon: School,
     roles: ACADEMIC_ROLES,
   },
   {
