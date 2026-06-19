@@ -7,6 +7,7 @@ export const ALL_ROLES: readonly UserRole[] = [
   "admin",
   "diretor",
   "gestor",
+  "comercial",
   "coordenacao",
   "secretaria",
   "financeiro",
@@ -19,6 +20,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   admin: "Administrador",
   diretor: "Diretor",
   gestor: "Gestor",
+  comercial: "Comercial",
   coordenacao: "Coordenacao Pedagogica",
   secretaria: "Secretaria",
   financeiro: "Financeiro",
@@ -31,6 +33,7 @@ export const ROLE_BADGE_CLASSES: Record<UserRole, string> = {
   admin: "bg-red-100 text-red-800",
   diretor: "bg-purple-100 text-purple-800",
   gestor: "bg-cyan-100 text-cyan-800",
+  comercial: "bg-lime-100 text-lime-800",
   coordenacao: "bg-indigo-100 text-indigo-800",
   secretaria: "bg-sky-100 text-sky-800",
   financeiro: "bg-emerald-100 text-emerald-800",
@@ -79,6 +82,15 @@ export const MANAGEMENT_ROLES: readonly UserRole[] = ["admin", "diretor"];
 
 export const GESTOR_ROLES: readonly UserRole[] = ["admin", "diretor", "gestor"];
 
+export const COMERCIAL_ROLES: readonly UserRole[] = [
+  "admin",
+  "diretor",
+  "gestor",
+  "coordenacao",
+  "secretaria",
+  "comercial",
+];
+
 export const ACADEMIC_ROLES: readonly UserRole[] = [
   "admin",
   "diretor",
@@ -103,5 +115,6 @@ export const REPORT_ROLES: readonly UserRole[] = [
   "coordenacao",
   "secretaria",
   "financeiro",
+  "comercial",
   "professor",
 ];

@@ -98,6 +98,11 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "documents.read",
     "leads.manage",
   ],
+  comercial: [
+    "profile.self",
+    "reports.read",
+    "leads.manage",
+  ],
   coordenacao: [
     "profile.self",
     "reports.read",

@@ -16,6 +16,7 @@ export {
   ACADEMIC_ROLES,
   FINANCE_ROLES,
   GESTOR_ROLES,
+  COMERCIAL_ROLES,
   REPORT_ROLES,
   ALL_ROLES,
 } from "@/lib/auth/roles";

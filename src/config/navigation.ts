@@ -26,6 +26,7 @@ import {
   Ticket,
   Trophy,
   School,
+  UserMinus,
   Building2,
   ClipboardSignature,
   Landmark,
@@ -47,6 +48,7 @@ import {
   REPORT_ROLES,
   STAFF_ROLES,
   GESTOR_ROLES,
+  COMERCIAL_ROLES,
 } from "@/lib/auth/roles";
 
 export interface NavItem {
@@ -155,6 +157,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ACADEMIC_ROLES,
   },
   {
+    label: "Desistências",
+    href: "/dashboard/desistencias",
+    icon: UserMinus,
+    roles: ["admin", "diretor", "gestor", "coordenacao", "secretaria"],
+  },
+  {
     label: "AVA / EAD",
     href: "/dashboard/ava",
     icon: MonitorPlay,
@@ -206,13 +214,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Comercial (CRM)",
     href: "/dashboard/crm",
     icon: Target,
-    roles: STAFF_ROLES,
+    roles: COMERCIAL_ROLES,
   },
   {
     label: "Eventos",
     href: "/dashboard/eventos",
     icon: Ticket,
-    roles: STAFF_ROLES,
+    roles: COMERCIAL_ROLES,
   },
   {
     label: "Campanhas",

@@ -36,17 +36,18 @@ export default async function ReportsPage({
     <>
       <PageHeader
         title="Relatorios"
-        description="Central academica, financeira, pedagogica e comercial com filtros e exportacao."
+        description="Central academica, financeira, pedagogica, comercial e de desistencias com filtros e exportacao."
       />
 
       <ReportFiltersForm filters={filters} options={data.options} />
 
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
         {[
           ["academic", "Academicos"],
           ["financial", "Financeiros"],
           ["pedagogical", "Pedagogicos"],
           ["commercial", "Comerciais"],
+          ["dropout", "Desistencias"],
         ].map(([category, label]) => (
           <Card
             key={category}
@@ -82,4 +83,3 @@ export default async function ReportsPage({
     </>
   );
 }
-

@@ -30,9 +30,11 @@ interface StudentClassRow {
   id: string;
   status: string;
   createdAt: string;
+  updatedAt: string;
   studentId: string;
   studentName: string;
   studentStatus: string;
+  studentNotes: string | null;
   classId: string;
   className: string;
   classStatus: string;
@@ -155,13 +157,27 @@ function inRange(value: string | null | undefined, filters: ReportFilters): bool
 }
 
 function matchesCommon(
-  row: { courseId?: string | null; classId?: string | null; unitId?: string | null; status?: string },
+  row: {
+    courseId?: string | null;
+    classId?: string | null;
+    unitId?: string | null;
+    status?: string;
+    studentStatus?: string;
+    classStatus?: string;
+  },
   filters: ReportFilters,
 ): boolean {
   if (filters.courseId && row.courseId !== filters.courseId) return false;
   if (filters.classId && row.classId !== filters.classId) return false;
   if (filters.unitId && row.unitId !== filters.unitId) return false;
-  if (filters.status && row.status !== filters.status) return false;
+  if (
+    filters.status &&
+    row.status !== filters.status &&
+    row.studentStatus !== filters.status &&
+    row.classStatus !== filters.status
+  ) {
+    return false;
+  }
   return true;
 }
 
@@ -230,9 +246,11 @@ function mapStudentClass(row: UnknownRecord): StudentClassRow {
     id: str(row.id),
     status: str(row.status, "active"),
     createdAt: str(row.created_at),
+    updatedAt: str(student.updated_at) || str(row.updated_at) || str(row.created_at),
     studentId: str(student.id),
     studentName: str(student.full_name, "Aluno sem nome"),
     studentStatus: str(student.status, "active"),
+    studentNotes: nullableStr(student.notes),
     classId: str(cls.id),
     className: str(cls.name, "Turma sem nome"),
     classStatus: str(cls.status, "open"),
@@ -325,7 +343,7 @@ async function loadAcademic(filters: ReportFilters): Promise<{
     supabase
       .from("class_students")
       .select(
-        "id, status, created_at, student:students(id, full_name, status), class:classes(id, name, status, course_id, unit_id, course:courses(id, name), unit:units(id, name))",
+        "id, status, created_at, updated_at, student:students(id, full_name, status, notes, updated_at), class:classes(id, name, status, course_id, unit_id, course:courses(id, name), unit:units(id, name))",
       )
       .order("created_at", { ascending: false }),
     supabase
@@ -616,6 +634,83 @@ function academicSections(data: Awaited<ReturnType<typeof loadAcademic>>): Repor
   ];
 }
 
+function studentStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    active: "Ativo",
+    inactive: "Inativo",
+    defaulter: "Inadimplente",
+    locked: "Trancado",
+    transferred: "Transferido",
+    completed: "Concluido",
+    dropout: "Desistente",
+  };
+  return labels[status] ?? status;
+}
+
+function dropoutSections(data: Awaited<ReturnType<typeof loadAcademic>>): ReportSection[] {
+  const rows = data.students.filter((student) => student.studentStatus === "dropout" || student.studentStatus === "transferred");
+  const dropoutCount = rows.filter((student) => student.studentStatus === "dropout").length;
+  const transferredCount = rows.filter((student) => student.studentStatus === "transferred").length;
+  const totalStudents = data.students.length;
+  const byCourse = new Map<string, number>();
+  const byStatus = new Map<string, number>();
+
+  for (const row of rows) {
+    increment(byCourse, row.courseName || "Sem curso");
+    increment(byStatus, studentStatusLabel(row.studentStatus));
+  }
+
+  return [
+    section({
+      id: "dropout-overview",
+      title: "Relatorio de desistencias",
+      description: "Acompanhamento de evasao escolar, transferencias, curso, turma, data e motivo informado.",
+      category: "dropout",
+      metrics: [
+        { label: "Desistentes", value: formatNumber(dropoutCount) },
+        { label: "Transferidos", value: formatNumber(transferredCount) },
+        { label: "Total de saidas", value: formatNumber(rows.length) },
+        { label: "Taxa de desistencia", value: formatPercent(percent(dropoutCount, totalStudents)) },
+      ],
+      chart: topChart(byCourse),
+      table: {
+        id: "dropout-students-table",
+        title: "Alunos desistentes e transferidos",
+        description: "Lista filtrada por periodo, curso, turma, unidade e status do aluno.",
+        columns: ["Aluno", "Situacao", "Curso", "Turma", "Unidade", "Data", "Motivo/observacao"],
+        rows: rows.map((row) => [
+          row.studentName,
+          studentStatusLabel(row.studentStatus),
+          row.courseName,
+          row.className,
+          row.unitName,
+          row.updatedAt ? row.updatedAt.slice(0, 10) : "-",
+          row.studentNotes ?? "-",
+        ]),
+      },
+    }),
+    section({
+      id: "dropout-status-breakdown",
+      title: "Resumo da evasao",
+      description: "Distribuicao das saidas por situacao e taxa de desistencia sobre alunos filtrados.",
+      category: "dropout",
+      metrics: [
+        { label: "Base filtrada", value: formatNumber(totalStudents) },
+        { label: "Taxa de saida", value: formatPercent(percent(rows.length, totalStudents)) },
+        { label: "Taxa de desistencia", value: formatPercent(percent(dropoutCount, totalStudents)) },
+      ],
+      chart: topChart(byStatus),
+      table: {
+        id: "dropout-course-table",
+        title: "Saidas por curso",
+        description: "Total de alunos desistentes ou transferidos agrupado por curso.",
+        columns: ["Curso", "Saidas"],
+        rows: [...byCourse.entries()].map(([course, total]) => [course, formatNumber(total)]),
+      },
+    }),
+  ];
+}
+
 function financialSections(data: Awaited<ReturnType<typeof loadFinancial>>): ReportSection[] {
   const invoiceById = new Map(data.invoices.map((invoice) => [invoice.id, invoice]));
   const received = data.payments.reduce((sum, payment) => sum + payment.amount, 0);
@@ -835,7 +930,7 @@ export async function getReportsData(role: UserRole, filters: ReportFilters): Pr
   const categories = allowedReportCategories(role);
   const [options, academic, financial, pedagogical, commercial] = await Promise.all([
     getReportOptions(),
-    categories.includes("academic") ? loadAcademic(filters) : null,
+    categories.includes("academic") || categories.includes("dropout") ? loadAcademic(filters) : null,
     categories.includes("financial") ? loadFinancial(filters) : null,
     categories.includes("pedagogical") ? loadPedagogical(filters) : null,
     categories.includes("commercial") ? loadCommercial(filters) : null,
@@ -845,6 +940,7 @@ export async function getReportsData(role: UserRole, filters: ReportFilters): Pr
     options,
     sections: [
       ...(academic ? academicSections(academic) : []),
+      ...(academic && categories.includes("dropout") ? dropoutSections(academic) : []),
       ...(financial ? financialSections(financial) : []),
       ...(pedagogical ? pedagogicalSections(pedagogical) : []),
       ...(commercial ? commercialSections(commercial) : []),

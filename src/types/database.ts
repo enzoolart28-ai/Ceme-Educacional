@@ -3873,6 +3873,7 @@ export type Database = {
         | "aluno"
         | "responsavel"
         | "gestor"
+        | "comercial"
       user_status: "active" | "inactive" | "suspended" | "pending"
     }
     CompositeTypes: {
@@ -4258,6 +4259,7 @@ export const Constants = {
         "aluno",
         "responsavel",
         "gestor",
+        "comercial",
       ],
       user_status: ["active", "inactive", "suspended", "pending"],
     },

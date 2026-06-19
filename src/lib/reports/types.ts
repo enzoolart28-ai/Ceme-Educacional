@@ -1,6 +1,6 @@
 import type { UserRole } from "@/types/models";
 
-export type ReportCategory = "academic" | "financial" | "pedagogical" | "commercial";
+export type ReportCategory = "academic" | "financial" | "pedagogical" | "commercial" | "dropout";
 
 export interface ReportFilters {
   from?: string;
@@ -63,17 +63,19 @@ export function allowedReportCategories(role: UserRole): ReportCategory[] {
   switch (role) {
     case "admin":
     case "diretor":
-      return ["academic", "financial", "pedagogical", "commercial"];
+    case "gestor":
+      return ["academic", "financial", "pedagogical", "commercial", "dropout"];
+    case "comercial":
+      return ["commercial"];
     case "coordenacao":
-      return ["academic", "pedagogical"];
+      return ["academic", "pedagogical", "dropout"];
     case "financeiro":
       return ["financial"];
     case "secretaria":
-      return ["academic"];
+      return ["academic", "dropout"];
     case "professor":
       return ["academic", "pedagogical"];
     default:
       return [];
   }
 }
-
