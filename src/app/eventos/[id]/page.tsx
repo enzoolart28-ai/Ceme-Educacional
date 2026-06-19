@@ -19,7 +19,7 @@ export default async function PublicEventPage({ params }: { params: Promise<{ id
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
             <GraduationCap className="h-5 w-5" />
           </div>
-          <span className="text-lg font-bold">CME Educacional</span>
+          <span className="text-lg font-bold">CEME Educacional</span>
         </div>
 
         {!event ? (
@@ -52,7 +52,7 @@ export default async function PublicEventPage({ params }: { params: Promise<{ id
         )}
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          <Clock className="mr-1 inline h-3 w-3" /> Sistema CME Educacional
+          <Clock className="mr-1 inline h-3 w-3" /> Sistema CEME Educacional
         </p>
       </div>
     </main>

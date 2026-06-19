@@ -63,7 +63,7 @@ export function DashboardShell({ role, fullName, email, children }: DashboardShe
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
         <GraduationCap className="h-5 w-5" />
       </div>
-      <span className="font-semibold text-slate-900">CME Educacional</span>
+      <span className="font-semibold text-slate-900">CEME Educacional</span>
     </div>
   );
 
@@ -87,7 +87,7 @@ export function DashboardShell({ role, fullName, email, children }: DashboardShe
           />
           <aside className="absolute inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl">
             <div className="flex h-16 items-center justify-between border-b border-slate-100 px-5">
-              <span className="font-semibold text-slate-900">CME Educacional</span>
+              <span className="font-semibold text-slate-900">CEME Educacional</span>
               <button onClick={() => setMobileOpen(false)} aria-label="Fechar menu">
                 <X className="h-5 w-5 text-slate-500" />
               </button>

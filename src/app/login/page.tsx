@@ -16,7 +16,7 @@ export default async function LoginPage({
 
   return (
     <AuthShell
-      title="CME Educacional"
+      title="CEME Educacional"
       subtitle="Acesse o sistema com suas credenciais"
     >
       <LoginForm redirectTo={redirectTo} />

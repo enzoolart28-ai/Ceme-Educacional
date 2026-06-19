@@ -174,7 +174,7 @@ async function buildContent(
   const today = formatDate(new Date().toISOString());
   const footer = [
     `Documento gerado eletronicamente em ${today}.`,
-    "Sistema CME Educacional — validade sujeita a conferência.",
+    "Sistema CEME Educacional — validade sujeita a conferência.",
   ];
   const titleLabel = GENERATED_DOCUMENT_TYPE_LABELS[type];
 

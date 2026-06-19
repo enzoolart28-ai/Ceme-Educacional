@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "CME Educacional",
-    template: "%s | CME Educacional",
+    default: "CEME Educacional",
+    template: "%s | CEME Educacional",
   },
   description: "Sistema de gestão para rede particular de ensino.",
 };

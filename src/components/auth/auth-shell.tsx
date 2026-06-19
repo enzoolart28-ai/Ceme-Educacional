@@ -25,7 +25,7 @@ export function AuthShell({
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          Sistema CME Educacional &middot; Acesso restrito
+          Sistema CEME Educacional &middot; Acesso restrito
         </p>
       </div>
     </main>

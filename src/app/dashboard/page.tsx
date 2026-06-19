@@ -82,7 +82,7 @@ export default async function DashboardPage() {
     <>
       <PageHeader
         title={`Olá, ${firstName}!`}
-        description="Bem-vindo ao Sistema CME Educacional."
+        description="Bem-vindo ao Sistema CEME Educacional."
         action={<RoleBadge role={role} />}
       />
       {dashboard}

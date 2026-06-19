@@ -41,7 +41,7 @@ export async function buildDocumentPdf(content: PdfContent): Promise<Uint8Array>
   let y = PAGE_H - MARGIN;
 
   // Cabeçalho institucional
-  page.drawText("SISTEMA CME EDUCACIONAL", { x: MARGIN, y, size: 16, font: bold, color: rgb(0.15, 0.18, 0.4) });
+  page.drawText("SISTEMA CEME EDUCACIONAL", { x: MARGIN, y, size: 16, font: bold, color: rgb(0.15, 0.18, 0.4) });
   y -= 18;
   page.drawText("Rede Particular de Ensino", { x: MARGIN, y, size: 10, font, color: rgb(0.4, 0.4, 0.4) });
   y -= 12;
