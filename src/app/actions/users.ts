@@ -36,8 +36,12 @@ export async function createUserAction(values: CreateUserInput): Promise<ActionR
     user_metadata: { full_name, role },
   });
   if (error || !data.user) {
-    const already = error?.message?.toLowerCase().includes("already") || error?.status === 422;
-    return { error: already ? "Já existe um usuário com este e-mail." : "Não foi possível criar o usuário." };
+    const msg = error?.message?.toLowerCase() ?? "";
+    if (msg.includes("already") || msg.includes("registered")) {
+      return { error: "Já existe um usuário com este e-mail." };
+    }
+    // Mostra o motivo real para facilitar o diagnóstico (tela só de admin).
+    return { error: `Não foi possível criar o usuário: ${error?.message ?? "erro desconhecido"}` };
   }
 
   // O trigger handle_new_user cria o perfil; garantimos papel/status/nome.
