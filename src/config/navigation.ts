@@ -136,7 +136,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Alunos",
     href: "/dashboard/alunos",
     icon: IdCard,
-    roles: ACADEMIC_ROLES,
+    roles: [...ACADEMIC_ROLES, "comercial"],
   },
   {
     label: "Chamada",

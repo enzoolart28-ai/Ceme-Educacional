@@ -24,6 +24,7 @@ begin
       ('coordenacao@cme.local', 'Coordenação Pedagógica',   'coordenacao', 'active'),
       ('secretaria@cme.local',  'Secretaria',               'secretaria',  'active'),
       ('financeiro@cme.local',  'Setor Financeiro',         'financeiro',  'active'),
+      ('comercial@cme.local',   'Comercial Demonstração',   'comercial',   'active'),
       ('professor@cme.local',   'Professor Demonstração',   'professor',   'active'),
       ('aluno@cme.local',       'Aluno Demonstração',       'aluno',       'active'),
       ('responsavel@cme.local', 'Responsável Demonstração', 'responsavel', 'active'),
