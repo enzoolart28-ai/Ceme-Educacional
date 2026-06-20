@@ -102,6 +102,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "profile.self",
     "reports.read",
     "leads.manage",
+    "students.read",
     "students.manage",
     "classes.read",
   ],
