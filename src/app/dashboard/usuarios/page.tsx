@@ -41,9 +41,9 @@ export default async function UsuariosPage() {
                 Não foi possível carregar a lista de usuários.
               </p>
               <p className="text-amber-800">
-                Os usuários <strong>não foram apagados</strong> — esta tela usa a chave de
-                servidor (SUPABASE_SERVICE_ROLE_KEY) para ler os perfis, e ela está
-                indisponível ou incorreta no ambiente. Corrija essa variável e refaça o deploy.
+                Os usuários <strong>não foram apagados</strong> — houve uma falha temporária ao
+                ler os perfis. Atualize a página (Ctrl + F5). Se persistir, verifique a conexão
+                com o banco de dados.
               </p>
               <p className="text-xs text-amber-700">Detalhe técnico: {error}</p>
             </div>
