@@ -3,13 +3,10 @@ import "server-only";
 // =============================================================================
 // Consultas do módulo de Gestão de Usuários (somente perfis administrativos)
 // =============================================================================
-// A LISTA usa o cliente de sessão (RLS), não o service_role: a página é restrita
-// a admin/diretor, e o policy "profiles_select_self_or_staff" permite que staff
-// leia todos os perfis. Assim a lista continua funcionando mesmo que a chave de
-// servidor (SUPABASE_SERVICE_ROLE_KEY) esteja ausente/incorreta no ambiente.
-// O service_role permanece apenas nas AÇÕES (criar/alterar/excluir login), que
-// exigem a API de admin do Auth.
-import { createClient } from "@/lib/supabase/server";
+// A página chamadora é restrita a admin/diretor. A leitura usa o cliente
+// administrativo para não depender de policies RLS antigas ou incompletas no
+// banco remoto. A chave continua confinada ao servidor.
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { Profile } from "@/types/models";
 
 export interface ListUsersResult {
@@ -21,7 +18,15 @@ export interface ListUsersResult {
 }
 
 export async function listUsers(): Promise<ListUsersResult> {
-  const supabase = await createClient();
+  let supabase: ReturnType<typeof createAdminClient>;
+  try {
+    supabase = createAdminClient();
+  } catch (error) {
+    return {
+      users: [],
+      error: error instanceof Error ? error.message : "Cliente administrativo indisponível.",
+    };
+  }
 
   const { data, error } = await supabase
     .from("profiles")
