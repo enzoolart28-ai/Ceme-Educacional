@@ -1,0 +1,13 @@
+
+> cme-educacional@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.3.17:3000
+- Environments: .env.local
+✓ Ready in 1532ms
+
+○ Compiling /login ...
+ GET /login 200 in 9.2s (next.js: 8.5s, proxy.ts: 392ms, application-code: 366ms)
+ HEAD /login 200 in 102ms (next.js: 17ms, proxy.ts: 14ms, application-code: 72ms)
