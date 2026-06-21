@@ -4,8 +4,8 @@ import "server-only";
 // Consultas REAIS dos dashboards
 // =============================================================================
 // Fonte real disponível hoje: tabela `profiles`. As contagens respeitam a RLS
-// (apenas staff enxerga todos os perfis). Métricas sem tabela ainda (turmas,
-// receita, notas, frequência) vêm de src/lib/dashboard/mock.ts, separadas.
+// (apenas staff enxerga todos os perfis). Os painéis exibem apenas dados reais —
+// não há mais valores de exemplo (mock).
 // =============================================================================
 import { createClient } from "@/lib/supabase/server";
 import type { ProfileStats } from "@/lib/dashboard/types";

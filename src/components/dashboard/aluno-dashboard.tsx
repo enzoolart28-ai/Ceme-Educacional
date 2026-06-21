@@ -1,23 +1,9 @@
-import {
-  BookOpen,
-  LayoutGrid,
-  CalendarClock,
-  ListTodo,
-  Percent,
-  ClipboardCheck,
-} from "lucide-react";
+import { BookOpen, LayoutGrid, Percent, ClipboardCheck, GraduationCap } from "lucide-react";
 import { formatPercent } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
-import { MockBadge } from "@/components/ui/mock-badge";
-import { AlertsPanel } from "@/components/dashboard/alerts-panel";
-import {
-  ListCard,
-  TimelineRow,
-  SimpleRow,
-} from "@/components/dashboard/list-card";
-import { mockAluno } from "@/lib/dashboard/mock";
+import { ListCard, SimpleRow } from "@/components/dashboard/list-card";
 import type { StudentAcademic } from "@/lib/academic/queries";
 import type { FrequencySummary } from "@/lib/attendance/frequency";
 import type { RecentGrade } from "@/lib/grades/queries";
@@ -43,9 +29,7 @@ export function AlunoDashboard({
   const hasRealFrequency = frequency != null && frequency.total > 0;
   const hasRealGrades = recentGrades.length > 0;
   const hasRealProgress = courseProgress != null && courseProgress.total > 0;
-  const progressFraction = hasRealProgress
-    ? courseProgress!.percent ?? 0
-    : mockAluno.progressoCurso;
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -65,75 +49,53 @@ export function AlunoDashboard({
         />
         <StatCard
           label="Frequência geral"
-          value={formatPercent(hasRealFrequency ? frequency!.percent! : mockAluno.frequencia)}
+          value={hasRealFrequency ? formatPercent(frequency!.percent!) : "—"}
           icon={Percent}
           tone={hasRealFrequency && frequency!.lowFrequency ? "rose" : "emerald"}
           hint={hasRealFrequency ? "Dados reais (chamada)" : undefined}
-          isMock={!hasRealFrequency}
         />
         <StatCard
-          label="Atividades pendentes"
-          value={mockAluno.atividadesPendentes.length}
-          icon={ListTodo}
-          tone="amber"
-          isMock
+          label="Aulas concluídas"
+          value={hasRealProgress ? `${courseProgress!.completed}/${courseProgress!.total}` : "—"}
+          icon={GraduationCap}
+          tone="violet"
+          hint={hasRealProgress ? "Dados reais (AVA)" : undefined}
         />
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Progresso no curso</CardTitle>
-          {!hasRealProgress && <MockBadge />}
-        </CardHeader>
-        <CardContent>
-          <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-slate-500">
-              {hasRealProgress
-                ? `${courseProgress!.completed}/${courseProgress!.total} aulas concluídas`
-                : "Conclusão estimada"}
-            </span>
-            <span className="font-semibold text-slate-900">{formatPercent(progressFraction)}</span>
-          </div>
-          <ProgressBar value={progressFraction * 100} tone="indigo" />
-        </CardContent>
-      </Card>
+      {hasRealProgress && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Progresso no curso</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="mb-2 flex items-center justify-between text-sm">
+              <span className="text-slate-500">
+                {courseProgress!.completed}/{courseProgress!.total} aulas concluídas
+              </span>
+              <span className="font-semibold text-slate-900">{formatPercent(courseProgress!.percent ?? 0)}</span>
+            </div>
+            <ProgressBar value={(courseProgress!.percent ?? 0) * 100} tone="indigo" />
+          </CardContent>
+        </Card>
+      )}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <ListCard title="Próximas aulas" icon={CalendarClock} isMock>
-          {mockAluno.proximasAulas.map((a, i) => (
-            <TimelineRow key={i} time={a.time} title={a.title} subtitle={a.subtitle} />
-          ))}
-        </ListCard>
-
-        <ListCard title="Atividades pendentes" icon={ListTodo} isMock>
-          {mockAluno.atividadesPendentes.map((a, i) => (
-            <SimpleRow key={i} title={a.title} subtitle={a.subtitle} trailing={a.due} trailingClass="text-amber-600" />
-          ))}
-        </ListCard>
-
-        <ListCard title="Notas recentes" icon={ClipboardCheck} isMock={!hasRealGrades}>
-          {hasRealGrades
-            ? recentGrades.map((n) => (
-                <SimpleRow
-                  key={n.id}
-                  title={n.subjectName ?? n.assessmentName}
-                  subtitle={n.subjectName ? n.assessmentName : undefined}
-                  trailing={`${n.grade} / ${n.maxGrade}`}
-                  trailingClass={gradeTone((n.grade / n.maxGrade) * 10)}
-                />
-              ))
-            : mockAluno.notasRecentes.map((n, i) => (
-                <SimpleRow
-                  key={i}
-                  title={n.subject}
-                  trailing={n.grade.toFixed(1)}
-                  trailingClass={gradeTone(n.grade)}
-                />
-              ))}
-        </ListCard>
-
-        <AlertsPanel items={mockAluno.comunicados} title="Comunicados recentes" />
-      </div>
+      <ListCard
+        title="Notas recentes"
+        icon={ClipboardCheck}
+        isEmpty={!hasRealGrades}
+        emptyText="Nenhuma nota lançada ainda."
+      >
+        {recentGrades.map((n) => (
+          <SimpleRow
+            key={n.id}
+            title={n.subjectName ?? n.assessmentName}
+            subtitle={n.subjectName ? n.assessmentName : undefined}
+            trailing={`${n.grade} / ${n.maxGrade}`}
+            trailingClass={gradeTone((n.grade / n.maxGrade) * 10)}
+          />
+        ))}
+      </ListCard>
     </div>
   );
 }

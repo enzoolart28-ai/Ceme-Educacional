@@ -6,7 +6,8 @@
       "Bash(npm --version)",
       "PowerShell(node --version)",
       "PowerShell(npm --version)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(cd \"/c/Users/enzoo/OneDrive/Documentos/Projeto CEME\" && ls supabase/migrations/ | tail -4 && echo \"=== helpers existentes ===\" && grep -rhoE \"create or replace function public\\\\.\\(is_staff|current_profile_id|is_enrolled|teaches_class|enrolled_in_course|guardian_of_course_student|guards_student|current_guardian_id\\)\\\\b\" supabase/migrations/ | sort -u)"
     ]
   }
 }
