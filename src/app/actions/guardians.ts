@@ -14,11 +14,33 @@ import {
   type GuardianInput,
 } from "@/lib/guardians/schemas";
 import { onlyDigits } from "@/lib/students/cpf";
+import { generateAutomaticGuardianAccounts } from "@/lib/guardians/automatic-accounts";
 import type { ActionResult } from "@/app/actions/auth";
+
+interface GenerationActionResult extends ActionResult {
+  accountsCreated?: number;
+  studentsLinked?: number;
+}
 
 async function canManage(): Promise<boolean> {
   const profile = await getProfile();
   return !!profile && hasPermission(profile.role, "guardians.manage");
+}
+
+export async function generateGuardianAccountsAction(): Promise<GenerationActionResult> {
+  if (!(await canManage())) return { error: "Voce nao tem permissao para esta acao." };
+  try {
+    const result = await generateAutomaticGuardianAccounts();
+    revalidatePath("/dashboard/responsaveis");
+    revalidatePath("/dashboard/dependentes");
+    return {
+      success: true,
+      accountsCreated: result.accountsCreated,
+      studentsLinked: result.studentsLinked,
+    };
+  } catch {
+    return { error: "Nao foi possivel gerar os acessos dos responsaveis." };
+  }
 }
 
 function toPayload(v: GuardianInput) {

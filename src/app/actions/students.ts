@@ -10,6 +10,7 @@ import { getProfile } from "@/lib/auth/session";
 import { hasPermission } from "@/lib/auth/permissions";
 import { studentSchema, type StudentInput } from "@/lib/students/schemas";
 import { onlyDigits } from "@/lib/students/cpf";
+import { generateAutomaticGuardianAccounts } from "@/lib/guardians/automatic-accounts";
 import type { ActionResult } from "@/app/actions/auth";
 import type { StudentStatus } from "@/types/models";
 
@@ -62,6 +63,12 @@ export async function createStudentAction(values: StudentInput): Promise<ActionR
     };
   }
 
+  try {
+    await generateAutomaticGuardianAccounts([data.id]);
+  } catch {
+    // O cadastro do aluno permanece valido; a secretaria pode gerar o acesso em lote.
+  }
+
   revalidatePath("/dashboard/alunos");
   redirect(`/dashboard/alunos/${data.id}`);
 }
@@ -87,6 +94,12 @@ export async function updateStudentAction(
         ? "Já existe um aluno com este CPF."
         : "Não foi possível salvar as alterações.",
     };
+  }
+
+  try {
+    await generateAutomaticGuardianAccounts([id]);
+  } catch {
+    // O vinculo pode ser reprocessado pela tela de responsaveis.
   }
 
   revalidatePath(`/dashboard/alunos/${id}`);

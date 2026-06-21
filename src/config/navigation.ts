@@ -33,6 +33,8 @@ import {
   GitCompareArrows,
   ArrowUpDown,
   FileClock,
+  PlugZap,
+  MessageCircleMore,
   Wallet,
   BookOpen,
   BarChart3,
@@ -245,6 +247,18 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/financeiro",
     icon: Wallet,
     roles: FINANCE_ROLES,
+  },
+  {
+    label: "Integracao Asaas",
+    href: "/dashboard/financeiro/integracoes/asaas",
+    icon: PlugZap,
+    roles: ["admin", "diretor", "financeiro"],
+  },
+  {
+    label: "Integracao WhatsApp",
+    href: "/dashboard/integracoes/whatsapp",
+    icon: MessageCircleMore,
+    roles: ["admin", "diretor", "gestor", "comercial", "secretaria", "financeiro"],
   },
   {
     label: "Caixa",

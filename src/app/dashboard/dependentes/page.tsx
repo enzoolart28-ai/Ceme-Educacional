@@ -1,4 +1,5 @@
-import { UsersRound } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, UsersRound } from "lucide-react";
 import { requireRole } from "@/lib/auth/session";
 import { getDependents } from "@/lib/guardians/queries";
 import { PageHeader } from "@/components/ui/page-header";
@@ -6,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StudentStatusBadge } from "@/components/students/student-status-badge";
+import { Button } from "@/components/ui/button";
 
 export default async function DependentesPage() {
   const profile = await requireRole(["responsavel"]);
@@ -44,6 +46,13 @@ export default async function DependentesPage() {
                   <Badge className="bg-indigo-100 text-indigo-800">Pedagógico</Badge>
                 )}
               </div>
+              {d.student && (
+                <Link href={`/dashboard/dependentes/${d.student.id}`} className="mt-4 block">
+                  <Button type="button" variant="outline" className="w-full">
+                    Ver notas e observacoes <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              )}
             </Card>
           ))}
         </div>

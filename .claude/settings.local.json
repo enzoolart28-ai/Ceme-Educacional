@@ -7,7 +7,8 @@
       "PowerShell(node --version)",
       "PowerShell(npm --version)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(cd \"/c/Users/enzoo/OneDrive/Documentos/Projeto CEME\" && ls supabase/migrations/ | tail -4 && echo \"=== helpers existentes ===\" && grep -rhoE \"create or replace function public\\\\.\\(is_staff|current_profile_id|is_enrolled|teaches_class|enrolled_in_course|guardian_of_course_student|guards_student|current_guardian_id\\)\\\\b\" supabase/migrations/ | sort -u)"
+      "Bash(cd \"/c/Users/enzoo/OneDrive/Documentos/Projeto CEME\" && ls supabase/migrations/ | tail -4 && echo \"=== helpers existentes ===\" && grep -rhoE \"create or replace function public\\\\.\\(is_staff|current_profile_id|is_enrolled|teaches_class|enrolled_in_course|guardian_of_course_student|guards_student|current_guardian_id\\)\\\\b\" supabase/migrations/ | sort -u)",
+      "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','Machine'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','User'\\); npx tsc --noEmit; if \\($?\\) { \"TSC_OK\" }; npm run lint 2>&1 | Select-String -Pattern \"error|warning|problem\" | Select-Object -First 10 | Out-String; npm run build 2>&1 | Select-String -Pattern \"Compiled successfully|Failed to compile|Error:\" | Select-Object -First 5 | Out-String)"
     ]
   }
 }

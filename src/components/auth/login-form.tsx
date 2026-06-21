@@ -20,7 +20,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
     formState: { errors },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { identifier: "", password: "" },
   });
 
   function onSubmit(values: LoginInput) {
@@ -39,17 +39,17 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
       {serverError && <Alert tone="error">{serverError}</Alert>}
 
       <div>
-        <Label htmlFor="email">E-mail</Label>
+        <Label htmlFor="identifier">E-mail ou CPF do aluno</Label>
         <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="voce@escola.com"
-          hasError={!!errors.email}
-          {...register("email")}
+          id="identifier"
+          type="text"
+          autoComplete="username"
+          placeholder="voce@escola.com ou CPF"
+          hasError={!!errors.identifier}
+          {...register("identifier")}
         />
-        {errors.email && (
-          <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>
+        {errors.identifier && (
+          <p className="mt-1 text-xs text-red-600">{errors.identifier.message}</p>
         )}
       </div>
 

@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { onlyDigits } from "@/lib/students/cpf";
 import {
   loginSchema,
   recoverSchema,
@@ -29,7 +31,7 @@ async function getOrigin(): Promise<string> {
 }
 
 export async function signInAction(
-  values: { email: string; password: string },
+  values: { identifier: string; password: string },
   redirectTo?: string,
 ): Promise<ActionResult> {
   const parsed = loginSchema.safeParse(values);
@@ -37,9 +39,36 @@ export async function signInAction(
     return { error: "Dados de login inválidos." };
   }
 
+  let email = parsed.data.identifier.trim().toLowerCase();
+  if (!email.includes("@")) {
+    const admin = createAdminClient();
+    const cpf = onlyDigits(email);
+    const { data: alias } = await admin
+      .from("guardian_login_aliases")
+      .select("guardian_id")
+      .eq("login_cpf", cpf)
+      .maybeSingle();
+    if (!alias) return { error: "CPF ou senha incorretos." };
+
+    const { data: guardian } = await admin
+      .from("guardians")
+      .select("profile_id")
+      .eq("id", alias.guardian_id)
+      .maybeSingle();
+    if (!guardian?.profile_id) return { error: "Conta do responsavel ainda nao foi ativada." };
+
+    const { data: guardianProfile } = await admin
+      .from("profiles")
+      .select("email")
+      .eq("id", guardian.profile_id)
+      .maybeSingle();
+    if (!guardianProfile?.email) return { error: "Conta do responsavel ainda nao foi ativada." };
+    email = guardianProfile.email;
+  }
+
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
-    email: parsed.data.email,
+    email,
     password: parsed.data.password,
   });
 
@@ -50,7 +79,7 @@ export async function signInAction(
   // Bloqueio de usuário inativo/suspenso: encerra a sessão recém-criada.
   const { data: profile } = await supabase
     .from("profiles")
-    .select("status")
+    .select("status, must_change_password")
     .eq("user_id", data.user.id)
     .single();
 
@@ -66,6 +95,7 @@ export async function signInAction(
   await supabase.rpc("record_last_access");
 
   revalidatePath("/", "layout");
+  if (profile?.must_change_password) redirect("/redefinir-senha?first=1");
   redirect(redirectTo && redirectTo.startsWith("/") ? redirectTo : "/dashboard");
 }
 
@@ -128,6 +158,11 @@ export async function updatePasswordAction(values: {
   if (error) {
     return { error: "Não foi possível atualizar a senha." };
   }
+
+  await supabase
+    .from("profiles")
+    .update({ must_change_password: false })
+    .eq("user_id", user.id);
 
   revalidatePath("/", "layout");
   redirect("/dashboard");

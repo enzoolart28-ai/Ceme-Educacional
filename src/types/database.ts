@@ -191,6 +191,157 @@ export type Database = {
           },
         ]
       }
+      asaas_charges: {
+        Row: {
+          asaas_customer_id: string
+          asaas_payment_id: string
+          bank_slip_url: string | null
+          billing_type: string
+          created_at: string
+          due_date: string
+          environment: string
+          external_reference: string
+          id: string
+          invoice_id: string
+          invoice_url: string | null
+          pix_encoded_image: string | null
+          pix_expiration_at: string | null
+          pix_payload: string | null
+          raw_response: Json
+          status: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          asaas_customer_id: string
+          asaas_payment_id: string
+          bank_slip_url?: string | null
+          billing_type: string
+          created_at?: string
+          due_date: string
+          environment: string
+          external_reference: string
+          id?: string
+          invoice_id: string
+          invoice_url?: string | null
+          pix_encoded_image?: string | null
+          pix_expiration_at?: string | null
+          pix_payload?: string | null
+          raw_response?: Json
+          status: string
+          updated_at?: string
+          value: number
+        }
+        Update: {
+          asaas_customer_id?: string
+          asaas_payment_id?: string
+          bank_slip_url?: string | null
+          billing_type?: string
+          created_at?: string
+          due_date?: string
+          environment?: string
+          external_reference?: string
+          id?: string
+          invoice_id?: string
+          invoice_url?: string | null
+          pix_encoded_image?: string | null
+          pix_expiration_at?: string | null
+          pix_payload?: string | null
+          raw_response?: Json
+          status?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asaas_charges_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      asaas_customers: {
+        Row: {
+          asaas_customer_id: string
+          cpf_cnpj: string
+          created_at: string
+          environment: string
+          id: string
+          last_synced_at: string
+          name: string
+          raw_response: Json
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          asaas_customer_id: string
+          cpf_cnpj: string
+          created_at?: string
+          environment: string
+          id?: string
+          last_synced_at?: string
+          name: string
+          raw_response?: Json
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          asaas_customer_id?: string
+          cpf_cnpj?: string
+          created_at?: string
+          environment?: string
+          id?: string
+          last_synced_at?: string
+          name?: string
+          raw_response?: Json
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asaas_customers_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      asaas_webhook_events: {
+        Row: {
+          asaas_event_id: string
+          asaas_payment_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          processed_at: string | null
+          processing_error: string | null
+        }
+        Insert: {
+          asaas_event_id: string
+          asaas_payment_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          payload: Json
+          processed_at?: string | null
+          processing_error?: string | null
+        }
+        Update: {
+          asaas_event_id?: string
+          asaas_payment_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          processing_error?: string | null
+        }
+        Relationships: []
+      }
       assessment_options: {
         Row: {
           id: string
@@ -2161,9 +2312,50 @@ export type Database = {
           },
         ]
       }
+      guardian_login_aliases: {
+        Row: {
+          created_at: string
+          guardian_id: string
+          id: string
+          login_cpf: string
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          guardian_id: string
+          id?: string
+          login_cpf: string
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          guardian_id?: string
+          id?: string
+          login_cpf?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guardian_login_aliases_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "guardians"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guardian_login_aliases_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: true
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guardians: {
         Row: {
+          account_created_at: string | null
           address: string | null
+          auto_family_key: string | null
           city: string | null
           cpf: string | null
           created_at: string
@@ -2174,12 +2366,15 @@ export type Database = {
           notes: string | null
           phone: string | null
           profile_id: string | null
+          review_required: boolean
           rg: string | null
           state: string | null
           updated_at: string
         }
         Insert: {
+          account_created_at?: string | null
           address?: string | null
+          auto_family_key?: string | null
           city?: string | null
           cpf?: string | null
           created_at?: string
@@ -2190,12 +2385,15 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          review_required?: boolean
           rg?: string | null
           state?: string | null
           updated_at?: string
         }
         Update: {
+          account_created_at?: string | null
           address?: string | null
+          auto_family_key?: string | null
           city?: string | null
           cpf?: string | null
           created_at?: string
@@ -2206,6 +2404,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          review_required?: boolean
           rg?: string | null
           state?: string | null
           updated_at?: string
@@ -2861,6 +3060,8 @@ export type Database = {
           notes: string | null
           paid_at: string
           payment_method: Database["public"]["Enums"]["payment_method"]
+          payment_provider: string | null
+          provider_payment_id: string | null
           received_by: string | null
         }
         Insert: {
@@ -2871,6 +3072,8 @@ export type Database = {
           notes?: string | null
           paid_at?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
+          payment_provider?: string | null
+          provider_payment_id?: string | null
           received_by?: string | null
         }
         Update: {
@@ -2881,6 +3084,8 @@ export type Database = {
           notes?: string | null
           paid_at?: string
           payment_method?: Database["public"]["Enums"]["payment_method"]
+          payment_provider?: string | null
+          provider_payment_id?: string | null
           received_by?: string | null
         }
         Relationships: [
@@ -2925,6 +3130,7 @@ export type Database = {
           full_name: string
           id: string
           last_access_at: string | null
+          must_change_password: boolean
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
           status: Database["public"]["Enums"]["user_status"]
@@ -2937,6 +3143,7 @@ export type Database = {
           full_name?: string
           id?: string
           last_access_at?: string | null
+          must_change_password?: boolean
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           status?: Database["public"]["Enums"]["user_status"]
@@ -2949,6 +3156,7 @@ export type Database = {
           full_name?: string
           id?: string
           last_access_at?: string | null
+          must_change_password?: boolean
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           status?: Database["public"]["Enums"]["user_status"]
@@ -3529,6 +3737,327 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_contacts: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          guardian_id: string | null
+          id: string
+          lead_id: string | null
+          notes: string | null
+          opt_in_status: Database["public"]["Enums"]["whatsapp_opt_in_status"]
+          opted_in_at: string | null
+          opted_out_at: string | null
+          phone_e164: string
+          profile_id: string | null
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          guardian_id?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          opt_in_status?: Database["public"]["Enums"]["whatsapp_opt_in_status"]
+          opted_in_at?: string | null
+          opted_out_at?: string | null
+          phone_e164: string
+          profile_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          guardian_id?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          opt_in_status?: Database["public"]["Enums"]["whatsapp_opt_in_status"]
+          opted_in_at?: string | null
+          opted_out_at?: string | null
+          phone_e164?: string
+          profile_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_contacts_guardian_id_fkey"
+            columns: ["guardian_id"]
+            isOneToOne: false
+            referencedRelation: "guardians"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_contacts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_contacts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_contacts_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_follow_up_rules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          delay_minutes: number
+          enabled: boolean
+          id: string
+          name: string
+          template_language: string
+          template_name: string
+          trigger_type: Database["public"]["Enums"]["whatsapp_trigger_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          delay_minutes?: number
+          enabled?: boolean
+          id?: string
+          name: string
+          template_language?: string
+          template_name: string
+          trigger_type: Database["public"]["Enums"]["whatsapp_trigger_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          delay_minutes?: number
+          enabled?: boolean
+          id?: string
+          name?: string
+          template_language?: string
+          template_name?: string
+          trigger_type?: Database["public"]["Enums"]["whatsapp_trigger_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_follow_up_rules_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_messages: {
+        Row: {
+          body: string | null
+          contact_id: string
+          created_at: string
+          delivered_at: string | null
+          direction: Database["public"]["Enums"]["whatsapp_message_direction"]
+          error_code: string | null
+          error_message: string | null
+          id: string
+          meta_message_id: string | null
+          metadata: Json
+          read_at: string | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["whatsapp_message_status"]
+          template_name: string | null
+        }
+        Insert: {
+          body?: string | null
+          contact_id: string
+          created_at?: string
+          delivered_at?: string | null
+          direction: Database["public"]["Enums"]["whatsapp_message_direction"]
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          meta_message_id?: string | null
+          metadata?: Json
+          read_at?: string | null
+          sent_at?: string | null
+          status: Database["public"]["Enums"]["whatsapp_message_status"]
+          template_name?: string | null
+        }
+        Update: {
+          body?: string | null
+          contact_id?: string
+          created_at?: string
+          delivered_at?: string | null
+          direction?: Database["public"]["Enums"]["whatsapp_message_direction"]
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          meta_message_id?: string | null
+          metadata?: Json
+          read_at?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["whatsapp_message_status"]
+          template_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_messages_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_outbox: {
+        Row: {
+          attempts: number
+          contact_id: string
+          created_at: string
+          follow_up_rule_id: string | null
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          processed_at: string | null
+          scheduled_for: string
+          source_id: string | null
+          source_type: string | null
+          status: Database["public"]["Enums"]["whatsapp_outbox_status"]
+          template_components: Json
+          template_language: string
+          template_name: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          contact_id: string
+          created_at?: string
+          follow_up_rule_id?: string | null
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          processed_at?: string | null
+          scheduled_for: string
+          source_id?: string | null
+          source_type?: string | null
+          status?: Database["public"]["Enums"]["whatsapp_outbox_status"]
+          template_components?: Json
+          template_language?: string
+          template_name: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          contact_id?: string
+          created_at?: string
+          follow_up_rule_id?: string | null
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          processed_at?: string | null
+          scheduled_for?: string
+          source_id?: string | null
+          source_type?: string | null
+          status?: Database["public"]["Enums"]["whatsapp_outbox_status"]
+          template_components?: Json
+          template_language?: string
+          template_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_outbox_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_outbox_follow_up_rule_id_fkey"
+            columns: ["follow_up_rule_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_follow_up_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_templates: {
+        Row: {
+          category: string | null
+          components: Json
+          created_at: string
+          id: string
+          language: string
+          last_synced_at: string | null
+          meta_template_id: string | null
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          components?: Json
+          created_at?: string
+          id?: string
+          language?: string
+          last_synced_at?: string | null
+          meta_template_id?: string | null
+          name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          components?: Json
+          created_at?: string
+          id?: string
+          language?: string
+          last_synced_at?: string | null
+          meta_template_id?: string | null
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_webhook_events: {
+        Row: {
+          created_at: string
+          event_key: string
+          id: string
+          payload: Json
+          processed_at: string | null
+          processing_error: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_key: string
+          id?: string
+          payload: Json
+          processed_at?: string | null
+          processing_error?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_key?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          processing_error?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -3875,6 +4404,26 @@ export type Database = {
         | "gestor"
         | "comercial"
       user_status: "active" | "inactive" | "suspended" | "pending"
+      whatsapp_message_direction: "inbound" | "outbound"
+      whatsapp_message_status:
+        | "queued"
+        | "sent"
+        | "delivered"
+        | "read"
+        | "failed"
+        | "received"
+      whatsapp_opt_in_status: "pending" | "opted_in" | "opted_out"
+      whatsapp_outbox_status:
+        | "pending"
+        | "processing"
+        | "sent"
+        | "failed"
+        | "cancelled"
+      whatsapp_trigger_type:
+        | "lead_no_response"
+        | "invoice_due"
+        | "invoice_overdue"
+        | "manual"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -4262,6 +4811,29 @@ export const Constants = {
         "comercial",
       ],
       user_status: ["active", "inactive", "suspended", "pending"],
+      whatsapp_message_direction: ["inbound", "outbound"],
+      whatsapp_message_status: [
+        "queued",
+        "sent",
+        "delivered",
+        "read",
+        "failed",
+        "received",
+      ],
+      whatsapp_opt_in_status: ["pending", "opted_in", "opted_out"],
+      whatsapp_outbox_status: [
+        "pending",
+        "processing",
+        "sent",
+        "failed",
+        "cancelled",
+      ],
+      whatsapp_trigger_type: [
+        "lead_no_response",
+        "invoice_due",
+        "invoice_overdue",
+        "manual",
+      ],
     },
   },
 } as const

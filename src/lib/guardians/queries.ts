@@ -14,6 +14,26 @@ export interface GuardianStudentRow {
   student: { id: string; full_name: string; status: StudentStatus } | null;
 }
 
+export interface DependentGradeRow {
+  id: string;
+  assessmentName: string;
+  subjectName: string;
+  date: string | null;
+  grade: number | null;
+  maxGrade: number;
+  feedback: string | null;
+}
+
+export interface DependentAcademicView {
+  id: string;
+  fullName: string;
+  status: StudentStatus;
+  courseName: string | null;
+  className: string | null;
+  observations: string | null;
+  grades: DependentGradeRow[];
+}
+
 export async function listGuardians(q?: string): Promise<Guardian[]> {
   const supabase = await createClient();
   let query = supabase.from("guardians").select("*").order("full_name");
@@ -85,4 +105,77 @@ export async function getDependents(profileId: string): Promise<GuardianStudentR
     .maybeSingle();
   if (!g) return [];
   return getGuardianStudents(g.id);
+}
+
+export async function getDependentAcademicView(
+  profileId: string,
+  studentId: string,
+): Promise<DependentAcademicView | null> {
+  const supabase = await createClient();
+  const { data: guardian } = await supabase
+    .from("guardians")
+    .select("id")
+    .eq("profile_id", profileId)
+    .maybeSingle();
+  if (!guardian) return null;
+
+  const { data: link } = await supabase
+    .from("student_guardians")
+    .select("id")
+    .eq("guardian_id", guardian.id)
+    .eq("student_id", studentId)
+    .maybeSingle();
+  if (!link) return null;
+
+  const [{ data: student }, { data: enrollment }, { data: gradeRows }] = await Promise.all([
+    supabase
+      .from("students")
+      .select("id, full_name, status, notes")
+      .eq("id", studentId)
+      .maybeSingle(),
+    supabase
+      .from("class_students")
+      .select("class:classes(name, course:courses(name))")
+      .eq("student_id", studentId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("grades")
+      .select("id, grade, feedback, assessment:assessments(name, date, max_grade, subject:subjects(name))")
+      .eq("student_id", studentId),
+  ]);
+  if (!student) return null;
+
+  const classData = enrollment?.class as unknown as {
+    name: string;
+    course: { name: string } | null;
+  } | null;
+  const grades: DependentGradeRow[] = (gradeRows ?? []).map((row) => {
+    const assessment = row.assessment as unknown as {
+      name: string;
+      date: string | null;
+      max_grade: number;
+      subject: { name: string } | null;
+    } | null;
+    return {
+      id: row.id,
+      assessmentName: assessment?.name ?? "Avaliacao",
+      subjectName: assessment?.subject?.name ?? "Geral",
+      date: assessment?.date ?? null,
+      grade: row.grade == null ? null : Number(row.grade),
+      maxGrade: Number(assessment?.max_grade ?? 10),
+      feedback: row.feedback,
+    };
+  });
+
+  return {
+    id: student.id,
+    fullName: student.full_name,
+    status: student.status,
+    courseName: classData?.course?.name ?? null,
+    className: classData?.name ?? null,
+    observations: student.notes,
+    grades,
+  };
 }

@@ -45,6 +45,7 @@ export const PERMISSIONS = {
   FINANCE_READ: "finance.read",
   FINANCE_MANAGE: "finance.manage",
   REPORTS_READ: "reports.read",
+  WHATSAPP_MANAGE: "whatsapp.manage",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -75,6 +76,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "financial_requests.read",
     "financial_requests.approve",
     "audit.read",
+    "whatsapp.manage",
   ],
   gestor: [
     "profile.self",
@@ -97,6 +99,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "students.read",
     "documents.read",
     "leads.manage",
+    "whatsapp.manage",
   ],
   comercial: [
     "profile.self",
@@ -105,6 +108,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "students.read",
     "students.manage",
     "classes.read",
+    "whatsapp.manage",
   ],
   coordenacao: [
     "profile.self",
@@ -143,6 +147,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "campaigns.manage",
     "alerts.manage",
     "financial_requests.create",
+    "whatsapp.manage",
   ],
   financeiro: [
     "profile.self",
@@ -155,6 +160,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "financial_requests.create",
     "financial_requests.read",
     "financial_requests.pay",
+    "whatsapp.manage",
   ],
   professor: [
     "profile.self",

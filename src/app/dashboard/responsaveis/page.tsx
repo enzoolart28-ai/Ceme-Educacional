@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { DataTable, type Column } from "@/components/ui/data-table";
 import { GuardianSearch } from "@/components/guardians/guardian-search";
+import { GenerateGuardianAccountsButton } from "@/components/guardians/generate-accounts-button";
 import type { Guardian } from "@/types/models";
 
 export default async function ResponsaveisPage({
@@ -49,6 +50,9 @@ export default async function ResponsaveisPage({
           </Link>
         }
       />
+      <div className="mb-4">
+        <GenerateGuardianAccountsButton />
+      </div>
       <GuardianSearch />
       <p className="mb-3 text-sm text-slate-500">
         {guardians.length} responsável(is) encontrado(s)

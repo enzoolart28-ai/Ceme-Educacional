@@ -4,6 +4,8 @@ import { ArrowLeft, Receipt } from "lucide-react";
 import { requireRole, FINANCE_ROLES } from "@/lib/auth/session";
 import { hasPermission } from "@/lib/auth/permissions";
 import { getInvoiceById } from "@/lib/finance/queries";
+import { getAsaasChargeByInvoice } from "@/lib/asaas/charges";
+import { getAsaasConfigStatus } from "@/lib/asaas/client";
 import { formatDateOnly, formatMoney } from "@/lib/finance/format";
 import { PAYMENT_METHOD_LABELS } from "@/lib/finance/labels";
 import { formatDateTime } from "@/lib/utils";
@@ -15,6 +17,7 @@ import { InvoiceStatusBadge } from "@/components/finance/invoice-status-badge";
 import { PaymentForm } from "@/components/finance/payment-form";
 import { InvoiceAdjustmentForm } from "@/components/finance/invoice-adjustment-form";
 import { RenegotiationForm } from "@/components/finance/renegotiation-form";
+import { AsaasChargeCard } from "@/components/asaas/charge-card";
 import {
   CancelInvoiceButton,
   DeletePaymentButton,
@@ -39,8 +42,12 @@ export default async function InvoiceDetailPage({
   const canManage = hasPermission(profile.role, "finance.manage");
   const isAdmin = profile.role === "admin";
   const { id } = await params;
-  const invoice = await getInvoiceById(id);
+  const [invoice, asaasCharge] = await Promise.all([
+    getInvoiceById(id),
+    getAsaasChargeByInvoice(id),
+  ]);
   if (!invoice) notFound();
+  const asaasConfig = getAsaasConfigStatus();
 
   const canReceive =
     canManage &&
@@ -129,6 +136,11 @@ export default async function InvoiceDetailPage({
 
         {canManage && (
           <div className="space-y-6">
+            <AsaasChargeCard
+              invoiceId={invoice.id}
+              charge={asaasCharge}
+              configured={asaasConfig.configured}
+            />
             {canReceive && (
               <>
                 <PaymentForm invoiceId={invoice.id} remainingAmount={invoice.remainingAmount} />

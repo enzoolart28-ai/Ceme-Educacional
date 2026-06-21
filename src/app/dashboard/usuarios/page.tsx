@@ -1,4 +1,4 @@
-import { Users } from "lucide-react";
+import { Users, AlertTriangle } from "lucide-react";
 import { requireRole, getProfile, MANAGEMENT_ROLES } from "@/lib/auth/session";
 import { hasPermission } from "@/lib/auth/permissions";
 import { listUsers } from "@/lib/users/queries";
@@ -21,7 +21,7 @@ export default async function UsuariosPage() {
   const me = await requireRole(MANAGEMENT_ROLES);
   const profile = await getProfile();
   const canManage = profile ? hasPermission(profile.role, "users.manage") : false;
-  const users = await listUsers();
+  const { users, error } = await listUsers();
 
   return (
     <>
@@ -32,7 +32,24 @@ export default async function UsuariosPage() {
 
       {canManage && <UserCreateForm />}
 
-      {users.length === 0 ? (
+      {error ? (
+        <Card className="border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <div className="space-y-1 text-sm">
+              <p className="font-medium text-amber-900">
+                Não foi possível carregar a lista de usuários.
+              </p>
+              <p className="text-amber-800">
+                Os usuários <strong>não foram apagados</strong> — esta tela usa a chave de
+                servidor (SUPABASE_SERVICE_ROLE_KEY) para ler os perfis, e ela está
+                indisponível ou incorreta no ambiente. Corrija essa variável e refaça o deploy.
+              </p>
+              <p className="text-xs text-amber-700">Detalhe técnico: {error}</p>
+            </div>
+          </div>
+        </Card>
+      ) : users.length === 0 ? (
         <EmptyState icon={Users} title="Nenhum usuário" description="Crie o primeiro usuário acima." />
       ) : (
         <Card className="divide-y divide-slate-100">

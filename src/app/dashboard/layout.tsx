@@ -9,6 +9,10 @@ export default async function DashboardLayout({
 }) {
   const profile = await requireAuth();
 
+  if (profile.must_change_password) {
+    redirect("/redefinir-senha?first=1");
+  }
+
   // Gate de cadastro inicial: perfil sem nome precisa completar o cadastro.
   if (profile.full_name.trim().length === 0) {
     redirect("/completar-perfil");
