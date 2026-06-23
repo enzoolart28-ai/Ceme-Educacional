@@ -18,11 +18,11 @@ export default async function RelatoriosGestaoPage() {
   const dashboard = await getManagementDashboard();
   const dropout = await getDropoutReport();
   const groups = [
-    ["Financeiro", dashboard.finance],
-    ["Academico", dashboard.academic],
-    ["Pedagogico", dashboard.pedagogical],
-    ["Comercial", dashboard.commercial],
-    ["Administrativo", dashboard.administrative],
+    ["Financeiro", dashboard.finance, "/dashboard/gestao/fluxo-caixa", "Ver fluxo de caixa →"],
+    ["Academico", dashboard.academic, "/dashboard/academico", "Ver acadêmico →"],
+    ["Pedagogico", dashboard.pedagogical, "/dashboard/pedagogico", "Ver pedagógico →"],
+    ["Comercial", dashboard.commercial, "/dashboard/crm/relatorios", "Ver relatórios do CRM →"],
+    ["Administrativo", dashboard.administrative, "/dashboard/documentos", "Ver documentos →"],
   ] as const;
 
   return (
@@ -46,7 +46,7 @@ export default async function RelatoriosGestaoPage() {
           </div>
         </Section>
 
-        {groups.map(([title, metrics]) => (
+        {groups.map(([title, metrics, href, linkLabel]) => (
           <Section key={title} title={title}>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               {metrics.map((metric) => (
@@ -57,6 +57,11 @@ export default async function RelatoriosGestaoPage() {
                   icon={BarChart3}
                 />
               ))}
+            </div>
+            <div className="mt-4">
+              <Link href={href} className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                {linkLabel}
+              </Link>
             </div>
           </Section>
         ))}
