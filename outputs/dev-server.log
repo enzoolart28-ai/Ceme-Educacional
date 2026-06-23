@@ -4,10 +4,93 @@
 
 ▲ Next.js 16.2.7 (Turbopack)
 - Local:         http://localhost:3000
-- Network:       http://192.168.3.17:3000
+- Network:       http://192.168.1.169:3000
 - Environments: .env.local
-✓ Ready in 1532ms
+✓ Ready in 1901ms
 
 ○ Compiling /login ...
- GET /login 200 in 9.2s (next.js: 8.5s, proxy.ts: 392ms, application-code: 366ms)
- HEAD /login 200 in 102ms (next.js: 17ms, proxy.ts: 14ms, application-code: 72ms)
+ HEAD /login 200 in 5.7s (next.js: 5.0s, proxy.ts: 365ms, application-code: 349ms)
+ GET / 307 in 721ms (next.js: 556ms, proxy.ts: 25ms, application-code: 140ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 206ms (next.js: 12ms, proxy.ts: 13ms, application-code: 182ms)
+ GET / 307 in 670ms (next.js: 17ms, proxy.ts: 552ms, application-code: 102ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 175ms (next.js: 8ms, proxy.ts: 9ms, application-code: 158ms)
+ GET /dashboard 200 in 2.4s (next.js: 1115ms, proxy.ts: 137ms, application-code: 1163ms)
+ POST /login?redirectTo=%2Fdashboard 303 in 3.0s (next.js: 9ms, proxy.ts: 12ms, application-code: 2.9s)
+  └─ ƒ signInAction({"identifier":"admin@cme.local","password":"Senha@123"}, "/dashboard") in 472ms src/app/actions/auth.ts
+ GET /dashboard/calendario 200 in 1713ms (next.js: 947ms, proxy.ts: 89ms, application-code: 677ms)
+ GET /dashboard 200 in 585ms (next.js: 11ms, proxy.ts: 91ms, application-code: 484ms)
+ GET /dashboard/calendario 200 in 906ms (next.js: 40ms, proxy.ts: 393ms, application-code: 473ms)
+ GET /dashboard 200 in 387ms (next.js: 16ms, proxy.ts: 55ms, application-code: 316ms)
+ GET /dashboard/calendario 200 in 312ms (next.js: 7ms, proxy.ts: 63ms, application-code: 241ms)
+○ Compiling /dashboard/calendario/[id] ...
+ GET /dashboard/calendario/8dff3001-3d9a-46c2-b461-927b48b9ade3 200 in 5.2s (next.js: 4.9s, proxy.ts: 58ms, application-code: 247ms)
+ GET /dashboard/calendario/8dff3001-3d9a-46c2-b461-927b48b9ade3 200 in 352ms (next.js: 36ms, proxy.ts: 76ms, application-code: 241ms)
+ GET /dashboard/calendario/8dff3001-3d9a-46c2-b461-927b48b9ade3 200 in 313ms (next.js: 10ms, proxy.ts: 109ms, application-code: 194ms)
+ GET /dashboard/calendario/8dff3001-3d9a-46c2-b461-927b48b9ade3 200 in 284ms (next.js: 9ms, proxy.ts: 78ms, application-code: 196ms)
+ GET /dashboard/calendario 200 in 173ms (next.js: 47ms, proxy.ts: 74ms, application-code: 53ms)
+ GET /dashboard/calendario 200 in 385ms (next.js: 6ms, proxy.ts: 72ms, application-code: 307ms)
+ POST /dashboard/calendario/8dff3001-3d9a-46c2-b461-927b48b9ade3 303 in 694ms (next.js: 22ms, proxy.ts: 100ms, application-code: 572ms)
+  └─ ƒ deleteEventAction({"id":"8dff3001-3d9a-46c2-b461-927b48b9ade3"}) in 139ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 350ms (next.js: 9ms, proxy.ts: 94ms, application-code: 248ms)
+ GET /dashboard/calendario/5550975d-db58-44dc-af10-d954cc182402 200 in 255ms (next.js: 16ms, proxy.ts: 59ms, application-code: 180ms)
+ GET /dashboard/calendario 200 in 197ms (next.js: 57ms, proxy.ts: 68ms, application-code: 73ms)
+ GET /dashboard/calendario 200 in 379ms (next.js: 7ms, proxy.ts: 79ms, application-code: 293ms)
+ POST /dashboard/calendario/5550975d-db58-44dc-af10-d954cc182402 303 in 583ms (next.js: 15ms, proxy.ts: 66ms, application-code: 502ms)
+  └─ ƒ deleteEventAction({"id":"5550975d-db58-44dc-af10-d954cc182402"}) in 104ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 118ms (next.js: 7ms, proxy.ts: 95ms, application-code: 16ms)
+ GET /dashboard/calendario 200 in 389ms (next.js: 9ms, proxy.ts: 89ms, application-code: 291ms)
+ GET /dashboard/calendario 200 in 339ms (next.js: 8ms, proxy.ts: 76ms, application-code: 255ms)
+ GET /dashboard/calendario/c9ef2068-8452-4a89-9f94-07a4b7933446 200 in 212ms (next.js: 15ms, proxy.ts: 54ms, application-code: 143ms)
+ GET /dashboard/calendario 200 in 186ms (next.js: 50ms, proxy.ts: 79ms, application-code: 58ms)
+ GET /dashboard/calendario 200 in 388ms (next.js: 6ms, proxy.ts: 79ms, application-code: 303ms)
+ POST /dashboard/calendario/c9ef2068-8452-4a89-9f94-07a4b7933446 303 in 592ms (next.js: 16ms, proxy.ts: 71ms, application-code: 506ms)
+  └─ ƒ deleteEventAction({"id":"c9ef2068-8452-4a89-9f94-07a4b7933446"}) in 100ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 362ms (next.js: 8ms, proxy.ts: 87ms, application-code: 268ms)
+ GET /dashboard/calendario/b2de9a88-1ffa-41e0-a34a-305401f424f3 200 in 236ms (next.js: 15ms, proxy.ts: 54ms, application-code: 167ms)
+ GET /dashboard/calendario 200 in 196ms (next.js: 29ms, proxy.ts: 120ms, application-code: 47ms)
+ GET /dashboard/calendario 200 in 360ms (next.js: 6ms, proxy.ts: 65ms, application-code: 288ms)
+ POST /dashboard/calendario/b2de9a88-1ffa-41e0-a34a-305401f424f3 303 in 586ms (next.js: 17ms, proxy.ts: 70ms, application-code: 499ms)
+  └─ ƒ deleteEventAction({"id":"b2de9a88-1ffa-41e0-a34a-305401f424f3"}) in 120ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 314ms (next.js: 7ms, proxy.ts: 74ms, application-code: 233ms)
+ GET /dashboard/calendario/0eb0d05c-816d-4711-ab66-64dcb286eb4c 200 in 231ms (next.js: 16ms, proxy.ts: 58ms, application-code: 156ms)
+ GET /dashboard/calendario 200 in 204ms (next.js: 62ms, proxy.ts: 69ms, application-code: 73ms)
+ GET /dashboard/calendario 200 in 400ms (next.js: 6ms, proxy.ts: 100ms, application-code: 294ms)
+ POST /dashboard/calendario/0eb0d05c-816d-4711-ab66-64dcb286eb4c 303 in 596ms (next.js: 17ms, proxy.ts: 65ms, application-code: 514ms)
+  └─ ƒ deleteEventAction({"id":"0eb0d05c-816d-4711-ab66-64dcb286eb4c"}) in 94ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 327ms (next.js: 7ms, proxy.ts: 75ms, application-code: 245ms)
+ GET /dashboard/calendario 200 in 152ms (next.js: 7ms, proxy.ts: 134ms, application-code: 10ms)
+ GET /dashboard/calendario 200 in 287ms (next.js: 9ms, proxy.ts: 73ms, application-code: 206ms)
+ GET /dashboard/calendario/ba1a3ed9-c195-4e0e-ad6b-b7a7c7e4264f 200 in 209ms (next.js: 13ms, proxy.ts: 55ms, application-code: 141ms)
+ GET /dashboard/calendario 200 in 184ms (next.js: 13ms, proxy.ts: 111ms, application-code: 61ms)
+ GET /dashboard/calendario 200 in 396ms (next.js: 6ms, proxy.ts: 63ms, application-code: 327ms)
+ POST /dashboard/calendario/ba1a3ed9-c195-4e0e-ad6b-b7a7c7e4264f 303 in 635ms (next.js: 21ms, proxy.ts: 95ms, application-code: 519ms)
+  └─ ƒ deleteEventAction({"id":"ba1a3ed9-c195-4e0e-ad6b-b7a7c7e4264f"}) in 106ms src/app/actions/calendar.ts
+ GET /dashboard/calendario 200 in 151ms (next.js: 8ms, proxy.ts: 134ms, application-code: 9ms)
+ GET /dashboard/calendario 200 in 338ms (next.js: 7ms, proxy.ts: 83ms, application-code: 248ms)
+ GET /dashboard/calendario 200 in 288ms (next.js: 8ms, proxy.ts: 74ms, application-code: 206ms)
+ GET /dashboard/calendario?view=week 200 in 239ms (next.js: 6ms, proxy.ts: 61ms, application-code: 172ms)
+ GET /dashboard/calendario?view=month 200 in 265ms (next.js: 6ms, proxy.ts: 53ms, application-code: 205ms)
+ GET /dashboard/calendario?view=week 200 in 240ms (next.js: 6ms, proxy.ts: 55ms, application-code: 179ms)
+ GET /dashboard/calendario?view=list 200 in 218ms (next.js: 6ms, proxy.ts: 55ms, application-code: 157ms)
+ GET /dashboard/calendario/novo 200 in 931ms (next.js: 708ms, proxy.ts: 54ms, application-code: 169ms)
+ GET /dashboard/calendario 200 in 277ms (next.js: 7ms, proxy.ts: 61ms, application-code: 209ms)
+ GET /dashboard/alertas 200 in 935ms (next.js: 485ms, proxy.ts: 60ms, application-code: 390ms)
+○ Compiling /dashboard/alunos ...
+ GET /dashboard/alunos 200 in 8.0s (next.js: 5.9s, proxy.ts: 894ms, application-code: 1192ms)
+ GET /dashboard/alunos 200 in 1317ms (next.js: 15ms, proxy.ts: 126ms, application-code: 1177ms)
+ GET /dashboard/alunos 200 in 596ms (next.js: 15ms, proxy.ts: 111ms, application-code: 471ms)
+✓ Compiled in 175ms
+ GET /login?redirectTo=%2Fdashboard 200 in 733ms (next.js: 300ms, proxy.ts: 262ms, application-code: 171ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 258ms (next.js: 9ms, proxy.ts: 10ms, application-code: 239ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 194ms (next.js: 17ms, proxy.ts: 23ms, application-code: 154ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 193ms (next.js: 53ms, proxy.ts: 24ms, application-code: 116ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 192ms (next.js: 96ms, proxy.ts: 26ms, application-code: 71ms)
+✓ Compiled in 141ms
+ GET /login?redirectTo=%2Fdashboard 200 in 611ms (next.js: 240ms, proxy.ts: 188ms, application-code: 184ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 379ms (next.js: 10ms, proxy.ts: 11ms, application-code: 358ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 296ms (next.js: 66ms, proxy.ts: 29ms, application-code: 201ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 300ms (next.js: 28ms, proxy.ts: 29ms, application-code: 244ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 298ms (next.js: 105ms, proxy.ts: 33ms, application-code: 159ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 297ms (next.js: 139ms, proxy.ts: 35ms, application-code: 123ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 303ms (next.js: 29ms, proxy.ts: 173ms, application-code: 101ms)
+ GET /login?redirectTo=%2Fdashboard 200 in 61ms (next.js: 14ms, proxy.ts: 10ms, application-code: 36ms)

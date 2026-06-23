@@ -42,6 +42,7 @@ export const EVENT_TYPE_OPTIONS = (
 export const VISIBILITY_LABELS: Record<EventVisibility, string> = {
   public: "Público (todos)",
   restricted: "Restrito (envolvidos)",
+  private: "Somente para mim (privado)",
 };
 
 export const VISIBILITY_OPTIONS = (

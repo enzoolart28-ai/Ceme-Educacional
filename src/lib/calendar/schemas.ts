@@ -21,7 +21,7 @@ export const eventSchema = z
     unit_id: z.string().uuid().optional().or(z.literal("")),
     teacher_id: z.string().uuid().optional().or(z.literal("")),
     location: z.string().max(200).optional().or(z.literal("")),
-    visibility: z.enum(["public", "restricted"]),
+    visibility: z.enum(["public", "restricted", "private"]),
   })
   .refine(
     (d) => !d.end_datetime || !d.start_datetime || d.end_datetime >= d.start_datetime,

@@ -4273,7 +4273,7 @@ export type Database = {
         | "encerrado"
         | "cancelado"
         | "finalizado"
-      event_visibility: "public" | "restricted"
+      event_visibility: "public" | "restricted" | "private"
       financial_request_priority: "baixa" | "media" | "alta" | "urgente"
       financial_request_status:
         | "draft"
@@ -4665,7 +4665,7 @@ export const Constants = {
         "cancelado",
         "finalizado",
       ],
-      event_visibility: ["public", "restricted"],
+      event_visibility: ["public", "restricted", "private"],
       financial_request_priority: ["baixa", "media", "alta", "urgente"],
       financial_request_status: [
         "draft",
