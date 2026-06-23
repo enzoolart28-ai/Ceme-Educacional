@@ -98,3 +98,4 @@
  GET /login?redirectTo=%2Fdashboard 500 in 4.6s (next.js: 92ms, proxy.ts: 4.5s, application-code: 27ms)
  GET /login?redirectTo=%2Fdashboard 500 in 233ms (next.js: 92ms, proxy.ts: 115ms, application-code: 26ms)
  GET /login?redirectTo=%2Fdashboard 500 in 291ms (next.js: 86ms, proxy.ts: 185ms, application-code: 20ms)
+✓ Compiled in 585ms

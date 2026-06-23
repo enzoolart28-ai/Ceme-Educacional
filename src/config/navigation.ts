@@ -37,6 +37,7 @@ import {
   MessageCircleMore,
   Wallet,
   Receipt,
+  Table2,
   BookOpen,
   BarChart3,
   UserCircle,
@@ -151,6 +152,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Avaliações",
     href: "/dashboard/avaliacoes",
     icon: ClipboardList,
+    roles: ACADEMIC_ROLES,
+  },
+  {
+    label: "Diário de Notas",
+    href: "/dashboard/avaliacoes/diario",
+    icon: Table2,
     roles: ACADEMIC_ROLES,
   },
   {

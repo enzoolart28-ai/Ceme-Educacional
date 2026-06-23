@@ -257,3 +257,62 @@ export async function getStudentRecentGradesByProfile(profileId: string): Promis
   if (!student) return [];
   return getStudentRecentGrades(student.id);
 }
+
+// --- Diário de notas (planilha turma × alunos × avaliações) ------------------
+export interface GradebookData {
+  assessments: { id: string; name: string; maxGrade: number }[];
+  students: { id: string; name: string }[];
+  /** chave `${assessmentId}:${studentId}` -> nota (string; "" quando vazio). */
+  grades: Record<string, string>;
+}
+
+/** Turmas que o usuário pode lançar notas (RLS: staff vê todas; professor as suas). */
+export async function listGradebookClasses(): Promise<{ id: string; name: string }[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("classes").select("id, name").order("name");
+  return data ?? [];
+}
+
+export async function getClassGradebook(classId: string): Promise<GradebookData> {
+  const supabase = await createClient();
+
+  const { data: aData } = await supabase
+    .from("assessments")
+    .select("id, name, max_grade, date, created_at")
+    .eq("class_id", classId)
+    .order("date", { ascending: true })
+    .order("created_at", { ascending: true });
+  const assessments = (aData ?? []).map((a) => ({
+    id: a.id,
+    name: a.name,
+    maxGrade: Number(a.max_grade) || 10,
+  }));
+
+  const { data: csData } = await supabase
+    .from("class_students")
+    .select("student:students(id, full_name)")
+    .eq("class_id", classId);
+  const students = (csData ?? [])
+    .map((r) => {
+      const s = (Array.isArray(r.student) ? r.student[0] : r.student) as
+        | { id: string; full_name: string }
+        | null;
+      return s ? { id: s.id, name: s.full_name } : null;
+    })
+    .filter((s): s is { id: string; name: string } => s !== null)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const grades: Record<string, string> = {};
+  const assessmentIds = assessments.map((a) => a.id);
+  if (assessmentIds.length > 0) {
+    const { data: gData } = await supabase
+      .from("grades")
+      .select("assessment_id, student_id, grade")
+      .in("assessment_id", assessmentIds);
+    for (const g of gData ?? []) {
+      grades[`${g.assessment_id}:${g.student_id}`] = g.grade != null ? String(g.grade) : "";
+    }
+  }
+
+  return { assessments, students, grades };
+}

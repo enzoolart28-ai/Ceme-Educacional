@@ -131,3 +131,29 @@ export async function saveGradesAction(
   revalidatePath(`/dashboard/avaliacoes/${assessmentId}`);
   return { success: true };
 }
+
+/** Salva o diário de notas (várias avaliações × alunos de uma turma de uma vez). */
+export async function saveGradebookAction(
+  entries: { assessment_id: string; student_id: string; grade: string }[],
+): Promise<ActionResult> {
+  const profile = await ensureGrader();
+  if (!profile) return { error: "Você não tem permissão para lançar notas." };
+
+  const rows = entries.map((e) => ({
+    assessment_id: e.assessment_id,
+    student_id: e.student_id,
+    grade: e.grade === "" ? null : Number(e.grade),
+  }));
+  if (rows.length === 0) return { success: true };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("grades")
+    .upsert(rows, { onConflict: "assessment_id,student_id" });
+  if (error) {
+    return { error: "Não foi possível salvar as notas (verifique suas permissões)." };
+  }
+
+  revalidatePath("/dashboard/avaliacoes/diario");
+  return { success: true };
+}
