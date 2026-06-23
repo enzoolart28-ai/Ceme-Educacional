@@ -3,9 +3,13 @@ import { ArrowLeft } from "lucide-react";
 import { requirePermission } from "@/lib/auth/session";
 import { PageHeader } from "@/components/ui/page-header";
 import { StudentForm } from "@/components/students/student-form";
+import { listStudents } from "@/lib/students/queries";
 
 export default async function NovoAlunoPage() {
   await requirePermission("students.manage");
+
+  const existing = await listStudents();
+  const students = existing.map((s) => ({ id: s.id, name: s.full_name }));
 
   return (
     <>
@@ -18,6 +22,7 @@ export default async function NovoAlunoPage() {
       <PageHeader title="Novo aluno" description="Cadastre um novo aluno." />
       <StudentForm
         mode="create"
+        students={students}
         defaultValues={{
           full_name: "",
           cpf: "",

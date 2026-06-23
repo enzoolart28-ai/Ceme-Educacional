@@ -1,6 +1,8 @@
-import { BarChart3 } from "lucide-react";
+import Link from "next/link";
+import { BarChart3, UserMinus, ArrowRightLeft, Percent, Users } from "lucide-react";
 import { GESTOR_ROLES, requireRole } from "@/lib/auth/session";
 import { getManagementDashboard } from "@/lib/management/queries";
+import { getDropoutReport } from "@/lib/desistencias/queries";
 import { PageHeader } from "@/components/ui/page-header";
 import { Section } from "@/components/ui/section";
 import { StatCard } from "@/components/ui/stat-card";
@@ -14,6 +16,7 @@ function formatMetric(value: number, kind?: "money" | "number" | "percent") {
 export default async function RelatoriosGestaoPage() {
   await requireRole(GESTOR_ROLES);
   const dashboard = await getManagementDashboard();
+  const dropout = await getDropoutReport();
   const groups = [
     ["Financeiro", dashboard.finance],
     ["Academico", dashboard.academic],
@@ -26,6 +29,23 @@ export default async function RelatoriosGestaoPage() {
     <>
       <PageHeader title="Relatorios Gerenciais" description="Indicadores consolidados por area para acompanhamento do gestor." />
       <div className="space-y-8">
+        <Section title="Desistências e Evasão">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <StatCard label="Desistentes" value={formatMetric(dropout.dropoutCount)} icon={UserMinus} tone="rose" />
+            <StatCard label="Transferidos" value={formatMetric(dropout.transferredCount)} icon={ArrowRightLeft} tone="amber" />
+            <StatCard label="Taxa de desistência" value={`${dropout.rate}%`} icon={Percent} tone="violet" />
+            <StatCard label="Total de alunos" value={formatMetric(dropout.totalStudents)} icon={Users} tone="indigo" />
+          </div>
+          <div className="mt-4">
+            <Link
+              href="/dashboard/desistencias"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+            >
+              Ver relatório completo de desistências →
+            </Link>
+          </div>
+        </Section>
+
         {groups.map(([title, metrics]) => (
           <Section key={title} title={title}>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">

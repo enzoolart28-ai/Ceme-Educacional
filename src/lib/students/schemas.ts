@@ -6,10 +6,14 @@ const optionalText = (max: number) =>
 
 export const studentSchema = z.object({
   full_name: z.string().min(3, "Informe o nome completo").max(150),
+  // CPF opcional: irmãos/menores podem não ter CPF próprio. Se preenchido, é
+  // validado (formato + dígitos) e continua sendo único no banco.
   cpf: z
     .string()
-    .min(1, "Informe o CPF")
-    .refine(isValidCpf, "CPF inválido"),
+    .max(14)
+    .optional()
+    .or(z.literal(""))
+    .refine((v) => !v || isValidCpf(v), "CPF inválido"),
   rg: optionalText(20),
   birth_date: optionalText(10),
   phone: optionalText(20),

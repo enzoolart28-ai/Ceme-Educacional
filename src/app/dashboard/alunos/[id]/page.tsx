@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { requirePermission } from "@/lib/auth/session";
 import { hasPermission } from "@/lib/auth/permissions";
-import { getStudentById, getStudentGuardians } from "@/lib/students/queries";
+import { getStudentById, getStudentGuardians, getSiblings } from "@/lib/students/queries";
 import { getStudentAcademic } from "@/lib/academic/queries";
 import { getStudentFrequency } from "@/lib/attendance/queries";
 import { getStudentBoletim } from "@/lib/grades/queries";
@@ -71,6 +71,7 @@ export default async function AlunoDetailPage({
     ? await getStudentAcademic(student.profile_id)
     : null;
   const guardians = await getStudentGuardians(student.id);
+  const siblings = await getSiblings(student.id);
   const frequency = await getStudentFrequency(student.id);
   const boletim = await getStudentBoletim(student.id);
 
@@ -167,6 +168,35 @@ export default async function AlunoDetailPage({
               icon={Users}
               title="Nenhum responsável vinculado"
               description="Vincule um responsável (conta de login) ao aluno."
+            />
+          </Card>
+        ),
+    },
+    {
+      key: "irmaos",
+      label: "Irmãos",
+      content:
+        siblings.length > 0 ? (
+          <Card>
+            <CardContent className="divide-y divide-slate-100 p-0">
+              {siblings.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/dashboard/alunos/${s.id}`}
+                  className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50"
+                >
+                  <span className="text-sm font-medium text-slate-900">{s.full_name}</span>
+                  <StudentStatusBadge status={s.status} />
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="p-6">
+            <EmptyState
+              icon={Users}
+              title="Nenhum irmão vinculado"
+              description="Irmãos aparecem aqui quando compartilham um responsável. No cadastro de um novo aluno, use a opção “Irmão(ã) já cadastrado”."
             />
           </Card>
         ),

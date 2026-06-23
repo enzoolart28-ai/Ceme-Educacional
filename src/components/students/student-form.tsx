@@ -19,12 +19,16 @@ export function StudentForm({
   mode,
   studentId,
   defaultValues,
+  students = [],
 }: {
   mode: "create" | "edit";
   studentId?: string;
   defaultValues: StudentInput;
+  /** Lista de alunos existentes (para vincular irmão no cadastro). */
+  students?: { id: string; name: string }[];
 }) {
   const [serverError, setServerError] = useState<string | null>(null);
+  const [siblingOfId, setSiblingOfId] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const {
@@ -41,7 +45,7 @@ export function StudentForm({
     startTransition(async () => {
       const result =
         mode === "create"
-          ? await createStudentAction(values)
+          ? await createStudentAction(values, siblingOfId || undefined)
           : await updateStudentAction(studentId!, values);
       // Em sucesso a action redireciona; só chegamos aqui em erro.
       if (result?.error) setServerError(result.error);
@@ -70,13 +74,55 @@ export function StudentForm({
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">{field("full_name", "Nome completo *")}</div>
-          {field("cpf", "CPF *", { placeholder: "000.000.000-00", inputMode: "numeric" })}
+          <div>
+            <Label htmlFor="cpf">CPF</Label>
+            <Input
+              id="cpf"
+              placeholder="000.000.000-00"
+              inputMode="numeric"
+              hasError={!!errors.cpf}
+              {...register("cpf")}
+            />
+            {errors.cpf ? (
+              <p className="mt-1 text-xs text-red-600">{errors.cpf.message as string}</p>
+            ) : (
+              <p className="mt-1 text-xs text-slate-400">
+                Opcional — deixe em branco para irmãos/menores sem CPF.
+              </p>
+            )}
+          </div>
           {field("rg", "RG")}
           {field("birth_date", "Data de nascimento", { type: "date" })}
           {field("phone", "Telefone", { placeholder: "(00) 00000-0000" })}
           <div className="sm:col-span-2">{field("email", "E-mail", { type: "email" })}</div>
         </CardContent>
       </Card>
+
+      {mode === "create" && students.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Irmão(ã) já cadastrado</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Label htmlFor="siblingOf">Vincular como irmão de</Label>
+            <Select
+              id="siblingOf"
+              value={siblingOfId}
+              onChange={(e) => setSiblingOfId(e.target.value)}
+            >
+              <option value="">— Nenhum —</option>
+              {students.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </Select>
+            <p className="mt-1 text-xs text-slate-400">
+              Ao selecionar, os responsáveis do irmão são copiados automaticamente para este aluno.
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>

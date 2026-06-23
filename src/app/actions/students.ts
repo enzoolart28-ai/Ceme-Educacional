@@ -27,7 +27,7 @@ async function isAdmin(): Promise<boolean> {
 function toPayload(v: StudentInput) {
   return {
     full_name: v.full_name,
-    cpf: onlyDigits(v.cpf),
+    cpf: v.cpf ? onlyDigits(v.cpf) : null,
     rg: v.rg || null,
     birth_date: v.birth_date || null,
     phone: v.phone || null,
@@ -42,7 +42,11 @@ function toPayload(v: StudentInput) {
   };
 }
 
-export async function createStudentAction(values: StudentInput): Promise<ActionResult> {
+export async function createStudentAction(
+  values: StudentInput,
+  /** Quando informado, copia os responsáveis deste irmão para o novo aluno. */
+  siblingOfId?: string,
+): Promise<ActionResult> {
   if (!(await canManage())) return { error: "Você não tem permissão para esta ação." };
 
   const parsed = studentSchema.safeParse(values);
@@ -61,6 +65,24 @@ export async function createStudentAction(values: StudentInput): Promise<ActionR
         ? "Já existe um aluno com este CPF."
         : "Não foi possível cadastrar o aluno.",
     };
+  }
+
+  // Vínculo de irmãos: reaproveita os responsáveis do irmão informado.
+  if (siblingOfId) {
+    const { data: links } = await supabase
+      .from("student_guardians")
+      .select("guardian_id, is_financial_responsible, is_pedagogical_responsible")
+      .eq("student_id", siblingOfId);
+    if (links && links.length > 0) {
+      await supabase.from("student_guardians").insert(
+        links.map((l) => ({
+          student_id: data.id,
+          guardian_id: l.guardian_id,
+          is_financial_responsible: l.is_financial_responsible,
+          is_pedagogical_responsible: l.is_pedagogical_responsible,
+        })),
+      );
+    }
   }
 
   try {

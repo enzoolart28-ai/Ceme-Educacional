@@ -94,6 +94,42 @@ export async function getStudentById(id: string): Promise<Student | null> {
   return data ?? null;
 }
 
+export interface SiblingRow {
+  id: string;
+  full_name: string;
+  status: StudentStatus;
+}
+
+/** Irmãos = outros alunos que compartilham ao menos um responsável (recebe students.id). */
+export async function getSiblings(studentId: string): Promise<SiblingRow[]> {
+  const supabase = await createClient();
+
+  const { data: links } = await supabase
+    .from("student_guardians")
+    .select("guardian_id")
+    .eq("student_id", studentId);
+
+  const guardianIds = [...new Set((links ?? []).map((l) => l.guardian_id))];
+  if (guardianIds.length === 0) return [];
+
+  const { data } = await supabase
+    .from("student_guardians")
+    .select("student:students(id, full_name, status, deleted_at)")
+    .in("guardian_id", guardianIds)
+    .neq("student_id", studentId);
+
+  const byId = new Map<string, SiblingRow>();
+  for (const row of data ?? []) {
+    const s = row.student as unknown as
+      | { id: string; full_name: string; status: StudentStatus; deleted_at: string | null }
+      | null;
+    if (s && !s.deleted_at && !byId.has(s.id)) {
+      byId.set(s.id, { id: s.id, full_name: s.full_name, status: s.status });
+    }
+  }
+  return [...byId.values()];
+}
+
 /** Responsáveis vinculados a um aluno (recebe students.id). */
 export async function getStudentGuardians(studentId: string): Promise<GuardianRow[]> {
   const supabase = await createClient();
