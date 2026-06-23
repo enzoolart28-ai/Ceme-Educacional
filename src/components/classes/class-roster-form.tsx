@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UserPlus } from "lucide-react";
 import { linkClassStudentAction } from "@/app/actions/classes";
 import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { Alert } from "@/components/ui/alert";
 
 export function ClassRosterForm({
@@ -47,17 +47,14 @@ export function ClassRosterForm({
     <div className="space-y-2">
       {error && <Alert tone="error">{error}</Alert>}
       <div className="flex flex-col gap-2 sm:flex-row">
-        <Select
+        <SearchableSelect
+          options={students.map((s) => ({ value: s.id, label: s.full_name }))}
           value={studentId}
-          onChange={(e) => setStudentId(e.target.value)}
+          onChange={setStudentId}
+          placeholder="Selecione um aluno…"
+          ariaLabel="Aluno"
           className="sm:flex-1"
-          aria-label="Aluno"
-        >
-          <option value="">Selecione um aluno…</option>
-          {students.map((s) => (
-            <option key={s.id} value={s.id}>{s.full_name}</option>
-          ))}
-        </Select>
+        />
         <Button onClick={submit} isLoading={isPending}>
           <UserPlus className="h-4 w-4" /> Vincular
         </Button>
