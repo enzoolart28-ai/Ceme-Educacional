@@ -36,6 +36,7 @@ import {
   PlugZap,
   MessageCircleMore,
   Wallet,
+  Receipt,
   BookOpen,
   BarChart3,
   UserCircle,
@@ -259,6 +260,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     href: "/dashboard/integracoes/whatsapp",
     icon: MessageCircleMore,
     roles: ["admin", "diretor", "gestor", "comercial", "secretaria", "financeiro"],
+  },
+  {
+    label: "Contas a Pagar",
+    href: "/dashboard/financeiro/contas-a-pagar",
+    icon: Receipt,
+    roles: ["admin", "diretor", "gestor", "financeiro"],
   },
   {
     label: "Caixa",

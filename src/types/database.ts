@@ -1863,6 +1863,33 @@ export type Database = {
           },
         ]
       }
+      expense_categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       financial_logs: {
         Row: {
           action: string
@@ -3047,6 +3074,136 @@ export type Database = {
             columns: ["teacher_id"]
             isOneToOne: false
             referencedRelation: "teachers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payables: {
+        Row: {
+          amount: number
+          cash_movement_id: string | null
+          category_id: string
+          competence_month: number
+          competence_year: number
+          created_at: string
+          created_by: string | null
+          description: string
+          due_date: string | null
+          id: string
+          notes: string | null
+          paid_at: string | null
+          payee_id: string | null
+          recurring: boolean
+          status: Database["public"]["Enums"]["payable_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          cash_movement_id?: string | null
+          category_id: string
+          competence_month: number
+          competence_year: number
+          created_at?: string
+          created_by?: string | null
+          description: string
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          payee_id?: string | null
+          recurring?: boolean
+          status?: Database["public"]["Enums"]["payable_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          cash_movement_id?: string | null
+          category_id?: string
+          competence_month?: number
+          competence_year?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          payee_id?: string | null
+          recurring?: boolean
+          status?: Database["public"]["Enums"]["payable_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payables_cash_movement_id_fkey"
+            columns: ["cash_movement_id"]
+            isOneToOne: false
+            referencedRelation: "cash_movements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payables_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expense_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payables_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payables_payee_id_fkey"
+            columns: ["payee_id"]
+            isOneToOne: false
+            referencedRelation: "payees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payees: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          pix_key: string | null
+          profile_id: string | null
+          type: Database["public"]["Enums"]["payee_type"]
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          pix_key?: string | null
+          profile_id?: string | null
+          type?: Database["public"]["Enums"]["payee_type"]
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          pix_key?: string | null
+          profile_id?: string | null
+          type?: Database["public"]["Enums"]["payee_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payees_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -4365,6 +4522,13 @@ export type Database = {
         | "announcement"
         | "message"
       online_assessment_status: "draft" | "published" | "closed" | "archived"
+      payable_status: "pendente" | "pago" | "vencido" | "cancelado"
+      payee_type:
+        | "colaborador"
+        | "professor"
+        | "preceptor"
+        | "fornecedor"
+        | "outro"
       payment_method:
         | "cash"
         | "pix"
@@ -4768,6 +4932,14 @@ export const Constants = {
         "message",
       ],
       online_assessment_status: ["draft", "published", "closed", "archived"],
+      payable_status: ["pendente", "pago", "vencido", "cancelado"],
+      payee_type: [
+        "colaborador",
+        "professor",
+        "preceptor",
+        "fornecedor",
+        "outro",
+      ],
       payment_method: [
         "cash",
         "pix",

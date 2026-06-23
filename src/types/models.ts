@@ -86,6 +86,13 @@ export type CalendarEvent = Database["public"]["Tables"]["calendar_events"]["Row
 export type CalendarEventType = Database["public"]["Enums"]["calendar_event_type"];
 export type EventVisibility = Database["public"]["Enums"]["event_visibility"];
 
+// --- Contas a Pagar (despesas) ----------------------------------------------
+export type PayableStatus = Database["public"]["Enums"]["payable_status"];
+export type PayeeType = Database["public"]["Enums"]["payee_type"];
+export type ExpenseCategory = Database["public"]["Tables"]["expense_categories"]["Row"];
+export type Payee = Database["public"]["Tables"]["payees"]["Row"];
+export type Payable = Database["public"]["Tables"]["payables"]["Row"];
+
 // --- Comunicação Interna -----------------------------------------------------
 export type Announcement = Database["public"]["Tables"]["announcements"]["Row"];
 export type AnnouncementRead =
