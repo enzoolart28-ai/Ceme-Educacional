@@ -8,6 +8,7 @@ import { navItemsForRole } from "@/config/navigation";
 import { roleLabel } from "@/lib/auth/roles";
 import { cn } from "@/lib/utils";
 import { SignOutButton } from "@/components/layout/sign-out-button";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import type { UserRole } from "@/types/models";
 
 interface DashboardShellProps {
@@ -113,6 +114,7 @@ export function DashboardShell({ role, fullName, email, children }: DashboardShe
               <p className="text-sm font-medium text-slate-900">{fullName || email}</p>
               <p className="text-xs text-slate-500">{roleLabel(role)}</p>
             </div>
+            <ThemeToggle />
             <SignOutButton />
           </div>
         </header>

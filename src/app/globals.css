@@ -1,9 +1,19 @@
 @import "tailwindcss";
 
+/* Habilita o modo escuro por classe: utilitários dark: valem quando há .dark
+   em um ancestral (em vez de seguir só o tema do sistema). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  color-scheme: light; /* mantém o app no tema claro mesmo com o aparelho no escuro */
+  color-scheme: light;
+}
+
+.dark {
+  --background: #0b1120; /* slate-950 */
+  --foreground: #e2e8f0; /* slate-200 */
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -13,19 +23,55 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* App é desenhado para tema CLARO (cards bg-white). Não seguimos o tema escuro
-   do sistema, senão o texto herdado fica claro e some nos campos. */
-
 body {
-  background: #ffffff;
+  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Garante texto escuro em todos os campos (mesmo os que não definem cor),
-   evitando texto claro/ilegível quando o aparelho está em modo escuro. */
+/* Texto dos campos: escuro no claro, claro no escuro. */
 input,
 textarea,
 select {
   color: rgb(15 23 42); /* slate-900 */
 }
+.dark input,
+.dark textarea,
+.dark select {
+  color: rgb(226 232 240); /* slate-200 */
+}
+
+/* =============================================================================
+   TEMA ESCURO — remapeamento global das cores neutras
+   -----------------------------------------------------------------------------
+   O app foi feito em tema claro com cores fixas (bg-white, text-slate-*,
+   border-slate-*). Aqui, sob .dark, remapeamos essas cores neutras para tons
+   escuros — assim o app inteiro ganha modo escuro sem reescrever cada tela.
+   Cores com significado (indigo, emerald, rose, amber…) são mantidas.
+   ========================================================================== */
+
+/* Superfícies */
+.dark .bg-white { background-color: #0f172a; }      /* cartões/menus → slate-900 */
+.dark .bg-white\/80 { background-color: rgba(15, 23, 42, 0.85); }
+.dark .bg-slate-50 { background-color: #0b1120; }    /* fundo de página */
+.dark .bg-slate-100 { background-color: #1e293b; }   /* chips/realces neutros */
+.dark .hover\:bg-slate-50:hover { background-color: #1e293b; }
+.dark .hover\:bg-slate-100:hover { background-color: #334155; }
+.dark .bg-indigo-50 { background-color: #1e1b4b; }   /* hover do menu / realces */
+.dark .hover\:bg-indigo-50:hover { background-color: #1e1b4b; }
+
+/* Textos neutros */
+.dark .text-slate-900 { color: #f1f5f9; }
+.dark .text-slate-800 { color: #e2e8f0; }
+.dark .text-slate-700 { color: #cbd5e1; }
+.dark .text-slate-600 { color: #cbd5e1; }
+.dark .text-slate-500 { color: #94a3b8; }
+.dark .text-slate-400 { color: #64748b; }
+
+/* Bordas */
+.dark .border-slate-100 { border-color: #1e293b; }
+.dark .border-slate-200 { border-color: #1e293b; }
+.dark .border-slate-300 { border-color: #334155; }
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #1e293b; }
+
+/* Tabelas com cabeçalho slate-50 já é coberto por .bg-slate-50 acima. */
