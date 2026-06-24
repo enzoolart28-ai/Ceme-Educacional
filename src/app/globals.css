@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color-scheme: light; /* mantém o app no tema claro mesmo com o aparelho no escuro */
 }
 
 @theme inline {
@@ -12,15 +13,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* App é desenhado para tema CLARO (cards bg-white). Não seguimos o tema escuro
+   do sistema, senão o texto herdado fica claro e some nos campos. */
 
 body {
-  background: var(--background);
+  background: #ffffff;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Garante texto escuro em todos os campos (mesmo os que não definem cor),
+   evitando texto claro/ilegível quando o aparelho está em modo escuro. */
+input,
+textarea,
+select {
+  color: rgb(15 23 42); /* slate-900 */
 }
