@@ -88,7 +88,7 @@ export default async function RelatoriosGestaoPage() {
                   key={`${group.title}-${metric.label}`}
                   label={metric.label}
                   value={formatMetric(metric.value, metric.kind)}
-                  icon={BarChart3}
+                  icon={<BarChart3 className="h-5 w-5" />}
                   tone={group.tone}
                   explanation={EXPLAIN[metric.label] ?? `Indicador da área ${group.title}.`}
                   related={group.metrics

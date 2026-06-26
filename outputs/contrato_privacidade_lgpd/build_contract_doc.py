@@ -8,23 +8,24 @@ from docx.enum.table import WD_ALIGN_VERTICAL, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt, RGBColor
+from docx.shared import Cm, Inches, Pt, RGBColor
 
 
 OUT_DIR = Path(__file__).resolve().parent
-DOCX_PATH = OUT_DIR / "Contrato_Locacao_App_Privacidade_LGPD_Formal_Tecnico.docx"
+DOCX_PATH = OUT_DIR / "Contrato_Locacao_App_ABNT_Dados_Contratada.docx"
 
 BLACK = RGBColor(0, 0, 0)
-BLUE = RGBColor(46, 116, 181)
-DARK_BLUE = RGBColor(31, 77, 120)
+BLUE = RGBColor(0, 0, 0)
+DARK_BLUE = RGBColor(0, 0, 0)
 MUTED = RGBColor(85, 85, 85)
-LIGHT_GRAY = "F2F4F7"
-BLUE_GRAY = "E8EEF5"
-CALLOUT = "F4F6F9"
+LIGHT_GRAY = "FFFFFF"
+BLUE_GRAY = "FFFFFF"
+CALLOUT = "FFFFFF"
 WHITE = "FFFFFF"
+ABNT_CONTENT_WIDTH_DXA = 9072
 
 
-def set_run_font(run, name="Calibri", size=None, color=None, bold=None, italic=None):
+def set_run_font(run, name="Times New Roman", size=None, color=None, bold=None, italic=None):
     run.font.name = name
     rpr = run._element.get_or_add_rPr()
     rfonts = rpr.rFonts
@@ -89,6 +90,15 @@ def set_table_borders(table, color="D9DEE7", size="6"):
 
 
 def set_table_geometry(table, widths_dxa, indent_dxa=120):
+    total_width = sum(widths_dxa)
+    if total_width > ABNT_CONTENT_WIDTH_DXA:
+        ratio = ABNT_CONTENT_WIDTH_DXA / total_width
+        scaled = [max(1, int(width * ratio)) for width in widths_dxa]
+        scaled[-1] += ABNT_CONTENT_WIDTH_DXA - sum(scaled)
+        widths_dxa = scaled
+    elif total_width == 9360:
+        widths_dxa = [int(width * ABNT_CONTENT_WIDTH_DXA / 9360) for width in widths_dxa]
+        widths_dxa[-1] += ABNT_CONTENT_WIDTH_DXA - sum(widths_dxa)
     table.alignment = WD_TABLE_ALIGNMENT.LEFT
     table.autofit = False
     tbl = table._tbl
@@ -210,51 +220,54 @@ def add_hyperlink(paragraph, text, url):
 def setup_document() -> Document:
     doc = Document()
     section = doc.sections[0]
-    section.page_width = Inches(8.5)
-    section.page_height = Inches(11)
-    section.top_margin = Inches(1)
-    section.bottom_margin = Inches(1)
-    section.left_margin = Inches(1)
-    section.right_margin = Inches(1)
-    section.header_distance = Inches(0.492)
-    section.footer_distance = Inches(0.492)
+    section.page_width = Cm(21)
+    section.page_height = Cm(29.7)
+    section.top_margin = Cm(3)
+    section.bottom_margin = Cm(2)
+    section.left_margin = Cm(3)
+    section.right_margin = Cm(2)
+    section.header_distance = Cm(1.5)
+    section.footer_distance = Cm(1.5)
 
     styles = doc.styles
     normal = styles["Normal"]
-    normal.font.name = "Calibri"
-    normal._element.rPr.rFonts.set(qn("w:ascii"), "Calibri")
-    normal._element.rPr.rFonts.set(qn("w:hAnsi"), "Calibri")
-    normal.font.size = Pt(11)
+    normal.font.name = "Times New Roman"
+    normal._element.rPr.rFonts.set(qn("w:ascii"), "Times New Roman")
+    normal._element.rPr.rFonts.set(qn("w:hAnsi"), "Times New Roman")
+    normal.font.size = Pt(12)
     normal.font.color.rgb = BLACK
     normal.paragraph_format.space_before = Pt(0)
-    normal.paragraph_format.space_after = Pt(6)
-    normal.paragraph_format.line_spacing = 1.10
+    normal.paragraph_format.space_after = Pt(0)
+    normal.paragraph_format.line_spacing = 1.5
+    normal.paragraph_format.first_line_indent = Cm(1.25)
+    normal.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
     for style_name, size, color, before, after in [
-        ("Heading 1", 16, BLUE, 16, 8),
-        ("Heading 2", 13, BLUE, 12, 6),
+        ("Heading 1", 12, BLUE, 12, 6),
+        ("Heading 2", 12, BLUE, 10, 6),
         ("Heading 3", 12, DARK_BLUE, 8, 4),
     ]:
         style = styles[style_name]
-        style.font.name = "Calibri"
-        style._element.rPr.rFonts.set(qn("w:ascii"), "Calibri")
-        style._element.rPr.rFonts.set(qn("w:hAnsi"), "Calibri")
+        style.font.name = "Times New Roman"
+        style._element.rPr.rFonts.set(qn("w:ascii"), "Times New Roman")
+        style._element.rPr.rFonts.set(qn("w:hAnsi"), "Times New Roman")
         style.font.size = Pt(size)
         style.font.color.rgb = color
         style.font.bold = True
         style.paragraph_format.space_before = Pt(before)
         style.paragraph_format.space_after = Pt(after)
-        style.paragraph_format.line_spacing = 1.10
+        style.paragraph_format.line_spacing = 1.5
+        style.paragraph_format.first_line_indent = Pt(0)
 
     for style_name in ["List Bullet", "List Number"]:
         if style_name in styles:
             style = styles[style_name]
-            style.font.name = "Calibri"
-            style._element.rPr.rFonts.set(qn("w:ascii"), "Calibri")
-            style._element.rPr.rFonts.set(qn("w:hAnsi"), "Calibri")
-            style.font.size = Pt(11)
-            style.paragraph_format.space_after = Pt(8)
-            style.paragraph_format.line_spacing = 1.167
+            style.font.name = "Times New Roman"
+            style._element.rPr.rFonts.set(qn("w:ascii"), "Times New Roman")
+            style._element.rPr.rFonts.set(qn("w:hAnsi"), "Times New Roman")
+            style.font.size = Pt(12)
+            style.paragraph_format.space_after = Pt(0)
+            style.paragraph_format.line_spacing = 1.5
 
     cp = doc.core_properties
     cp.title = "Instrumento Particular de Licenciamento de Software, Suporte Tecnico e Tratamento de Dados"
@@ -294,22 +307,26 @@ def add_header_footer(doc: Document):
 
 def add_title_block(doc: Document):
     p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(12)
-    p.paragraph_format.space_after = Pt(4)
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.first_line_indent = Pt(0)
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(12)
     r = p.add_run("INSTRUMENTO PARTICULAR DE LICENCIAMENTO DE SOFTWARE, DISPONIBILIZAÇÃO DE APLICATIVO, SUPORTE TÉCNICO, GOVERNANÇA DE ACESSO E TRATAMENTO DE DADOS")
-    set_run_font(r, size=22, color=BLACK, bold=True)
+    set_run_font(r, size=12, color=BLACK, bold=True)
 
     subtitle = doc.add_paragraph()
-    subtitle.paragraph_format.space_after = Pt(14)
+    subtitle.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    subtitle.paragraph_format.first_line_indent = Cm(1.25)
+    subtitle.paragraph_format.space_after = Pt(12)
     r = subtitle.add_run("Minuta técnico-jurídica com cláusulas de segregação de infraestrutura, gestão de credenciais críticas, privacidade por desenho, limitação de acesso administrativo e conformidade com a LGPD.")
-    set_run_font(r, size=12.5, color=MUTED, italic=True)
+    set_run_font(r, size=12, color=BLACK, italic=True)
 
     rows = [
         ("Aplicativo", "[NOME DO APLICATIVO/CEME]"),
-        ("Contratante/Cliente", "[RAZÃO SOCIAL OU NOME COMPLETO, CNPJ/CPF, ENDEREÇO]"),
-        ("Contratada/Desenvolvedora", "[RAZÃO SOCIAL OU NOME COMPLETO, CNPJ/CPF, ENDEREÇO]"),
-        ("Versão", "Minuta técnico-jurídica v2.0"),
-        ("Data de elaboração", "24 de junho de 2026"),
+        ("Contratante/Cliente", "Nome/Razão social: ________________________________________________\nCPF/CNPJ: _______________________________________________________\nEndereço: _______________________________________________________\nE-mail/telefone: ________________________________________________"),
+        ("Contratada/Desenvolvedora", "67.678.660 ENZO GABRIEL MACIEL CARVALHO OLART, pessoa jurídica inscrita no CNPJ sob nº 67.678.660/0001-05, Empresário (Individual), porte ME, com sede em 12 R ALFREDO TELES, nº 1217, bairro Formoso, CEP 69980-000, Cruzeiro do Sul/AC, e-mail CODEFORGE28@GMAIL.COM, telefone (68) 9953-5293."),
+        ("Versão", "Minuta técnico-jurídica em formato ABNT"),
+        ("Data de elaboração", "26 de junho de 2026"),
     ]
     add_label_detail_table(doc, rows, label_width_dxa=1900, detail_width_dxa=7460, header=None)
 
@@ -463,7 +480,7 @@ def build_contract(doc: Document):
         "1",
         "Partes, qualificação e capacidade contratual",
         [
-            "Pelo presente instrumento particular, de um lado, [NOME/RAZÃO SOCIAL DO CLIENTE], inscrito(a) no [CPF/CNPJ] sob nº [PREENCHER], com sede/endereço em [PREENCHER], doravante denominado(a) CONTRATANTE, Cliente ou Controlador; e, de outro lado, [NOME/RAZÃO SOCIAL DA DESENVOLVEDORA], inscrito(a) no [CPF/CNPJ] sob nº [PREENCHER], com sede/endereço em [PREENCHER], doravante denominada CONTRATADA, Desenvolvedora ou Operadora, quando aplicável, resolvem celebrar o presente Instrumento Particular de Licenciamento de Software, Disponibilização de Aplicativo, Suporte Técnico, Governança de Acesso e Tratamento de Dados.",
+            "Pelo presente instrumento particular, de um lado, CONTRATANTE/CLIENTE: Nome/Razão social: ________________________________________________; CPF/CNPJ: ________________________________; endereço/sede: ________________________________________________________________; e-mail/telefone: ________________________________________________, doravante denominado(a) CONTRATANTE, Cliente ou Controlador; e, de outro lado, 67.678.660 ENZO GABRIEL MACIEL CARVALHO OLART, pessoa jurídica inscrita no CNPJ sob nº 67.678.660/0001-05, Empresário (Individual), porte ME, com sede em 12 R ALFREDO TELES, nº 1217, bairro Formoso, CEP 69980-000, Cruzeiro do Sul/AC, endereço eletrônico CODEFORGE28@GMAIL.COM e telefone (68) 9953-5293, doravante denominada CONTRATADA, Desenvolvedora ou Operadora, quando aplicável, resolvem celebrar o presente Instrumento Particular de Licenciamento de Software, Disponibilização de Aplicativo, Suporte Técnico, Governança de Acesso e Tratamento de Dados.",
             "As Partes declaram possuir capacidade jurídica e poderes suficientes para celebrar este instrumento, obrigando-se por si, seus representantes, administradores, colaboradores, prepostos, subcontratados e terceiros autorizados, nos limites das responsabilidades aqui estabelecidas.",
             "As Partes reconhecem que a execução deste contrato exige cooperação técnica, confidencialidade, boa-fé objetiva, observância de normas de segurança da informação e conformidade com a legislação aplicável à proteção de dados pessoais.",
         ],
@@ -721,13 +738,30 @@ def build_contract(doc: Document):
         ],
     )
 
+    add_clause(
+        doc,
+        "23",
+        "Natureza jurídica da locação do aplicativo e cláusulas legais especiais",
+        [
+            "As Partes reconhecem que a expressão comercial 'locação do aplicativo' é utilizada neste instrumento para indicar a disponibilização onerosa, temporária e condicionada de acesso ao sistema. Para fins jurídicos, contudo, a operação será interpretada prioritariamente como licenciamento de uso de programa de computador, nos termos da Lei nº 9.609/1998, especialmente seu art. 9º, sem transferência de propriedade intelectual, código-fonte ou titularidade tecnológica.",
+            "A licença concedida ao Cliente possui natureza limitada, não exclusiva, intransferível, revogável, onerosa e vinculada à vigência contratual, ao plano contratado, aos usuários autorizados, às finalidades internas do Cliente e às restrições técnicas, comerciais e jurídicas previstas neste instrumento.",
+            "A mera disponibilização do aplicativo, hospedagem, suporte, parametrização, customização ou integração não implica cessão de direitos autorais, cessão de software, transferência de tecnologia, parceria societária, representação comercial, franquia, mandato, vínculo trabalhista, associação empresarial ou solidariedade entre as Partes, salvo previsão expressa e específica em instrumento próprio.",
+            "O Cliente declara ciência de que a infraestrutura técnica, as contas de terceiros, a regularidade das informações inseridas, a gestão dos usuários internos, as bases legais de tratamento de dados e o uso operacional do aplicativo permanecem sob sua responsabilidade quando tais elementos estiverem sob sua titularidade ou administração.",
+            "A Desenvolvedora declara ciência de que qualquer acesso a dados reais, ambiente produtivo, credenciais críticas ou informações confidenciais do Cliente deverá observar autorização, finalidade, necessidade, proporcionalidade, confidencialidade, rastreabilidade e revogação, sem prejuízo das obrigações previstas na LGPD, no Marco Civil da Internet e neste contrato.",
+            "As cláusulas de confidencialidade, proteção de dados, propriedade intelectual, limitação de acesso, auditoria, reversibilidade, responsabilidade civil, inadimplemento, rescisão, foro e solução de conflitos são consideradas cláusulas essenciais deste instrumento e deverão ser interpretadas de forma sistemática, preservando a finalidade econômica do contrato e a segurança jurídica das Partes.",
+            "Na hipótese de relação de consumo, adesão contratual ou contratação por pessoa física ou entidade vulnerável, as cláusulas deverão ser interpretadas em conformidade com o Código de Defesa do Consumidor, especialmente quanto à informação adequada, transparência, equilíbrio contratual e vedação de cláusulas abusivas.",
+            "Quando o aplicativo tratar dados de crianças ou adolescentes, a contratação deverá observar salvaguardas reforçadas de privacidade, segurança, consentimento ou base legal aplicável, minimização de dados, controle de acesso, finalidade educacional ou administrativa legítima e o melhor interesse do menor, nos termos da LGPD, do Estatuto da Criança e do Adolescente e demais normas aplicáveis.",
+            "A nulidade, invalidade ou inexequibilidade de qualquer cláusula não prejudicará as demais disposições do contrato, devendo as Partes substituir a disposição afetada por outra juridicamente válida que preserve, tanto quanto possível, a finalidade econômica, técnica e jurídica originalmente pretendida.",
+        ],
+    )
+
     add_heading(doc, "Assinaturas", level=1)
     p = doc.add_paragraph()
     p.add_run("[CIDADE/UF], [DIA] de [MÊS] de [ANO].")
     doc.add_paragraph("\n")
     sig_rows = [
         ("CONTRATANTE/CLIENTE", "CONTRATADA/DESENVOLVEDORA"),
-        ("Nome: [PREENCHER]\nCPF/CNPJ: [PREENCHER]\nRepresentante: [PREENCHER]", "Nome: [PREENCHER]\nCPF/CNPJ: [PREENCHER]\nRepresentante: [PREENCHER]"),
+        ("Nome/Razão social: ________________________________\nCPF/CNPJ: ______________________________________\nRepresentante: _________________________________", "67.678.660 ENZO GABRIEL MACIEL CARVALHO OLART\nCNPJ: 67.678.660/0001-05\nRepresentante: ENZO GABRIEL MACIEL CARVALHO OLART"),
     ]
     table = add_matrix_table(doc, ["____________________________________", "____________________________________"], sig_rows, [4680, 4680], header_fill=WHITE)
     for row in table.rows:
@@ -903,6 +937,105 @@ def add_annexes(doc: Document):
             ),
         ],
         [1900, 2700, 4760],
+    )
+
+    add_heading(doc, "ANEXO VI - Quadro de cláusulas legais essenciais", level=1)
+    add_callout(
+        doc,
+        "Finalidade do quadro",
+        "Este anexo organiza, de forma prática, as cláusulas jurídicas que devem permanecer visíveis no contrato de locação/licenciamento do aplicativo. Ele serve como checklist para revisão final, negociação com o Cliente e validação por advogado.",
+    )
+    add_matrix_table(
+        doc,
+        ["Cláusula", "Fundamento legal/prático", "Efeito contratual"],
+        [
+            (
+                "Licenciamento de uso do software",
+                "Lei nº 9.609/1998, especialmente art. 9º; Lei nº 9.610/1998, quando aplicável.",
+                "Deixa claro que a chamada 'locação do app' é licença de uso, sem cessão do código-fonte, propriedade intelectual ou tecnologia.",
+            ),
+            (
+                "Propriedade intelectual",
+                "Lei de Software, Lei de Direitos Autorais e Código Civil.",
+                "Protege código, arquitetura, marca, documentação, interfaces, materiais e melhorias gerais da Desenvolvedora.",
+            ),
+            (
+                "LGPD - papéis das Partes",
+                "LGPD, arts. 5º, 6º, 7º, 11, 37, 39, 42 a 45 e 46.",
+                "Define Cliente como Controlador e Desenvolvedora como Operadora quando tratar dados por instrução do Cliente.",
+            ),
+            (
+                "Limitação de acesso da Desenvolvedora",
+                "LGPD, princípios da necessidade, segurança, prevenção e responsabilização; Marco Civil da Internet.",
+                "Impede acesso permanente ao ambiente de produção, banco, usuários, documentos, logs ou chaves sem autorização.",
+            ),
+            (
+                "Autorização temporária de suporte",
+                "Boas práticas de governança, LGPD e segurança da informação.",
+                "Exige finalidade, prazo, escopo, usuário nominal, menor privilégio, registro de evidências e revogação do acesso.",
+            ),
+            (
+                "Confidencialidade e sigilo",
+                "Código Civil, LGPD, Marco Civil da Internet e proteção de segredo de negócio.",
+                "Obriga as Partes a proteger dados, credenciais, documentos, informações técnicas, comerciais e estratégicas.",
+            ),
+            (
+                "Segurança da informação",
+                "LGPD, arts. 46 a 49; Decreto nº 8.771/2016 como referência para segurança de registros.",
+                "Prevê controle de acesso, segregação de ambientes, logs, proteção de chaves, backups e revisão de permissões.",
+            ),
+            (
+                "Incidentes de segurança",
+                "LGPD, art. 48, e boas práticas de resposta a incidentes.",
+                "Define dever de comunicação, cooperação técnica, preservação de evidências, contenção e avaliação pelo Controlador.",
+            ),
+            (
+                "Direitos dos titulares",
+                "LGPD, art. 18 e correlatos.",
+                "Define que o Cliente responde aos titulares e que a Desenvolvedora coopera tecnicamente quando necessário.",
+            ),
+            (
+                "Marco Civil da Internet",
+                "Lei nº 12.965/2014, especialmente arts. 7º, 10, 11, 13 e 15, quando aplicáveis.",
+                "Reforça privacidade, sigilo, guarda de registros e disponibilização somente conforme lei ou ordem válida.",
+            ),
+            (
+                "Responsabilidade civil",
+                "Código Civil, arts. 186, 187, 389, 395, 475 e 927; LGPD, arts. 42 a 45.",
+                "Aloca riscos, define dever de reparação por dano comprovado e separa responsabilidades do Cliente e da Desenvolvedora.",
+            ),
+            (
+                "Inadimplemento, suspensão e rescisão",
+                "Código Civil e autonomia contratual.",
+                "Prevê consequências por falta de pagamento, violação grave, uso indevido, fraude, infração de sigilo ou risco de segurança.",
+            ),
+            (
+                "Reversibilidade e exportação",
+                "Boa-fé objetiva, função social do contrato e continuidade operacional.",
+                "Garante possibilidade de transição, exportação tecnicamente viável dos dados e revogação de acessos ao fim do contrato.",
+            ),
+            (
+                "CDC, quando aplicável",
+                "Código de Defesa do Consumidor, especialmente arts. 6º, 46 e 51.",
+                "Exige informação clara e afasta cláusulas abusivas quando a relação for enquadrada como consumerista.",
+            ),
+            (
+                "Dados de crianças e adolescentes",
+                "LGPD, ECA e Estatuto Digital da Criança e do Adolescente, quando aplicável.",
+                "Exige salvaguardas reforçadas, melhor interesse do menor, controle de acesso e finalidade legítima.",
+            ),
+            (
+                "Vedação de acesso não autorizado",
+                "Código Penal, art. 154-A, e demais normas aplicáveis.",
+                "Reforça proibição de invasão, exploração de vulnerabilidades, uso abusivo de credenciais e extração indevida de dados.",
+            ),
+            (
+                "Foro e solução de conflitos",
+                "Código Civil, CPC e legislação especial aplicável.",
+                "Define foro, comunicações formais e preserva exceções legais obrigatórias, como regras consumeristas quando aplicáveis.",
+            ),
+        ],
+        [2300, 3100, 3960],
     )
 
 

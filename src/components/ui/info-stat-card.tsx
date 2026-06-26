@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, type LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
@@ -21,7 +21,7 @@ const toneClasses: Record<StatTone, string> = {
 export function InfoStatCard({
   label,
   value,
-  icon: Icon,
+  icon,
   tone = "indigo",
   explanation,
   related = [],
@@ -30,7 +30,9 @@ export function InfoStatCard({
 }: {
   label: string;
   value: string | number;
-  icon: LucideIcon;
+  /** Ícone já renderizado (ReactNode) — não passar a função do ícone, pois este
+   *  é um Client Component e funções não cruzam a fronteira servidor→cliente. */
+  icon: React.ReactNode;
   tone?: StatTone;
   explanation: string;
   related?: { label: string; value: string }[];
@@ -63,7 +65,7 @@ export function InfoStatCard({
             toneClasses[tone],
           )}
         >
-          <Icon className="h-5 w-5" />
+          {icon}
         </button>
       </div>
 
