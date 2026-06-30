@@ -43,7 +43,7 @@ export function ManagerDecisionForm({ requestId }: { requestId: string }) {
               className="min-h-20 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
           </div>
-          <Button type="submit">Registrar decisao</Button>
+          <Button type="submit">Registrar decisão</Button>
         </form>
       </CardContent>
     </Card>

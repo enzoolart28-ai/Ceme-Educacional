@@ -26,7 +26,7 @@ export default async function MetasPage() {
 
   return (
     <>
-      <PageHeader title="Metas" description="Definicao e acompanhamento de metas por setor." />
+      <PageHeader title="Metas" description="Definição e acompanhamento de metas por setor." />
       <div className="mb-6 grid gap-6 lg:grid-cols-[24rem_1fr]">
         <Card>
           <CardHeader><CardTitle>Nova meta</CardTitle></CardHeader>

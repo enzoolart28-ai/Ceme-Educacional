@@ -17,8 +17,8 @@ export default async function GestaoPage() {
   const dashboard = await getManagementDashboard();
   const groups = [
     { title: "Financeiro", icon: Banknote, metrics: dashboard.finance },
-    { title: "Academico", icon: BookOpen, metrics: dashboard.academic },
-    { title: "Pedagogico", icon: BarChart3, metrics: dashboard.pedagogical },
+    { title: "Acadêmico", icon: BookOpen, metrics: dashboard.academic },
+    { title: "Pedagógico", icon: BarChart3, metrics: dashboard.pedagogical },
     { title: "Comercial", icon: Briefcase, metrics: dashboard.commercial },
     { title: "Administrativo", icon: FileText, metrics: dashboard.administrative },
   ];
@@ -26,8 +26,8 @@ export default async function GestaoPage() {
   return (
     <>
       <PageHeader
-        title="Gestao"
-        description="Visao consolidada da empresa para acompanhamento, fiscalizacao e tomada de decisao."
+        title="Gestão"
+        description="Visão consolidada da empresa para acompanhamento, fiscalização e tomada de decisão."
       />
       <div className="space-y-8">
         {groups.map((group) => (

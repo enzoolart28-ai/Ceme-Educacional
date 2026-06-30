@@ -42,7 +42,7 @@ export default async function AprovacoesFinanceirasPage() {
 
   return (
     <>
-      <PageHeader title="Aprovacoes Financeiras" description="Analise e decisao sobre solicitacoes de saida financeira." />
+      <PageHeader title="Aprovações Financeiras" description="Análise e decisão sobre solicitações de saída financeira." />
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
         <StatCard label="Pendentes" value={summary.pending} icon={ClipboardSignature} tone="amber" />
         <StatCard label="Urgentes" value={summary.urgent} icon={ClipboardSignature} tone="rose" />

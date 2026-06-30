@@ -83,7 +83,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ["admin", "diretor", "gestor", "coordenacao", "secretaria", "financeiro", "professor"],
   },
   {
-    label: "Gestao",
+    label: "Gestão",
     href: "/dashboard/gestao",
     icon: Building2,
     roles: GESTOR_ROLES,
@@ -95,7 +95,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: GESTOR_ROLES,
   },
   {
-    label: "Relatorios Gerenciais",
+    label: "Relatórios Gerenciais",
     href: "/dashboard/gestao/relatorios",
     icon: BarChart3,
     roles: GESTOR_ROLES,
@@ -107,7 +107,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: GESTOR_ROLES,
   },
   {
-    label: "Aprovacoes Financeiras",
+    label: "Aprovações Financeiras",
     href: "/dashboard/gestao/aprovacoes-financeiras",
     icon: ClipboardSignature,
     roles: GESTOR_ROLES,
@@ -119,7 +119,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ["admin", "diretor", "gestor", "financeiro"],
   },
   {
-    label: "Conferencia de Caixa",
+    label: "Conferência de Caixa",
     href: "/dashboard/gestao/conferencia-caixa",
     icon: Landmark,
     roles: GESTOR_ROLES,
@@ -257,13 +257,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: FINANCE_ROLES,
   },
   {
-    label: "Integracao Asaas",
+    label: "Integração Asaas",
     href: "/dashboard/financeiro/integracoes/asaas",
     icon: PlugZap,
     roles: ["admin", "diretor", "financeiro"],
   },
   {
-    label: "Integracao WhatsApp",
+    label: "Integração WhatsApp",
     href: "/dashboard/integracoes/whatsapp",
     icon: MessageCircleMore,
     roles: ["admin", "diretor", "gestor", "comercial", "secretaria", "financeiro"],
@@ -281,7 +281,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ["admin", "diretor", "financeiro"],
   },
   {
-    label: "Movimentacoes",
+    label: "Movimentações",
     href: "/dashboard/financeiro/movimentacoes",
     icon: ArrowUpDown,
     roles: ["admin", "diretor", "gestor", "financeiro"],
@@ -293,13 +293,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: ["admin", "diretor", "financeiro"],
   },
   {
-    label: "Solicitacoes Financeiras",
+    label: "Solicitações Financeiras",
     href: "/dashboard/financeiro/solicitacoes",
     icon: ClipboardSignature,
     roles: ["admin", "diretor", "gestor", "coordenacao", "secretaria", "financeiro", "professor"],
   },
   {
-    label: "Relatorios",
+    label: "Relatórios",
     href: "/dashboard/relatorios",
     icon: BarChart3,
     roles: REPORT_ROLES,

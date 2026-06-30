@@ -18,29 +18,29 @@ function formatMetric(value: number, kind?: "money" | "number" | "percent") {
 const EXPLAIN: Record<string, string> = {
   "Saldo atual em caixa": "Quanto há em caixa agora (entradas menos saídas do período).",
   Entradas: "Total de dinheiro que entrou no caixa no período.",
-  Saidas: "Total de dinheiro que saiu do caixa no período.",
-  "Solicitacoes pendentes": "Pedidos financeiros aguardando aprovação.",
-  "Solicitacoes aprovadas": "Pedidos financeiros já aprovados.",
-  "Solicitacoes recusadas": "Pedidos financeiros que foram recusados.",
+  "Saídas": "Total de dinheiro que saiu do caixa no período.",
+  "Solicitações pendentes": "Pedidos financeiros aguardando aprovação.",
+  "Solicitações aprovadas": "Pedidos financeiros já aprovados.",
+  "Solicitações recusadas": "Pedidos financeiros que foram recusados.",
   "Caixas abertos": "Caixas que estão abertos neste momento.",
-  "Fechamentos com diferenca": "Fechamentos de caixa cujo valor não bateu.",
+  "Fechamentos com diferença": "Fechamentos de caixa cujo valor não bateu.",
   "Alunos ativos": "Alunos com matrícula ativa no momento.",
-  Matriculas: "Total de matrículas (aluno vinculado a uma turma).",
+  "Matrículas": "Total de matrículas (aluno vinculado a uma turma).",
   "Turmas ativas": "Turmas em funcionamento atualmente.",
   "Professores ativos": "Professores ativos no sistema.",
   "Professores sem chamada": "Professores que ainda não lançaram a chamada.",
   "Atividades pendentes": "Atividades/provas enviadas aguardando correção.",
-  "Conteudos nao publicados": "Conteúdos (aulas) ainda em rascunho, não publicados.",
+  "Conteúdos não publicados": "Conteúdos (aulas) ainda em rascunho, não publicados.",
   "Leads recebidos": "Total de contatos/interessados recebidos.",
   "Leads em atendimento": "Leads que estão em atendimento agora.",
   "Leads convertidos": "Leads que viraram matrícula.",
-  "Taxa de conversao": "Percentual de leads que viraram matrícula.",
+  "Taxa de conversão": "Percentual de leads que viraram matrícula.",
   "Eventos realizados": "Eventos já finalizados.",
   "Inscritos em eventos": "Total de inscrições em eventos.",
   "Participantes convertidos": "Participantes de evento que viraram alunos.",
   "Documentos pendentes": "Documentos aguardando emissão/assinatura.",
-  "Solicitacoes internas abertas": "Solicitações internas ainda abertas.",
-  "Solicitacoes atrasadas": "Solicitações que passaram do prazo.",
+  "Solicitações internas abertas": "Solicitações internas ainda abertas.",
+  "Solicitações atrasadas": "Solicitações que passaram do prazo.",
 };
 
 export default async function RelatoriosGestaoPage() {
@@ -56,15 +56,15 @@ export default async function RelatoriosGestaoPage() {
     tone: StatTone;
   }[] = [
     { title: "Financeiro", metrics: dashboard.finance, href: "/dashboard/gestao/fluxo-caixa", label: "Abrir Fluxo de Caixa", tone: "emerald" },
-    { title: "Academico", metrics: dashboard.academic, href: "/dashboard/academico", label: "Abrir Acadêmico", tone: "indigo" },
-    { title: "Pedagogico", metrics: dashboard.pedagogical, href: "/dashboard/pedagogico", label: "Abrir Pedagógico", tone: "violet" },
+    { title: "Acadêmico", metrics: dashboard.academic, href: "/dashboard/academico", label: "Abrir Acadêmico", tone: "indigo" },
+    { title: "Pedagógico", metrics: dashboard.pedagogical, href: "/dashboard/pedagogico", label: "Abrir Pedagógico", tone: "violet" },
     { title: "Comercial", metrics: dashboard.commercial, href: "/dashboard/crm/relatorios", label: "Abrir Relatórios do CRM", tone: "sky" },
     { title: "Administrativo", metrics: dashboard.administrative, href: "/dashboard/documentos", label: "Abrir Documentos", tone: "amber" },
   ];
 
   return (
     <>
-      <PageHeader title="Relatorios Gerenciais" description="Indicadores consolidados por area. Toque no ícone de um cartão para ver o resumo e ir para a área." />
+      <PageHeader title="Relatórios Gerenciais" description="Indicadores consolidados por área. Toque no ícone de um cartão para ver o resumo e ir para a área." />
       <div className="space-y-8">
         <Section title="Desistências e Evasão">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">

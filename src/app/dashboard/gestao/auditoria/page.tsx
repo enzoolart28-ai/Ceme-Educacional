@@ -18,7 +18,7 @@ export default async function AuditoriaGestaoPage() {
 
   return (
     <>
-      <PageHeader title="Auditoria Gerencial" description="Logs de aprovacoes, caixa e eventos sensiveis." />
+      <PageHeader title="Auditoria Gerencial" description="Logs de aprovações, caixa e eventos sensíveis." />
       <DataTable
         columns={columns}
         data={logs}
