@@ -23,6 +23,7 @@ import {
   BellRing,
   CalendarDays,
   Target,
+  UserPlus,
   Ticket,
   Trophy,
   School,
@@ -74,6 +75,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Calendário",
     href: "/dashboard/calendario",
     icon: CalendarDays,
+    roles: ALL_ROLES,
+  },
+  {
+    label: "Captar Lead",
+    href: "/dashboard/captar-lead",
+    icon: UserPlus,
     roles: ALL_ROLES,
   },
   {
