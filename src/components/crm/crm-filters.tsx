@@ -8,7 +8,11 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { SOURCE_OPTIONS, STATUS_OPTIONS } from "@/lib/crm/labels";
 
-export function CrmFilters() {
+export function CrmFilters({
+  capturers = [],
+}: {
+  capturers?: { id: string; name: string }[];
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -24,7 +28,7 @@ export function CrmFilters() {
     router.push(`${pathname}?${params.toString()}`);
   }
 
-  const hasFilters = ["q", "course", "status", "source"].some((k) => searchParams.get(k));
+  const hasFilters = ["q", "course", "status", "source", "capturedBy"].some((k) => searchParams.get(k));
 
   return (
     <form
@@ -44,9 +48,15 @@ export function CrmFilters() {
         <option value="">Todas as origens</option>
         {SOURCE_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </Select>
+      {capturers.length > 0 && (
+        <Select value={searchParams.get("capturedBy") ?? ""} onChange={(e) => apply({ capturedBy: e.target.value })} className="sm:w-48" aria-label="Captado por">
+          <option value="">Captado por (todos)</option>
+          {capturers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </Select>
+      )}
       <Button type="submit" variant="outline">Buscar</Button>
       {hasFilters && (
-        <Button type="button" variant="ghost" onClick={() => { setQ(""); setCourse(""); apply({ q: "", course: "", status: "", source: "" }); }}>
+        <Button type="button" variant="ghost" onClick={() => { setQ(""); setCourse(""); apply({ q: "", course: "", status: "", source: "", capturedBy: "" }); }}>
           <X className="h-4 w-4" /> Limpar
         </Button>
       )}

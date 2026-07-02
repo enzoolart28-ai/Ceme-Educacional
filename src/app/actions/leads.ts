@@ -22,6 +22,8 @@ export async function createQuickLeadAction(values: QuickLeadInput): Promise<Act
     full_name: parsed.data.full_name.trim(),
     phone: parsed.data.phone.trim(),
     course_interest: parsed.data.course_interest.trim(),
+    created_by: profile.id,
+    created_by_name: profile.full_name,
     // source/status usam os defaults da tabela ('outro' / 'novo').
   });
 

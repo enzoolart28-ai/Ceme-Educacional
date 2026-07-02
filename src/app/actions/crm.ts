@@ -34,7 +34,11 @@ export async function createLeadAction(values: LeadInput): Promise<ActionResult>
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Verifique os campos." };
 
   const supabase = await createClient();
-  const { data, error } = await supabase.from("leads").insert(leadPayload(parsed.data)).select("id").single();
+  const { data, error } = await supabase
+    .from("leads")
+    .insert({ ...leadPayload(parsed.data), created_by: profile.id, created_by_name: profile.full_name })
+    .select("id")
+    .single();
   if (error || !data) return { error: "Não foi possível cadastrar o lead." };
   revalidatePath("/dashboard/crm");
   redirect(`/dashboard/crm/${data.id}`);

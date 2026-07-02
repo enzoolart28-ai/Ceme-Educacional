@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Plus, BarChart3, Users } from "lucide-react";
 import { requirePermission } from "@/lib/auth/session";
-import { listLeads } from "@/lib/crm/queries";
+import { listLeads, listLeadCapturers } from "@/lib/crm/queries";
 import {
   KANBAN_STATUSES,
   STATUS_LABELS,
@@ -39,12 +39,16 @@ export default async function CrmPage({
   const sp = await searchParams;
   const view = sp.view === "lista" ? "lista" : "kanban";
 
-  const leads = await listLeads({
-    q: sp.q,
-    course: sp.course,
-    status: sp.status as LeadStatus | undefined,
-    source: sp.source as LeadSource | undefined,
-  });
+  const [leads, capturers] = await Promise.all([
+    listLeads({
+      q: sp.q,
+      course: sp.course,
+      status: sp.status as LeadStatus | undefined,
+      source: sp.source as LeadSource | undefined,
+      capturedBy: sp.capturedBy,
+    }),
+    listLeadCapturers(),
+  ]);
 
   function buildUrl(overrides: Record<string, string>) {
     const params = new URLSearchParams();
@@ -76,7 +80,7 @@ export default async function CrmPage({
         <Link href={buildUrl({ view: "lista" })} className={tab("lista")}>Lista</Link>
       </div>
 
-      <CrmFilters />
+      <CrmFilters capturers={capturers} />
 
       {leads.length === 0 ? (
         <EmptyState icon={Users} title="Nenhum lead" description="Cadastre o primeiro interessado." />
@@ -107,6 +111,7 @@ export default async function CrmPage({
                   {l.course_interest ?? "—"} · {SOURCE_LABELS[l.source as LeadSource]}
                   {l.phone ? ` · ${l.phone}` : ""}
                   {l.city ? ` · ${l.city}` : ""}
+                  {l.created_by_name ? ` · captado por ${l.created_by_name}` : ""}
                 </p>
               </div>
               <Badge className={STATUS_BADGE[l.status as LeadStatus]}>{statusLabel(l.status as LeadStatus)}</Badge>

@@ -100,3 +100,6 @@
  GET /login?redirectTo=%2Fdashboard 500 in 291ms (next.js: 86ms, proxy.ts: 185ms, application-code: 20ms)
 ✓ Compiled in 585ms
 ✓ Compiled in 419ms
+✓ Compiled in 2.4s
+✓ Compiled in 458ms
+✓ Compiled in 260ms

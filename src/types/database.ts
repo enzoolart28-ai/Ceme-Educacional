@@ -2594,6 +2594,8 @@ export type Database = {
           converted_student_id: string | null
           course_interest: string | null
           created_at: string
+          created_by: string | null
+          created_by_name: string | null
           email: string | null
           full_name: string
           guardian_name: string | null
@@ -2610,6 +2612,8 @@ export type Database = {
           converted_student_id?: string | null
           course_interest?: string | null
           created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
           email?: string | null
           full_name: string
           guardian_name?: string | null
@@ -2626,6 +2630,8 @@ export type Database = {
           converted_student_id?: string | null
           course_interest?: string | null
           created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
           email?: string | null
           full_name?: string
           guardian_name?: string | null
@@ -2642,6 +2648,13 @@ export type Database = {
             columns: ["converted_student_id"]
             isOneToOne: false
             referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

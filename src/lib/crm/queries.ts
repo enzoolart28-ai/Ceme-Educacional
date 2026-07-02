@@ -11,6 +11,7 @@ export interface LeadFilters {
   course?: string;
   status?: LeadStatus;
   source?: LeadSource;
+  capturedBy?: string; // id do perfil que captou o lead
 }
 
 export interface InteractionRow extends LeadInteraction {
@@ -28,9 +29,29 @@ export async function listLeads(filters: LeadFilters = {}): Promise<Lead[]> {
   if (filters.course) query = query.ilike("course_interest", `%${filters.course}%`);
   if (filters.status) query = query.eq("status", filters.status);
   if (filters.source) query = query.eq("source", filters.source);
+  if (filters.capturedBy) query = query.eq("created_by", filters.capturedBy);
 
   const { data } = await query;
   return data ?? [];
+}
+
+/** Lista de usuários que já captaram algum lead (para o filtro "Captado por"). */
+export async function listLeadCapturers(): Promise<{ id: string; name: string }[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("leads")
+    .select("created_by, created_by_name")
+    .not("created_by", "is", null);
+
+  const byId = new Map<string, string>();
+  for (const row of data ?? []) {
+    if (row.created_by && !byId.has(row.created_by)) {
+      byId.set(row.created_by, row.created_by_name ?? "—");
+    }
+  }
+  return [...byId.entries()]
+    .map(([id, name]) => ({ id, name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getLead(id: string): Promise<Lead | null> {
