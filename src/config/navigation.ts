@@ -24,6 +24,7 @@ import {
   CalendarDays,
   Target,
   UserPlus,
+  ShoppingCart,
   Ticket,
   Trophy,
   School,
@@ -231,7 +232,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Comercial (CRM)",
     href: "/dashboard/crm",
     icon: Target,
-    roles: COMERCIAL_ROLES,
+    roles: [...COMERCIAL_ROLES, "professor"],
   },
   {
     label: "Eventos",
@@ -261,6 +262,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Financeiro",
     href: "/dashboard/financeiro",
     icon: Wallet,
+    roles: FINANCE_ROLES,
+  },
+  {
+    label: "Vendas",
+    href: "/dashboard/financeiro/vendas",
+    icon: ShoppingCart,
     roles: FINANCE_ROLES,
   },
   {

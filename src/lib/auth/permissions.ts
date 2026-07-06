@@ -154,6 +154,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "reports.read",
     "finance.read",
     "finance.manage",
+    "leads.manage",
     "alerts.manage",
     "cash.read",
     "cash.manage",
@@ -169,6 +170,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "grades.read",
     "grades.manage",
     "students.read",
+    "leads.manage",
     "financial_requests.create",
   ],
   aluno: [

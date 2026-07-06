@@ -89,6 +89,7 @@ export const COMERCIAL_ROLES: readonly UserRole[] = [
   "coordenacao",
   "secretaria",
   "comercial",
+  "financeiro",
 ];
 
 export const ACADEMIC_ROLES: readonly UserRole[] = [
